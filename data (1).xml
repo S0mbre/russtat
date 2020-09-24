@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenericData
+ xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message"
+ xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/common"
+ xmlns:compact="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/compact"
+ xmlns:cross="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/cross"
+ xmlns:generic="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/generic"
+ xmlns:query="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/query"
+ xmlns:structure="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/structure"
+ xmlns:utility="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/utility"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message SDMXMessage.xsd">
+<Header Id="singHead">
+	<ID>-1102098324</ID>
+	<Test>false</Test>
+	<Truncated>false</Truncated>
+	<Prepared>2020-09-24T07:11:43</Prepared>
+	<Extracted>2020-09-24T07:11:43</Extracted>
+	<Sender id="UIS">
+		<Name xml:lang="en">Official statistics</Name>
+		<Name xml:lang="ru">Государственная статистика</Name>
+	</Sender>
+	<DataSetAgency>1</DataSetAgency>
+	<DataSetID>9410063</DataSetID>
+</Header>
+<CodeLists>
+	<structure:CodeList id="s_OKATO">
+		<structure:Name xml:lang="ru">Классификатор объектов административно-территориального деления (ОКАТО)</structure:Name>
+		<structure:Code value="643">
+			<structure:Description xml:lang="ru">Российская Федерация</structure:Description>
+		</structure:Code>
+		<structure:Code value="030">
+			<structure:Description xml:lang="ru">Центральный федеральный округ</structure:Description>
+		</structure:Code>
+		<structure:Code value="14000000000">
+			<structure:Description xml:lang="ru">Белгородская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="15000000000">
+			<structure:Description xml:lang="ru">Брянская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="17000000000">
+			<structure:Description xml:lang="ru">Владимирская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="20000000000">
+			<structure:Description xml:lang="ru">Воронежская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="24000000000">
+			<structure:Description xml:lang="ru">Ивановская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="29000000000">
+			<structure:Description xml:lang="ru">Калужская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="34000000000">
+			<structure:Description xml:lang="ru">Костромская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="38000000000">
+			<structure:Description xml:lang="ru">Курская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="42000000000">
+			<structure:Description xml:lang="ru">Липецкая область</structure:Description>
+		</structure:Code>
+		<structure:Code value="46000000000">
+			<structure:Description xml:lang="ru">Московская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="54000000000">
+			<structure:Description xml:lang="ru">Орловская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="61000000000">
+			<structure:Description xml:lang="ru">Рязанская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="66000000000">
+			<structure:Description xml:lang="ru">Смоленская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="68000000000">
+			<structure:Description xml:lang="ru">Тамбовская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="28000000000">
+			<structure:Description xml:lang="ru">Тверская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="70000000000">
+			<structure:Description xml:lang="ru">Тульская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="78000000000">
+			<structure:Description xml:lang="ru">Ярославская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="45000000000">
+			<structure:Description xml:lang="ru">Город Москва столица Российской Федерации город федерального значения</structure:Description>
+		</structure:Code>
+		<structure:Code value="031">
+			<structure:Description xml:lang="ru">Северо-Западный федеральный округ</structure:Description>
+		</structure:Code>
+		<structure:Code value="86000000000">
+			<structure:Description xml:lang="ru">Республика Карелия</structure:Description>
+		</structure:Code>
+		<structure:Code value="87000000000">
+			<structure:Description xml:lang="ru">Республика Коми</structure:Description>
+		</structure:Code>
+		<structure:Code value="11000000000">
+			<structure:Description xml:lang="ru">Архангельская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="11100000000">
+			<structure:Description xml:lang="ru">Ненецкий автономный округ (Архангельская область)</structure:Description>
+		</structure:Code>
+		<structure:Code value="11001000">
+			<structure:Description xml:lang="ru">Архангельская область (без АО)</structure:Description>
+		</structure:Code>
+		<structure:Code value="11001000000">
+			<structure:Description xml:lang="ru">Архангельская область (кроме Ненецкого автономного округа)</structure:Description>
+		</structure:Code>
+		<structure:Code value="19000000000">
+			<structure:Description xml:lang="ru">Вологодская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="27000000000">
+			<structure:Description xml:lang="ru">Калининградская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="41000000000">
+			<structure:Description xml:lang="ru">Ленинградская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="47000000000">
+			<structure:Description xml:lang="ru">Мурманская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="49000000000">
+			<structure:Description xml:lang="ru">Новгородская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="58000000000">
+			<structure:Description xml:lang="ru">Псковская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="40000000000">
+			<structure:Description xml:lang="ru">Город Санкт-Петербург город федерального значения</structure:Description>
+		</structure:Code>
+		<structure:Code value="037">
+			<structure:Description xml:lang="ru">Южный федеральный округ (с 2010 года)</structure:Description>
+		</structure:Code>
+		<structure:Code value="040">
+			<structure:Description xml:lang="ru">Южный федеральный округ (с 29.07.2016)</structure:Description>
+		</structure:Code>
+		<structure:Code value="79000000000">
+			<structure:Description xml:lang="ru">Республика Адыгея (Адыгея)</structure:Description>
+		</structure:Code>
+		<structure:Code value="85000000000">
+			<structure:Description xml:lang="ru">Республика Калмыкия</structure:Description>
+		</structure:Code>
+		<structure:Code value="35000000000">
+			<structure:Description xml:lang="ru">Республика Крым</structure:Description>
+		</structure:Code>
+		<structure:Code value="03000000000">
+			<structure:Description xml:lang="ru">Краснодарский край</structure:Description>
+		</structure:Code>
+		<structure:Code value="12000000000">
+			<structure:Description xml:lang="ru">Астраханская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="18000000000">
+			<structure:Description xml:lang="ru">Волгоградская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="60000000000">
+			<structure:Description xml:lang="ru">Ростовская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="67000000000">
+			<structure:Description xml:lang="ru">Город федерального значения Севастополь</structure:Description>
+		</structure:Code>
+		<structure:Code value="038">
+			<structure:Description xml:lang="ru">Северо-Кавказский федеральный округ</structure:Description>
+		</structure:Code>
+		<structure:Code value="82000000000">
+			<structure:Description xml:lang="ru">Республика Дагестан</structure:Description>
+		</structure:Code>
+		<structure:Code value="26000000000">
+			<structure:Description xml:lang="ru">Республика Ингушетия*</structure:Description>
+		</structure:Code>
+		<structure:Code value="83000000000">
+			<structure:Description xml:lang="ru">Кабардино-Балкарская Республика</structure:Description>
+		</structure:Code>
+		<structure:Code value="91000000000">
+			<structure:Description xml:lang="ru">Карачаево-Черкесская Республика</structure:Description>
+		</structure:Code>
+		<structure:Code value="90000000000">
+			<structure:Description xml:lang="ru">Республика Северная Осетия-Алания</structure:Description>
+		</structure:Code>
+		<structure:Code value="96000000000">
+			<structure:Description xml:lang="ru">Чеченская Республика*</structure:Description>
+		</structure:Code>
+		<structure:Code value="07000000000">
+			<structure:Description xml:lang="ru">Ставропольский край</structure:Description>
+		</structure:Code>
+		<structure:Code value="033">
+			<structure:Description xml:lang="ru">Приволжский федеральный округ</structure:Description>
+		</structure:Code>
+		<structure:Code value="80000000000">
+			<structure:Description xml:lang="ru">Республика Башкортостан</structure:Description>
+		</structure:Code>
+		<structure:Code value="88000000000">
+			<structure:Description xml:lang="ru">Республика Марий Эл</structure:Description>
+		</structure:Code>
+		<structure:Code value="89000000000">
+			<structure:Description xml:lang="ru">Республика Мордовия</structure:Description>
+		</structure:Code>
+		<structure:Code value="92000000000">
+			<structure:Description xml:lang="ru">Республика Татарстан (Татарстан)</structure:Description>
+		</structure:Code>
+		<structure:Code value="94000000000">
+			<structure:Description xml:lang="ru">Удмуртская Республика</structure:Description>
+		</structure:Code>
+		<structure:Code value="97000000000">
+			<structure:Description xml:lang="ru">Чувашская Республика - Чувашия</structure:Description>
+		</structure:Code>
+		<structure:Code value="57000000000">
+			<structure:Description xml:lang="ru">Пермский край</structure:Description>
+		</structure:Code>
+		<structure:Code value="33000000000">
+			<structure:Description xml:lang="ru">Кировская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="22000000000">
+			<structure:Description xml:lang="ru">Нижегородская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="53000000000">
+			<structure:Description xml:lang="ru">Оренбургская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="56000000000">
+			<structure:Description xml:lang="ru">Пензенская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="36000000000">
+			<structure:Description xml:lang="ru">Самарская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="63000000000">
+			<structure:Description xml:lang="ru">Саратовская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="73000000000">
+			<structure:Description xml:lang="ru">Ульяновская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="034">
+			<structure:Description xml:lang="ru">Уральский федеральный округ</structure:Description>
+		</structure:Code>
+		<structure:Code value="37000000000">
+			<structure:Description xml:lang="ru">Курганская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="65000000000">
+			<structure:Description xml:lang="ru">Свердловская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="71000000000">
+			<structure:Description xml:lang="ru">Тюменская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="71100000000">
+			<structure:Description xml:lang="ru">Ханты-Мансийский автономный округ - Югра (Тюменская область)</structure:Description>
+		</structure:Code>
+		<structure:Code value="71140000000">
+			<structure:Description xml:lang="ru">Ямало-Ненецкий автономный округ (Тюменская область)</structure:Description>
+		</structure:Code>
+		<structure:Code value="71001000">
+			<structure:Description xml:lang="ru">Тюменская область (без АО)</structure:Description>
+		</structure:Code>
+		<structure:Code value="71001000000">
+			<structure:Description xml:lang="ru">Тюменская область (кроме Ханты-Мансийского автономного округа-Югры и Ямало-Ненецкого автономного округа)</structure:Description>
+		</structure:Code>
+		<structure:Code value="75000000000">
+			<structure:Description xml:lang="ru">Челябинская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="035">
+			<structure:Description xml:lang="ru">Сибирский федеральный округ</structure:Description>
+		</structure:Code>
+		<structure:Code value="041">
+			<structure:Description xml:lang="ru">Сибирский федеральный округ</structure:Description>
+		</structure:Code>
+		<structure:Code value="84000000000">
+			<structure:Description xml:lang="ru">Республика Алтай</structure:Description>
+		</structure:Code>
+		<structure:Code value="93000000000">
+			<structure:Description xml:lang="ru">Республика Тыва</structure:Description>
+		</structure:Code>
+		<structure:Code value="95000000000">
+			<structure:Description xml:lang="ru">Республика Хакасия</structure:Description>
+		</structure:Code>
+		<structure:Code value="01000000000">
+			<structure:Description xml:lang="ru">Алтайский край</structure:Description>
+		</structure:Code>
+		<structure:Code value="04000000000">
+			<structure:Description xml:lang="ru">Красноярский край</structure:Description>
+		</structure:Code>
+		<structure:Code value="25000000000">
+			<structure:Description xml:lang="ru">Иркутская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="32000000000">
+			<structure:Description xml:lang="ru">Кемеровская область - Кузбасс</structure:Description>
+		</structure:Code>
+		<structure:Code value="50000000000">
+			<structure:Description xml:lang="ru">Новосибирская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="52000000000">
+			<structure:Description xml:lang="ru">Омская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="69000000000">
+			<structure:Description xml:lang="ru">Томская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="036">
+			<structure:Description xml:lang="ru">Дальневосточный федеральный округ</structure:Description>
+		</structure:Code>
+		<structure:Code value="042">
+			<structure:Description xml:lang="ru">Дальневосточный федеральный округ</structure:Description>
+		</structure:Code>
+		<structure:Code value="81000000000">
+			<structure:Description xml:lang="ru">Республика Бурятия</structure:Description>
+		</structure:Code>
+		<structure:Code value="98000000000">
+			<structure:Description xml:lang="ru">Республика Саха (Якутия)</structure:Description>
+		</structure:Code>
+		<structure:Code value="76000000000">
+			<structure:Description xml:lang="ru">Забайкальский край</structure:Description>
+		</structure:Code>
+		<structure:Code value="30000000000">
+			<structure:Description xml:lang="ru">Камчатский край</structure:Description>
+		</structure:Code>
+		<structure:Code value="05000000000">
+			<structure:Description xml:lang="ru">Приморский край</structure:Description>
+		</structure:Code>
+		<structure:Code value="08000000000">
+			<structure:Description xml:lang="ru">Хабаровский край</structure:Description>
+		</structure:Code>
+		<structure:Code value="10000000000">
+			<structure:Description xml:lang="ru">Амурская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="44000000000">
+			<structure:Description xml:lang="ru">Магаданская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="64000000000">
+			<structure:Description xml:lang="ru">Сахалинская область</structure:Description>
+		</structure:Code>
+		<structure:Code value="99000000000">
+			<structure:Description xml:lang="ru">Еврейская автономная область</structure:Description>
+		</structure:Code>
+		<structure:Code value="77000000000">
+			<structure:Description xml:lang="ru">Чукотский автономный округ</structure:Description>
+		</structure:Code>
+		<structure:Code value="039">
+			<structure:Description xml:lang="ru">Крымский федеральный округ</structure:Description>
+		</structure:Code>
+	</structure:CodeList>
+</CodeLists>
+<Description Id="signObj">
+	<Indicator id="43245" name="Реальная начисленная заработная плата в процентах к соответствующему периоду предыдущего года">
+		<Units>
+			<Unit value="процент"/>
+		</Units>
+		<Periodicities>
+			<Periodicity value="Квартальная - не охарактеризована" releases="на 35-й рабочий день после отчетного периода" next-release="15.11.2020"/>
+		</Periodicities>
+		<DataRange start="2013" end="2020"/>
+		<LastUpdate value="2020-08-21T14:03:21"/>
+		<Dimensions>
+			<Dimension value="s_OKATO" agencyID="1">
+				<Name xml:lang="ru">Классификатор объектов административно-территориального деления (ОКАТО)</Name>
+			</Dimension>
+		</Dimensions>
+		<Methodology value="Реальная начисленная заработная плата характеризует покупательную способность заработной платы в отчетном периоде в связи с изменением цен на потребительские товары и услуги по сравнению с базисным периодом. Для этого рассчитывается индекс реальной начисленной заработной платы путем деления индекса номинальной начисленной заработной платы на индекс потребительских цен за один и тот же временной период."/>
+		<Organization value="Федеральная служба государственной статистики"/>
+		<Department value="Управление статистики труда"/>
+		<Allocations>
+			<Allocation id="1.30.1.">
+				<Name xml:lang="ru">По федеральному плану статработ / Федеральная служба государственной статистики / Рынок труда / Численность и начисленная заработная плата работников организаций</Name>
+			</Allocation>
+		</Allocations>
+		<Responsible>
+			<Name xml:lang="ru">Киньтикова И.В.</Name>
+			<Contacts xml:lang="ru">(495) 607-41-41 (доб. 99238) kintikova@gks.ru</Contacts>
+		</Responsible>
+	</Indicator>
+</Description>
+<DataSet>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-март"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2013</generic:Time>
+			<generic:ObsValue value="104,5"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-июнь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2013</generic:Time>
+			<generic:ObsValue value="105,4"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-сентябрь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2013</generic:Time>
+			<generic:ObsValue value="105,7"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-декабрь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2013</generic:Time>
+			<generic:ObsValue value="104,8"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-март"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2014</generic:Time>
+			<generic:ObsValue value="104,4"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-июнь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2014</generic:Time>
+			<generic:ObsValue value="103,4"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-сентябрь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2014</generic:Time>
+			<generic:ObsValue value="102,4"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-декабрь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2014</generic:Time>
+			<generic:ObsValue value="101,2"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-март"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2015</generic:Time>
+			<generic:ObsValue value="91"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-июнь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2015</generic:Time>
+			<generic:ObsValue value="91,2"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-сентябрь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2015</generic:Time>
+			<generic:ObsValue value="90,9"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-декабрь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2015</generic:Time>
+			<generic:ObsValue value="90,7"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-март"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2016</generic:Time>
+			<generic:ObsValue value="99,4"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-июнь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2016</generic:Time>
+			<generic:ObsValue value="100"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-сентябрь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2016</generic:Time>
+			<generic:ObsValue value="100,4"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-декабрь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2016</generic:Time>
+			<generic:ObsValue value="100,7"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-март"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2017</generic:Time>
+			<generic:ObsValue value="101,8"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-июнь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2017</generic:Time>
+			<generic:ObsValue value="102,6"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-сентябрь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2017</generic:Time>
+			<generic:ObsValue value="102,7"/>
+		</generic:Obs>
+	</generic:Series>
+	<generic:Series>
+		<generic:SeriesKey>
+			<generic:Value concept="s_OKATO" value="643"/>
+		</generic:SeriesKey>
+		<generic:Attributes>
+			<generic:Value concept="EI" value="процент"/>
+			<generic:Value concept="PERIOD" value="январь-декабрь"/>
+		</generic:Attributes>
+		<generic:Obs>
+			<generic:Time>2017</generic:Time>
+			<generic:ObsValue value="103,5"/>
+		</generic:Obs>
+	</generic:Series>
+</DataSet>
+</GenericData>
