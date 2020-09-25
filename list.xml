@@ -8613,12 +8613,6 @@
 			<format>xml</format>
 		</item>
 		<item>
-			<identifier>7708234640-fiveanineanineafouratwo</identifier>
- 			<title>Количество вновь созданных субъектов малого и среднего предпринимательства в сельском хозяйстве, включая крестьянские (фермерские) хозяйства и сельскохозяйственные потребительские кооперативы</title>
-			<link>https://fedstat.ru/opendata/7708234640-fiveanineanineafouratwo/data-2020-06-10-structure-2020-06-10.xml</link>
-			<format>xml</format>
-		</item>
-		<item>
 			<identifier>7708234640-sixazeroazeroafiveafour</identifier>
  			<title>Количество вновь утвержденных в отчетном периоде документов национальной системы стандартизации в сфере строительства, определяемое по количеству положительных заключений на такие документы профильного технического комитета по стандартизации ТК 465 &#39;Строительство&#39;</title>
 			<link>https://fedstat.ru/opendata/7708234640-sixazeroazeroafiveafour/data-2020-07-13-structure-2020-07-13.xml</link>
@@ -12717,6 +12711,12 @@
 			<format>xml</format>
 		</item>
 		<item>
+			<identifier>7708234640-sixazeroafourasixafour</identifier>
+ 			<title>Количество рабочих мест на всех видах работ  по производству товаров и услуг (по статусу в занятости)  в среднем за год с 2017 г. </title>
+			<link>https://fedstat.ru/opendata/7708234640-sixazeroafourasixafour/data-2020-09-24-structure-2020-09-24.xml</link>
+			<format>xml</format>
+		</item>
+		<item>
 			<identifier>7708234640-fourazeroasixafiveanine</identifier>
  			<title>Количество рабочих мест на всех видах работ по производству товаров и услуг (в среднем за год) по 2016 г.</title>
 			<link>https://fedstat.ru/opendata/7708234640-fourazeroasixafiveanine/data-2020-08-14-structure-2020-08-14.xml</link>
@@ -13323,24 +13323,6 @@
 			<format>xml</format>
 		</item>
 		<item>
-			<identifier>7708234640-fouratwoaeightafourafour</identifier>
- 			<title>Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом</title>
-			<link>https://fedstat.ru/opendata/7708234640-fouratwoaeightafourafour/data-2012-08-13-structure-2012-08-13.xml</link>
-			<format>xml</format>
-		</item>
-		<item>
-			<identifier>7708234640-fouratwoasixanineanine</identifier>
- 			<title>Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом</title>
-			<link>https://fedstat.ru/opendata/7708234640-fouratwoasixanineanine/data-2012-07-24-structure-2012-07-24.xml</link>
-			<format>xml</format>
-		</item>
-		<item>
-			<identifier>7708234640-fiveaoneazeroafiveaseven</identifier>
- 			<title>Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом</title>
-			<link>https://fedstat.ru/opendata/7708234640-fiveaoneazeroafiveaseven/data-2019-12-03-structure-2019-12-03.xml</link>
-			<format>xml</format>
-		</item>
-		<item>
 			<identifier>7702235133-fouratwoaeightanineaeight</identifier>
  			<title>Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом</title>
 			<link>https://fedstat.ru/opendata/7702235133-fouratwoaeightanineaeight/data-2017-07-20-structure-2017-07-20.xml</link>
@@ -13350,6 +13332,24 @@
 			<identifier>7708234640-fourathreeatwoazeroatwo</identifier>
  			<title>Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом</title>
 			<link>https://fedstat.ru/opendata/7708234640-fourathreeatwoazeroatwo/data-2013-01-25-structure-2013-01-25.xml</link>
+			<format>xml</format>
+		</item>
+		<item>
+			<identifier>7708234640-fiveaoneazeroafiveaseven</identifier>
+ 			<title>Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом</title>
+			<link>https://fedstat.ru/opendata/7708234640-fiveaoneazeroafiveaseven/data-2019-12-03-structure-2019-12-03.xml</link>
+			<format>xml</format>
+		</item>
+		<item>
+			<identifier>7708234640-fouratwoasixanineanine</identifier>
+ 			<title>Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом</title>
+			<link>https://fedstat.ru/opendata/7708234640-fouratwoasixanineanine/data-2012-07-24-structure-2012-07-24.xml</link>
+			<format>xml</format>
+		</item>
+		<item>
+			<identifier>7708234640-fouratwoaeightafourafour</identifier>
+ 			<title>Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом</title>
+			<link>https://fedstat.ru/opendata/7708234640-fouratwoaeightafourafour/data-2012-08-13-structure-2012-08-13.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -13557,15 +13557,15 @@
 			<format>xml</format>
 		</item>
 		<item>
-			<identifier>7708234640-fiveaeightanineathreeafive</identifier>
- 			<title>Количество спортивных сооружений на 100 тыс. человек населения</title>
-			<link>https://fedstat.ru/opendata/7708234640-fiveaeightanineathreeafive/data-2018-05-31-structure-2018-05-31.xml</link>
-			<format>xml</format>
-		</item>
-		<item>
 			<identifier>7708234640-fourathreeanineasevenafive</identifier>
  			<title>Количество спортивных сооружений на 100 тыс. человек населения</title>
 			<link>https://fedstat.ru/opendata/7708234640-fourathreeanineasevenafive/data-2018-05-31-structure-2018-05-31.xml</link>
+			<format>xml</format>
+		</item>
+		<item>
+			<identifier>7708234640-fiveaeightanineathreeafive</identifier>
+ 			<title>Количество спортивных сооружений на 100 тыс. человек населения</title>
+			<link>https://fedstat.ru/opendata/7708234640-fiveaeightanineathreeafive/data-2018-05-31-structure-2018-05-31.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -13968,6 +13968,12 @@
 			<identifier>7708234640-fiveaeightanineanineathree</identifier>
  			<title>Количество фактически отработанного времени на всех видах работ по производству товаров и услуг (в среднем за год) с 2017 г.</title>
 			<link>https://fedstat.ru/opendata/7708234640-fiveaeightanineanineathree/data-2020-08-14-structure-2020-08-14.xml</link>
+			<format>xml</format>
+		</item>
+		<item>
+			<identifier>7708234640-sixazeroafourasixathree</identifier>
+ 			<title>Количество фактически отработанного времени на всех видах работ по производству товаров и услуг (по статусу в занятости) в среднем за год с 2017 г. </title>
+			<link>https://fedstat.ru/opendata/7708234640-sixazeroafourasixathree/data-2020-09-24-structure-2020-09-24.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -17193,12 +17199,6 @@
 			<format>xml</format>
 		</item>
 		<item>
-			<identifier>7708234640-fouratwoaeightasevenaseven</identifier>
- 			<title>Общее количество действующих лицензий</title>
-			<link>https://fedstat.ru/opendata/7708234640-fouratwoaeightasevenaseven/data-2016-07-20-structure-2016-07-20.xml</link>
-			<format>xml</format>
-		</item>
-		<item>
 			<identifier>7708234640-fouratwoaeightaoneaone</identifier>
  			<title>Общее количество действующих лицензий</title>
 			<link>https://fedstat.ru/opendata/7708234640-fouratwoaeightaoneaone/data-2020-08-31-structure-2020-08-31.xml</link>
@@ -17208,6 +17208,12 @@
 			<identifier>7708234640-fiveazeroanineatwoanine</identifier>
  			<title>Общее количество действующих лицензий</title>
 			<link>https://fedstat.ru/opendata/7708234640-fiveazeroanineatwoanine/data-2015-07-24-structure-2015-07-24.xml</link>
+			<format>xml</format>
+		</item>
+		<item>
+			<identifier>7708234640-fouratwoaeightasevenaseven</identifier>
+ 			<title>Общее количество действующих лицензий</title>
+			<link>https://fedstat.ru/opendata/7708234640-fouratwoaeightasevenaseven/data-2016-07-20-structure-2016-07-20.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -17481,15 +17487,15 @@
 			<format>xml</format>
 		</item>
 		<item>
-			<identifier>7708234640-fiveasixatwoanineazero</identifier>
- 			<title>Общее количество наложенных административных штрафов</title>
-			<link>https://fedstat.ru/opendata/7708234640-fiveasixatwoanineazero/data-2018-05-30-structure-2018-05-30.xml</link>
-			<format>xml</format>
-		</item>
-		<item>
 			<identifier>7708234640-fouratwoaeightanineaone</identifier>
  			<title>Общее количество наложенных административных штрафов</title>
 			<link>https://fedstat.ru/opendata/7708234640-fouratwoaeightanineaone/data-2017-06-05-structure-2017-06-05.xml</link>
+			<format>xml</format>
+		</item>
+		<item>
+			<identifier>7708234640-fiveasixatwoanineazero</identifier>
+ 			<title>Общее количество наложенных административных штрафов</title>
+			<link>https://fedstat.ru/opendata/7708234640-fiveasixatwoanineazero/data-2018-05-30-structure-2018-05-30.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -17505,6 +17511,12 @@
 			<format>xml</format>
 		</item>
 		<item>
+			<identifier>7722377866-fiveaeightasevenafiveasix</identifier>
+ 			<title>Общее количество наложенных административных штрафов</title>
+			<link>https://fedstat.ru/opendata/7722377866-fiveaeightasevenafiveasix/data-2019-08-28-structure-2019-08-28.xml</link>
+			<format>xml</format>
+		</item>
+		<item>
 			<identifier>7708234640-fouratwoaeightaeightafive</identifier>
  			<title>Общее количество наложенных административных штрафов</title>
 			<link>https://fedstat.ru/opendata/7708234640-fouratwoaeightaeightafive/data-2016-04-05-structure-2016-04-05.xml</link>
@@ -17514,12 +17526,6 @@
 			<identifier>7708234640-fiveazeroanineaoneatwo</identifier>
  			<title>Общее количество наложенных административных штрафов</title>
 			<link>https://fedstat.ru/opendata/7708234640-fiveazeroanineaoneatwo/data-2017-06-06-structure-2017-06-06.xml</link>
-			<format>xml</format>
-		</item>
-		<item>
-			<identifier>7722377866-fiveaeightasevenafiveasix</identifier>
- 			<title>Общее количество наложенных административных штрафов</title>
-			<link>https://fedstat.ru/opendata/7722377866-fiveaeightasevenafiveasix/data-2019-08-28-structure-2019-08-28.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -20301,15 +20307,15 @@
 			<format>xml</format>
 		</item>
 		<item>
-			<identifier>7708234640-threeasixaoneaoneanine</identifier>
- 			<title>Остатки драгоценных металлов</title>
-			<link>https://fedstat.ru/opendata/7708234640-threeasixaoneaoneanine/data-2015-03-25-structure-2015-03-25.xml</link>
-			<format>xml</format>
-		</item>
-		<item>
 			<identifier>7708234640-threeasixaoneatwoathree</identifier>
  			<title>Остатки драгоценных металлов</title>
 			<link>https://fedstat.ru/opendata/7708234640-threeasixaoneatwoathree/data-2012-03-30-structure-2012-03-30.xml</link>
+			<format>xml</format>
+		</item>
+		<item>
+			<identifier>7708234640-threeasixaoneaoneanine</identifier>
+ 			<title>Остатки драгоценных металлов</title>
+			<link>https://fedstat.ru/opendata/7708234640-threeasixaoneaoneanine/data-2015-03-25-structure-2015-03-25.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -34419,15 +34425,15 @@
 			<format>xml</format>
 		</item>
 		<item>
-			<identifier>7708234640-fiveanineafiveafourafive</identifier>
- 			<title>Численность занятых в сфере малого и среднего предпринимательства, включая индивидуальных предпринимателей</title>
-			<link>https://fedstat.ru/opendata/7708234640-fiveanineafiveafourafive/data-2019-10-01-structure-2019-10-01.xml</link>
-			<format>xml</format>
-		</item>
-		<item>
 			<identifier>7708234640-fiveanineafourathreeaone</identifier>
  			<title>Численность занятых в сфере малого и среднего предпринимательства, включая индивидуальных предпринимателей</title>
 			<link>https://fedstat.ru/opendata/7708234640-fiveanineafourathreeaone/data-2020-04-24-structure-2020-04-24.xml</link>
+			<format>xml</format>
+		</item>
+		<item>
+			<identifier>7708234640-fiveanineafiveafourafive</identifier>
+ 			<title>Численность занятых в сфере малого и среднего предпринимательства, включая индивидуальных предпринимателей</title>
+			<link>https://fedstat.ru/opendata/7708234640-fiveanineafiveafourafive/data-2019-10-01-structure-2019-10-01.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -38063,7 +38069,7 @@
 		<item>
 			<identifier>7708234640-threeanineatwoanineaeight</identifier>
  			<title>Число основных радиотрансляционных точек</title>
-			<link>https://fedstat.ru/opendata/7708234640-threeanineatwoanineaeight/data-2019-09-02-structure-2019-09-02.xml</link>
+			<link>https://fedstat.ru/opendata/7708234640-threeanineatwoanineaeight/data-2020-09-24-structure-2020-09-24.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -38129,7 +38135,7 @@
 		<item>
 			<identifier>7708234640-threeanineathreeaeightasix</identifier>
  			<title>Число передающих центров</title>
-			<link>https://fedstat.ru/opendata/7708234640-threeanineathreeaeightasix/data-2019-09-02-structure-2019-09-02.xml</link>
+			<link>https://fedstat.ru/opendata/7708234640-threeanineathreeaeightasix/data-2020-09-24-structure-2020-09-24.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -39353,13 +39359,13 @@
 		<item>
 			<identifier>7708234640-threeanineafouraeightafive</identifier>
  			<title>Число телеграфных каналов всех видов, образованных каналообразующей аппаратурой</title>
-			<link>https://fedstat.ru/opendata/7708234640-threeanineafouraeightafive/data-2019-09-02-structure-2019-09-02.xml</link>
+			<link>https://fedstat.ru/opendata/7708234640-threeanineafouraeightafive/data-2020-09-24-structure-2020-09-24.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
 			<identifier>7708234640-threeanineafouraeightafour</identifier>
  			<title>Число телеграфных связей</title>
-			<link>https://fedstat.ru/opendata/7708234640-threeanineafouraeightafour/data-2019-09-02-structure-2019-09-02.xml</link>
+			<link>https://fedstat.ru/opendata/7708234640-threeanineafouraeightafour/data-2020-09-24-structure-2020-09-24.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -39437,7 +39443,7 @@
 		<item>
 			<identifier>7708234640-threeanineathreeazeroaone</identifier>
  			<title>Число узлов звукового проводного вещания всего</title>
-			<link>https://fedstat.ru/opendata/7708234640-threeanineathreeazeroaone/data-2019-09-02-structure-2019-09-02.xml</link>
+			<link>https://fedstat.ru/opendata/7708234640-threeanineathreeazeroaone/data-2020-09-24-structure-2020-09-24.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
@@ -39665,7 +39671,7 @@
 		<item>
 			<identifier>7708234640-threeanineatwoanineanine</identifier>
  			<title>Число электростанций</title>
-			<link>https://fedstat.ru/opendata/7708234640-threeanineatwoanineanine/data-2019-09-02-structure-2019-09-02.xml</link>
+			<link>https://fedstat.ru/opendata/7708234640-threeanineatwoanineanine/data-2020-09-24-structure-2020-09-24.xml</link>
 			<format>xml</format>
 		</item>
 		<item>
