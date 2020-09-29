@@ -45,14 +45,28 @@ class Psdb:
             pass
         return False
 
-    def fetch(self, sql, as_list=False):        
+    def exec(self, sql):
         params = [False] + list(self._connparams) + [False] if self._connparams \
                  else [False, 'russtat', 'postgres', '127.0.0.1', '5432', False]
         if not self.connect(*params):
             return None
         cur = self.con.cursor()
-        cur.execute(sql)
-        return cur if not as_list else cur.fetchall()
+        try:
+            cur.execute(sql)
+            return cur
+        except Exception as err:
+            print(err)
+            return None
+
+    def fetch(self, sql, fetch='iter'):      
+        cur = self.exec(sql)
+        if cur is None: return None
+        if fetch == 'list':
+            return cur.fetchall()
+        elif fetch == 'one':
+            return cur.fetchone()
+        else:
+            return cur
 
     def __bool__(self):
         return not self.con is None

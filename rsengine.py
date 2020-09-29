@@ -214,7 +214,8 @@ class Russtat:
 
         return data
 
-    def get_one(self, dataset, xmlfilename='auto', overwrite=True, del_xml=True, save2json='auto', loadfromjson='auto'):
+    def get_one(self, dataset, xmlfilename='auto', overwrite=True, del_xml=True, 
+                save2json='auto', loadfromjson='auto', on_dataset=None):
 
         def json_hook(d):
             for k in d:
@@ -346,6 +347,8 @@ class Russtat:
                 except Exception as err:
                     self._report(err)
 
+            if on_dataset: on_dataset(ds)
+
         except Exception as err:
             self._report(err)
             return None
@@ -353,7 +356,7 @@ class Russtat:
         return ds
 
     def get_many(self, datasets=None, xmlfilenames='auto', overwrite=True, del_xml=True, save2json='auto', loadfromjson='auto',
-              processes='auto', wait=True, on_results_ready=None, on_error=None, on_stopcheck=None):
+              processes='auto', wait=True, on_dataset=None, on_results_ready=None, on_error=None, on_stopcheck=None):
 
         if not self.datasets: self.update_dataset_list()
 
@@ -407,7 +410,7 @@ class Russtat:
                     self._report('Bad type: loadfromjson', True)
                     return None
                 
-                args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_))
+                args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_, on_dataset))
                 
             except Exception as err:
                 self._report(err, True)
