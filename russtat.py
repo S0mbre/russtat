@@ -2,8 +2,9 @@
 # --------------------------------------------------------------- #
 
 import os, sys
+import json
 from rsengine import Russtat, DEBUGGING
-from psdb import Psdb
+from psdb import Psdb, DatabaseError
 
 # --------------------------------------------------------------- #
 
@@ -11,32 +12,24 @@ def main():
     global DEBUGGING
 
     DEBUGGING = True
-
-    db = Psdb()
-    
-    DEBUGGING = False
+    db = Psdb()        
 
     def add2db(ds):
-        nonlocal db
-        
-        # agency
-        sql = """
-            insert into agencies(ag_id, name)
-            values ({}, {})
-            on conflict (name) do nothing; 
-            """.format(ds['agency_id'], ds['agency_name'])
-        if not db.exec(sql): return
-        id_agency = db.fetch("select id from agencies where name = '{}' limit 1;".format(ds['agency_name']), 'one')
-        if not id_agency: return
-        id_agency = id_agency[0]
+        nonlocal db        
+        ds_json = json.dumps(ds, ensure_ascii=False)
+        cur = db()
+        try:
+            params = [ds_json, 'YYYY-MM-DD HH24-MI-SS', 0, -1, -1]
+            cur.callproc('add_data', params)
+            print("Added: {}, Data ID = {}, Dataset ID = {}".format(*params[2:]))
+        except (Exception, DatabaseError) as err:
+            print(err)
 
-        # department
-        
-
+    DEBUGGING = False
     rs = Russtat(update_list=False)
 
     print(f":: {len(rs)} datasets")
-    res = rs.get_many(rs[:10], loadfromjson=None, on_dataset=add2db, on_error=print)
+    res = rs.get_many(rs[:4], loadfromjson=None, on_dataset=add2db, on_error=print)
     print(f":: Processed {len(res.get())} datasets")  
     
 def m():
