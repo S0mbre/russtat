@@ -155,27 +155,47 @@ class Russtat:
         if force_print or DEBUGGING:
             print(message, end=end, file=file, flush=flush)
 
+    def _get_text(self, node, tags=[], default='', ns=XML_NS, strip=True):
+        if node is None: return default
+        if tags:
+            for tag in tags:
+                node = node.find(tag, ns)
+                if node is None: return default
+        return node.text.strip() if strip else node.text
+    
+    def _get_attr(self, node, attr, tags=[], default='', ns=XML_NS, strip=True):
+        if node is None: return default
+        if tags:
+            for tag in tags:
+                node = node.find(tag, ns)
+                if node is None: return default        
+        sub = node.get(attr)
+        if sub is None: return default        
+        return sub.strip() if strip else sub
+
     def _get_codes(self, ds_rootnode):
         codelists = ds_rootnode.find('message:CodeLists', XML_NS)
         d_codes = {}
 
         for item in codelists.iterfind('structure:CodeList', XML_NS):
             name = item.get('id')
-            d_codes[name] = {'name': item.find('structure:Name', XML_NS).text.strip(), 
-                            'values': [(code.get('value').strip(), code.find('structure:Description', XML_NS).text.strip()) \
+            d_codes[name] = {'name': self._get_text(item, 'structure:Name'), 
+                            'values': [(self._get_attr(code, 'value'), 
+                                        self._get_text(code, 'structure:Description')) \
                                         for code in item.iterfind('structure:Code', XML_NS)]}
         return d_codes
 
     def _get_data(self, ds_rootnode, codes, max_row=-1):
         n = 0
         dataset = ds_rootnode.find('message:DataSet', XML_NS)
+        if not dataset: return []
         data = []
         for item in dataset.iterfind('generic:Series', XML_NS):
             
             try:
                 key = item.find('generic:SeriesKey', XML_NS).find('generic:Value', XML_NS)
-                key_concept = key.get('concept')
-                key_key = key.get('value')
+                key_concept = self._get_attr(key, 'concept')
+                key_key = self._get_attr(key, 'value')
                 classifier, cl = ('', '')
                 
                 for code in codes:
@@ -189,21 +209,21 @@ class Russtat:
                         
                 per, ei = ('', '')
                 for attr in item.find('generic:Attributes', XML_NS).iterfind('generic:Value', XML_NS):
-                    concept = attr.get('concept').strip()
-                    val = attr.get('value').strip()
+                    concept = self._get_attr(attr, 'concept')
+                    val = self._get_attr(attr, 'value')
                     if concept == 'EI':
                         ei = val
                     elif concept == 'PERIOD':
                         per = val
                 obs = item.find('generic:Obs', XML_NS)
                 try:
-                    tim = int(obs.find('generic:Time', XML_NS).text.strip())
+                    tim = int(self._get_text(obs, 'generic:Time'))
                 except ValueError:
-                    tim = obs.find('generic:Time', XML_NS).text.strip()
+                    tim = self._get_text(obs, 'generic:Time')
                 try:
-                    val = float(obs.find('generic:ObsValue', XML_NS).get('value').strip())
+                    val = float(self._get_attr(obs, 'value', ['generic:ObsValue']))
                 except ValueError:
-                    val = obs.find('generic:ObsValue', XML_NS).get('value').strip()
+                    val = self._get_attr(obs, 'value', ['generic:ObsValue'])
                 data.append((classifier, cl, ei, per, tim, val))
                 n += 1
                 if max_row > 0 and n > max_row: break
@@ -295,38 +315,29 @@ class Russtat:
 
             # Header
             node_hdr = ds_rootnode.find('message:Header', XML_NS)        
-            ds['prepared'] = dt.fromisoformat(node_hdr.find('message:Prepared', XML_NS).text.strip())
-            ds['id'] = node_hdr.find('message:DataSetID', XML_NS).text.strip()
-            ds['agency_id'] = node_hdr.find('message:DataSetAgency', XML_NS).text.strip()
+            ds['prepared'] = dt.fromisoformat(self._get_text(node_hdr, ['message:Prepared'], '1900-01-01'))
+            ds['id'] = self._get_text(node_hdr, ['message:DataSetID'])
+            ds['agency_id'] = self._get_text(node_hdr, ['message:DataSetAgency'])
 
             # Codes
             ds['codes'] = self._get_codes(ds_rootnode)
 
             # Description
             node_desc = ds_rootnode.find('message:Description', XML_NS).find('message:Indicator', XML_NS)
-            ds['full_name'] = node_desc.get('name').strip()
-            ds['unit'] = node_desc.find('message:Units', XML_NS).find('message:Unit', XML_NS).get('value').strip()
-            nd = node_desc.find('message:Periodicities', XML_NS).find('message:Periodicity', XML_NS)
-            ds['periodicity']['value'] = nd.get('value').strip()
-            ds['periodicity']['releases'] = nd.get('releases').strip()
-            ds['periodicity']['next'] = nd.get('next-release').strip()
-            if ds['periodicity']['next']: 
-                try:
-                    ds['periodicity']['next'] = dt.strptime(ds['periodicity']['next'], '%d.%m.%Y')
-                except:
-                    pass
-            nd = node_desc.find('message:DataRange', XML_NS)
-            ds['data_range'] = tuple(int(nd.get(x).strip()) for x in ('start', 'end'))
-            ds['updated'] = dt.fromisoformat(node_desc.find('message:LastUpdate', XML_NS).get('value').strip())
-            ds['methodology'] = node_desc.find('message:Methodology', XML_NS).get('value').strip()
-            ds['agency_name'] = node_desc.find('message:Organization', XML_NS).get('value').strip()
-            ds['agency_dept'] = node_desc.find('message:Department', XML_NS).get('value').strip()
-            nd = node_desc.find('message:Allocations', XML_NS).find('message:Allocation', XML_NS)
-            ds['classifier']['id'] = nd.get('id').strip()
-            ds['classifier']['path'] = nd.find('message:Name', XML_NS).text.strip()
-            nd = node_desc.find('message:Responsible', XML_NS)
-            ds['prepared_by']['name'] = nd.find('message:Name', XML_NS).text.strip()
-            ds['prepared_by']['contacts'] = nd.find('message:Contacts', XML_NS).text.strip()
+            ds['full_name'] = self._get_attr(node_desc, 'name')
+            ds['unit'] = self._get_attr(node_desc, 'value', ['message:Units', 'message:Unit'])
+            ds['periodicity']['value'] = self._get_attr(node_desc, 'value', ['message:Periodicities', 'message:Periodicity'])
+            ds['periodicity']['releases'] = self._get_attr(node_desc, 'releases', ['message:Periodicities', 'message:Periodicity'])
+            ds['periodicity']['next'] = dt.strptime(self._get_attr(node_desc, 'next-release', ['message:Periodicities', 'message:Periodicity'], '01.01.1900'), '%d.%m.%Y')
+            ds['data_range'] = tuple(int(self._get_attr(node_desc, x, ['message:DataRange'], '-1')) for x in ('start', 'end'))
+            ds['updated'] = dt.fromisoformat(self._get_attr(node_desc, 'value', ['message:LastUpdate'], '1900-01-01'))
+            ds['methodology'] = self._get_attr(node_desc, 'value', ['message:Methodology'])
+            ds['agency_name'] = self._get_attr(node_desc, 'value', ['message:Organization'])
+            ds['agency_dept'] = self._get_attr(node_desc, 'value', ['message:Department'])
+            ds['classifier']['id'] = self._get_attr(node_desc, 'id', ['message:Allocations', 'message:Allocation'])
+            ds['classifier']['path'] = self._get_text(node_desc, ['message:Allocations', 'message:Allocation', 'message:Name'])
+            ds['prepared_by']['name'] = self._get_text(node_desc, ['message:Responsible', 'message:Name'])
+            ds['prepared_by']['contacts'] = self._get_text(node_desc, ['message:Responsible', 'message:Contacts'])
             ds['data'] = self._get_data(ds_rootnode, ds['codes'])
 
             if save2json:
@@ -364,6 +375,8 @@ class Russtat:
             datasets = self.datasets
         elif isinstance(datasets, str):
             datasets = self.find_datasets(datasets)
+        elif isinstance(datasets, int):
+            datasets = [self.datasets[datasets]]
         elif is_iterable(datasets):
             if len(datasets) == 0:
                 self._report('Empty datasets parameter!', True)

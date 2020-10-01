@@ -9,25 +9,24 @@ from globs import *
 
 class Psdb:
 
-    def __init__(self, dbname='russtat', user='postgres', host='127.0.0.1', port='5432'):
-        self.con = None
-        self.pwd = None
+    def __init__(self, dbname='russtat', user='postgres', password=None, host='127.0.0.1', port='5432'):
+        self.con = None        
         self._connparams = None
-        self.connect(dbname=dbname, user=user, host=host, port=port)
+        self.connect(dbname=dbname, user=user, password=password, host=host, port=port)
 
     def __del__(self):
         self.disconnect()
 
-    def connect(self, reconnect=False, dbname='russtat', user='postgres', host='127.0.0.1', port='5432', force_pwd_query=False):
+    def connect(self, reconnect=False, dbname='russtat', user='postgres', password=None, host='127.0.0.1', port='5432'):
         if not self.con is None and not reconnect:
             return True
-        if force_pwd_query or self.pwd is None:
-            self.pwd = input('Enter password:')
+        if password is None:
+            password = input('>> Enter password:')
         try:
             self.disconnect()
-            self.con = psycopg2.connect(database=dbname, user=user, password=self.pwd, host=host, port=port)
-            self._connparams = (dbname, user, host, port)
-            if DEBUGGING: print(f'Connected to {self._connparams[0]} as {self._connparams[1]} at {self._connparams[2]}:{self._connparams[3]}')
+            self.con = psycopg2.connect(database=dbname, user=user, password=password, host=host, port=port)
+            self._connparams = (dbname, user, password, host, port)
+            if DEBUGGING: print(f'Connected to {self._connparams[0]} as {self._connparams[1]} at {self._connparams[3]}:{self._connparams[4]}')
             return True
         except Exception as err:
             self.con = None
@@ -46,14 +45,18 @@ class Psdb:
             pass
         return False
 
-    def exec(self, sql):
-        params = [False] + list(self._connparams) + [False] if self._connparams \
-                 else [False, 'russtat', 'postgres', '127.0.0.1', '5432', False]
+    def exec(self, sql, exec_params=None, commit=False):
+        params = [False] + list(self._connparams) if self._connparams else [False, 'russtat', 'postgres', None, '127.0.0.1', '5432']
         if not self.connect(*params):
             return None
         cur = self.con.cursor()
         try:
-            cur.execute(sql)
+            if exec_params:
+                cur.execute(sql, exec_params)
+            else:
+                cur.execute(sql)
+            if commit:
+                cur.commit()
             return cur
         except Exception as err:
             print(err)
