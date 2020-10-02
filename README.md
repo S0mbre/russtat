@@ -1,3 +1,5 @@
+![](https://raw.githubusercontent.com/S0mbre/russtat/master/icons/main.ico)
+
 # russtat: Python / PostgreSQL access to the Russian Federal statistics
 *russtat* utilizes the power of Python to download and process the massive public data release by the Russian Statistics Office from the [EMISS website](https://fedstat.ru/). The original XML-formatted datasets (close to 7,000 in total) are parsed and saved as JSON files which can then be fed into a ready-made PostgreSQL database to give additional power. Alternativaly, you can utilize the JSON files with your own software, in any way you like!
 
