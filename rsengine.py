@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
+# Copyright: (c) 2020, Iskander Shafikov <s00mbre@gmail.com>
+# GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 # --------------------------------------------------------------- #
 
+## @package russtat.rsengine
+# @brief EMISS data retrieving and processing engine.
 import xml.etree.ElementTree as ET
 import requests
 import os, sys
 import json
 import re
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
 from multiprocessing import Pool
 from globs import *
 
@@ -155,20 +159,28 @@ class Russtat:
         if force_print or DEBUGGING:
             print(message, end=end, file=file, flush=flush)
 
-    def _get_text(self, node, tags=[], default='', ns=XML_NS, strip=True):
+    def _get_text(self, node, tags=None, default='', ns=XML_NS, strip=True):
         if node is None: return default
         if tags:
-            for tag in tags:
-                node = node.find(tag, ns)
+            if is_iterable(tags):
+                for tag in tags:
+                    node = node.find(tag, ns)
+                    if node is None: return default
+            else:
+                node = node.find(tags, ns)
                 if node is None: return default
         return node.text.strip() if strip else node.text
     
-    def _get_attr(self, node, attr, tags=[], default='', ns=XML_NS, strip=True):
+    def _get_attr(self, node, attr, tags=None, default='', ns=XML_NS, strip=True):
         if node is None: return default
         if tags:
-            for tag in tags:
-                node = node.find(tag, ns)
-                if node is None: return default        
+            if is_iterable(tags):
+                for tag in tags:
+                    node = node.find(tag, ns)
+                    if node is None: return default
+            else:
+                node = node.find(tags, ns)
+                if node is None: return default    
         sub = node.get(attr)
         if sub is None: return default        
         return sub.strip() if strip else sub
@@ -178,7 +190,7 @@ class Russtat:
         d_codes = {}
 
         for item in codelists.iterfind('structure:CodeList', XML_NS):
-            name = item.get('id')
+            name = self._get_attr(item, 'id')
             d_codes[name] = {'name': self._get_text(item, 'structure:Name'), 
                             'values': [(self._get_attr(code, 'value'), 
                                         self._get_text(code, 'structure:Description')) \
@@ -217,13 +229,13 @@ class Russtat:
                         per = val
                 obs = item.find('generic:Obs', XML_NS)
                 try:
-                    tim = int(self._get_text(obs, 'generic:Time'))
+                    tim = int(self._get_text(obs, 'generic:Time', '0'))
                 except ValueError:
-                    tim = self._get_text(obs, 'generic:Time')
+                    tim = 0
                 try:
-                    val = float(self._get_attr(obs, 'value', ['generic:ObsValue']))
+                    val = float(self._get_attr(obs, 'value', 'generic:ObsValue', '0.0'))
                 except ValueError:
-                    val = self._get_attr(obs, 'value', ['generic:ObsValue'])
+                    val = 0.0
                 data.append((classifier, cl, ei, per, tim, val))
                 n += 1
                 if max_row > 0 and n > max_row: break
@@ -235,7 +247,7 @@ class Russtat:
         return data
 
     def get_one(self, dataset, xmlfilename='auto', overwrite=True, del_xml=True, 
-                save2json='auto', loadfromjson='auto', on_dataset=None):
+                save2json='auto', loadfromjson='auto', on_dataset=None, on_dataset_kwargs=None):
 
         def json_hook(d):
             for k in d:
@@ -262,15 +274,22 @@ class Russtat:
         if loadfromjson:
             if loadfromjson == 'auto':
                 loadfromjson = dataset.get('identifier', 'dataset') + '.json'
+            ds = None
             try:
-                json_file = os.path.abspath(os.path.join(self.root_folder, loadfromjson))
+                json_file = os.path.abspath(os.path.join(self.root_folder, loadfromjson))                
                 with open(json_file, 'r', encoding='utf-8') as infile:
-                    ds = json.load(infile, object_hook=json_hook)
-                    self._report(f'Loaded from JSON ({json_file})')
-                    return ds
+                    ds = json.load(infile, object_hook=json_hook)                
             except Exception as err:
                 self._report(f"{err}   Importing from XML...")
                 return self.get_one(dataset, xmlfilename, overwrite, del_xml, save2json, None)
+            else:
+                self._report(f'Loaded from JSON ({json_file})')
+                if on_dataset: 
+                    if on_dataset_kwargs:
+                        on_dataset(ds, **on_dataset_kwargs)
+                    else:
+                        on_dataset(ds)
+                return ds
 
         if not 'link' in dataset:
             self._report('Dataset has no "link" object!')
@@ -308,16 +327,15 @@ class Russtat:
               'data_range': (-1, -1), 'updated': None, 'methodology': '', 'agency_name': '', 'agency_dept': '', 
               'classifier': {'id': '', 'path': ''}, 'prepared_by': {'name': '', 'contacts': ''}, 'data': []}
 
-        tree = ET.parse(outputfile, ET.XMLParser(encoding='utf-8'))
-        ds_rootnode = tree.getroot()
-
         try:
+            tree = ET.parse(outputfile, ET.XMLParser(encoding='utf-8'))
+            ds_rootnode = tree.getroot()
 
             # Header
             node_hdr = ds_rootnode.find('message:Header', XML_NS)        
-            ds['prepared'] = dt.fromisoformat(self._get_text(node_hdr, ['message:Prepared'], '1900-01-01'))
-            ds['id'] = self._get_text(node_hdr, ['message:DataSetID'])
-            ds['agency_id'] = self._get_text(node_hdr, ['message:DataSetAgency'])
+            ds['prepared'] = dt.fromisoformat(self._get_text(node_hdr, 'message:Prepared', '1900-01-01')) - timedelta(hours=3)
+            ds['id'] = self._get_text(node_hdr, 'message:DataSetID')
+            ds['agency_id'] = self._get_text(node_hdr, 'message:DataSetAgency')
 
             # Codes
             ds['codes'] = self._get_codes(ds_rootnode)
@@ -328,12 +346,12 @@ class Russtat:
             ds['unit'] = self._get_attr(node_desc, 'value', ['message:Units', 'message:Unit'])
             ds['periodicity']['value'] = self._get_attr(node_desc, 'value', ['message:Periodicities', 'message:Periodicity'])
             ds['periodicity']['releases'] = self._get_attr(node_desc, 'releases', ['message:Periodicities', 'message:Periodicity'])
-            ds['periodicity']['next'] = dt.strptime(self._get_attr(node_desc, 'next-release', ['message:Periodicities', 'message:Periodicity'], '01.01.1900'), '%d.%m.%Y')
-            ds['data_range'] = tuple(int(self._get_attr(node_desc, x, ['message:DataRange'], '-1')) for x in ('start', 'end'))
-            ds['updated'] = dt.fromisoformat(self._get_attr(node_desc, 'value', ['message:LastUpdate'], '1900-01-01'))
-            ds['methodology'] = self._get_attr(node_desc, 'value', ['message:Methodology'])
-            ds['agency_name'] = self._get_attr(node_desc, 'value', ['message:Organization'])
-            ds['agency_dept'] = self._get_attr(node_desc, 'value', ['message:Department'])
+            ds['periodicity']['next'] = dt.strptime(self._get_attr(node_desc, 'next-release', ['message:Periodicities', 'message:Periodicity'], '01.01.1900'), '%d.%m.%Y') - timedelta(hours=3)
+            ds['data_range'] = tuple(int(self._get_attr(node_desc, x, 'message:DataRange', '0')) for x in ('start', 'end'))
+            ds['updated'] = dt.fromisoformat(self._get_attr(node_desc, 'value', 'message:LastUpdate', '1900-01-01')) - timedelta(hours=3)
+            ds['methodology'] = self._get_attr(node_desc, 'value', 'message:Methodology')
+            ds['agency_name'] = self._get_attr(node_desc, 'value', 'message:Organization')
+            ds['agency_dept'] = self._get_attr(node_desc, 'value', 'message:Department')
             ds['classifier']['id'] = self._get_attr(node_desc, 'id', ['message:Allocations', 'message:Allocation'])
             ds['classifier']['path'] = self._get_text(node_desc, ['message:Allocations', 'message:Allocation', 'message:Name'])
             ds['prepared_by']['name'] = self._get_text(node_desc, ['message:Responsible', 'message:Name'])
@@ -358,7 +376,11 @@ class Russtat:
                 except Exception as err:
                     self._report(err)
 
-            if on_dataset: on_dataset(ds)
+            if on_dataset: 
+                if on_dataset_kwargs:
+                    on_dataset(ds, **on_dataset_kwargs)
+                else:
+                    on_dataset(ds)
 
         except Exception as err:
             self._report(err)
@@ -367,7 +389,8 @@ class Russtat:
         return ds
 
     def get_many(self, datasets=None, xmlfilenames='auto', overwrite=True, del_xml=True, save2json='auto', loadfromjson='auto',
-              processes='auto', wait=True, on_dataset=None, on_results_ready=None, on_error=None, on_stopcheck=None):
+              processes='auto', wait=True, on_dataset=None, on_dataset_kwargs=None,
+              on_results_ready=None, on_error=None, on_stopcheck=None):
 
         if not self.datasets: self.update_dataset_list()
 
@@ -423,7 +446,7 @@ class Russtat:
                     self._report('Bad type: loadfromjson', True)
                     return None
                 
-                args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_, on_dataset))
+                args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_, on_dataset, on_dataset_kwargs))
                 
             except Exception as err:
                 self._report(err, True)

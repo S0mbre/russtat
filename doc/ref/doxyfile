@@ -1,0 +1,25 @@
+PROJECT_NAME           = "russtat"
+PROJECT_NUMBER         = 0.1
+PROJECT_BRIEF          = "Python / PostgreSQL access to the Russian Federal Statistics database (EMISS)"
+PROJECT_LOGO           = icons\main.ico
+OUTPUT_DIRECTORY       = doc\ref
+CREATE_SUBDIRS         = NO
+OUTPUT_LANGUAGE        = English # Russian, German, French, etc. see http://www.doxygen.nl/manual/config.html#cfg_output_language
+EXTRACT_ALL            = YES
+INPUT                  = .
+FILE_PATTERNS          = *.py *.pyw
+RECURSIVE              = YES
+EXCLUDE                = doc\ icons\
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_DOCBOOK       = NO
+EXTRACT_PRIVATE        = YES
+OPTIMIZE_OUTPUT_JAVA   = YES
+HTML_EXTRA_STYLESHEET  = "doc\ref\css\dark\custom.css" \
+                         "doc\ref\css\dark\custom_dark_theme.css"
+
+# Multi-lang comment block example:
+
+# @~english This is English documentation
+# @~russian А это по-русски
+# @~ THIS IS FOR ALL LANGUAGES (default mode)!
