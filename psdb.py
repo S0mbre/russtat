@@ -7,7 +7,7 @@
 # @brief PostgreSQL manipulation class.
 import psycopg2
 from psycopg2 import DatabaseError
-from globs import *
+from globs import DEBUGGING
 
 # --------------------------------------------------------------- # 
 

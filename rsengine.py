@@ -12,7 +12,7 @@ import json
 import re
 from datetime import datetime as dt, timedelta
 from multiprocessing import Pool
-from globs import *
+from globs import DEBUGGING
 
 URL_EMISS_LIST = 'https://fedstat.ru/opendata/list.xml'
 XML_NS = {'message': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message", 
@@ -39,10 +39,11 @@ def is_iterable(obj):
 
 class Russtat:
 
-    def __init__(self, root_folder='', update_list=False):        
+    def __init__(self, root_folder='', update_list=False, download_timeout=3):        
         self.root_folder = root_folder
         self.datasets = []
         self._iter = None
+        self.download_timeout = download_timeout
         self.update_dataset_list(overwrite=update_list, loadfromjson='list_json.json' if not update_list else '')
 
     def __iter__(self):
@@ -95,7 +96,7 @@ class Russtat:
             except Exception as err:
                 self._report(err)                
             try:
-                res = requests.get(URL_EMISS_LIST)
+                res = requests.get(URL_EMISS_LIST, timeout=self.download_timeout)
                 if not res: 
                     self._report(f'Could not retrieve dataset list from {URL_EMISS_LIST}')
                     return
@@ -255,35 +256,37 @@ class Russtat:
                     d.update({k: dt.strptime(d[k], '%Y-%m-%d %H:%M:%S')})
             return d
 
-        if isinstance(dataset, str):
-            datasets = self.find_datasets(dataset)
-            if not datasets:
-                self._report(f"No datasets match query '{dataset}'")
+        if loadfromjson is None or loadfromjson == 'auto':
+            if isinstance(dataset, str):
+                datasets = self.find_datasets(dataset)
+                if not datasets:
+                    self._report(f"No datasets match query '{dataset}'")
+                    return None
+                dataset = datasets[0]
+            elif isinstance(dataset, int):
+                try:
+                    dataset = self[dataset]
+                except Exception as err:
+                    self._report(err)
+                    return None
+            elif not isinstance(dataset, dict):
+                self._report(f"Bad data type for 'dataset': {type(dataset)}")
                 return None
-            dataset = datasets[0]
-        elif isinstance(dataset, int):
-            try:
-                dataset = self[dataset]
-            except Exception as err:
-                self._report(err)
-                return None
-        elif not isinstance(dataset, dict):
-            self._report(f"Bad data type for 'dataset': {type(dataset)}")
-            return None
         
         if loadfromjson:
             if loadfromjson == 'auto':
-                loadfromjson = dataset.get('identifier', 'dataset') + '.json'
+                loadfromjson = os.path.join(self.root_folder,
+                                            dataset.get('identifier', 'dataset') + '.json')
+            
             ds = None
             try:
-                json_file = os.path.abspath(os.path.join(self.root_folder, loadfromjson))                
-                with open(json_file, 'r', encoding='utf-8') as infile:
-                    ds = json.load(infile, object_hook=json_hook)                
+                with open(os.path.abspath(loadfromjson), 'r', encoding='utf-8') as infile:
+                    ds = json.load(infile, object_hook=json_hook)             
             except Exception as err:
                 self._report(f"{err}   Importing from XML...")
-                return self.get_one(dataset, xmlfilename, overwrite, del_xml, save2json, None)
+                return self.get_one(dataset, xmlfilename, overwrite, del_xml, save2json, None, on_dataset, on_dataset_kwargs)
             else:
-                self._report(f'Loaded from JSON ({json_file})')
+                self._report(f'Loaded from JSON ({loadfromjson})')
                 if on_dataset: 
                     if on_dataset_kwargs:
                         on_dataset(ds, **on_dataset_kwargs)
@@ -309,7 +312,7 @@ class Russtat:
             except Exception as err:
                 self._report(err)                
             try:
-                res = requests.get(dataset['link'])
+                res = requests.get(dataset['link'], timeout=self.download_timeout)
                 if not res: 
                     self._report(f"Could not retrieve dataset from {dataset['link']}")
                     return None
@@ -384,73 +387,91 @@ class Russtat:
 
         except Exception as err:
             self._report(err)
+            if del_xml:
+                try:
+                    os.remove(outputfile)
+                    self._report(f'Deleted XML ({outputfile})')
+                except Exception as err2:
+                    self._report(err2)
             return None
 
         return ds
 
-    def get_many(self, datasets=None, xmlfilenames='auto', overwrite=True, del_xml=True, save2json='auto', loadfromjson='auto',
+    def get_many(self, datasets=None, xmlfilenames='auto', overwrite=True, del_xml=True, 
+              save2json='auto', loadfromjson='auto',
               processes='auto', wait=True, on_dataset=None, on_dataset_kwargs=None,
               on_results_ready=None, on_error=None, on_stopcheck=None):
 
-        if not self.datasets: self.update_dataset_list()
-
-        if datasets is None:
-            datasets = self.datasets
-        elif isinstance(datasets, str):
-            datasets = self.find_datasets(datasets)
-        elif isinstance(datasets, int):
-            datasets = [self.datasets[datasets]]
-        elif is_iterable(datasets):
-            if len(datasets) == 0:
-                self._report('Empty datasets parameter!', True)
-                return None          
-            if isinstance(datasets[0], int) or isinstance(datasets[0], str):
-                datasets = [self[k] for k in datasets]            
-        else:
-            self._report('Bad type: datasets', True)
-            return None
-
-        if not datasets:
-            self._report('No datasets matching your request.', True)
-            return None
-
-        # prepare args for worker function
         args = []
-        for i, ds in enumerate(datasets):
-            try:                
-                if is_iterable(xmlfilenames):
-                    xmlfilename = xmlfilenames[i]
-                elif xmlfilenames == 'auto':
-                    xmlfilename = xmlfilenames
-                else:
-                    self._report('Bad type: xmlfilenames', True)
-                    return None
-                
-                if save2json is None:
-                    save2json_ = None
-                elif is_iterable(save2json):
-                    save2json_ = save2json[i]            
-                elif save2json == 'auto':
-                    save2json_ = save2json
-                else:
-                    self._report('Bad type: save2json', True)
-                    return None
 
-                if loadfromjson is None:
-                    loadfromjson_ = None
-                elif is_iterable(loadfromjson):
-                    loadfromjson_ = loadfromjson[i]            
-                elif loadfromjson == 'auto':
-                    loadfromjson_ = loadfromjson
-                else:
-                    self._report('Bad type: loadfromjson', True)
-                    return None
-                
-                args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_, on_dataset, on_dataset_kwargs))
-                
-            except Exception as err:
-                self._report(err, True)
+        if datasets is None and loadfromjson != 'auto' and not loadfromjson is None:
+
+            if is_iterable(loadfromjson):
+                for json_file in loadfromjson:
+                    args.append((None, None, False, False, None, json_file, on_dataset, on_dataset_kwargs))
+            else:
+                args.append((None, None, False, False, None, loadfromjson, on_dataset, on_dataset_kwargs))
+
+        else:
+
+            if not self.datasets: self.update_dataset_list()
+
+            if datasets is None:
+                datasets = self.datasets
+            elif isinstance(datasets, str):
+                datasets = self.find_datasets(datasets)
+            elif isinstance(datasets, int):
+                datasets = [self.datasets[datasets]]
+            elif is_iterable(datasets):
+                if len(datasets) == 0:
+                    self._report('Empty datasets parameter!', True)
+                    return None          
+                if isinstance(datasets[0], int) or isinstance(datasets[0], str):
+                    datasets = [self[k] for k in datasets]            
+            else:
+                self._report('Bad type: datasets', True)
                 return None
+
+            if not datasets:
+                self._report('No datasets matching your request.', True)
+                return None
+
+            # prepare args for worker function        
+            for i, ds in enumerate(datasets):
+                try:                
+                    if is_iterable(xmlfilenames):
+                        xmlfilename = xmlfilenames[i]
+                    elif xmlfilenames == 'auto':
+                        xmlfilename = xmlfilenames
+                    else:
+                        self._report('Bad type: xmlfilenames', True)
+                        return None
+                    
+                    if save2json is None:
+                        save2json_ = None
+                    elif is_iterable(save2json):
+                        save2json_ = save2json[i]            
+                    elif save2json == 'auto':
+                        save2json_ = save2json
+                    else:
+                        self._report('Bad type: save2json', True)
+                        return None
+
+                    if loadfromjson is None:
+                        loadfromjson_ = None
+                    elif is_iterable(loadfromjson):
+                        loadfromjson_ = loadfromjson[i]            
+                    elif loadfromjson == 'auto':
+                        loadfromjson_ = loadfromjson
+                    else:
+                        self._report('Bad type: loadfromjson', True)
+                        return None
+                    
+                    args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_, on_dataset, on_dataset_kwargs))
+                    
+                except Exception as err:
+                    self._report(err, True)
+                    return None
 
         if processes == 'auto': processes = None
         
