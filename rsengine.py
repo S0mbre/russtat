@@ -39,11 +39,11 @@ def is_iterable(obj):
 
 class Russtat:
 
-    def __init__(self, root_folder='', update_list=False, download_timeout=3):        
+    def __init__(self, root_folder='', update_list=False, connection_timeout=10):        
         self.root_folder = root_folder
         self.datasets = []
         self._iter = None
-        self.download_timeout = download_timeout
+        self.connection_timeout = connection_timeout
         self.update_dataset_list(overwrite=update_list, loadfromjson='list_json.json' if not update_list else '')
 
     def __iter__(self):
@@ -96,7 +96,7 @@ class Russtat:
             except Exception as err:
                 self._report(err)                
             try:
-                res = requests.get(URL_EMISS_LIST, timeout=self.download_timeout)
+                res = requests.get(URL_EMISS_LIST, timeout=self.connection_timeout)
                 if not res: 
                     self._report(f'Could not retrieve dataset list from {URL_EMISS_LIST}')
                     return
@@ -312,7 +312,7 @@ class Russtat:
             except Exception as err:
                 self._report(err)                
             try:
-                res = requests.get(dataset['link'], timeout=self.download_timeout)
+                res = requests.get(dataset['link'], timeout=self.connection_timeout)
                 if not res: 
                     self._report(f"Could not retrieve dataset from {dataset['link']}")
                     return None
@@ -441,31 +441,18 @@ class Russtat:
                 try:                
                     if is_iterable(xmlfilenames):
                         xmlfilename = xmlfilenames[i]
-                    elif xmlfilenames == 'auto':
-                        xmlfilename = xmlfilenames
                     else:
-                        self._report('Bad type: xmlfilenames', True)
-                        return None
+                        xmlfilename = xmlfilenames                    
                     
-                    if save2json is None:
-                        save2json_ = None
-                    elif is_iterable(save2json):
+                    if is_iterable(save2json):
                         save2json_ = save2json[i]            
-                    elif save2json == 'auto':
+                    else:
                         save2json_ = save2json
-                    else:
-                        self._report('Bad type: save2json', True)
-                        return None
 
-                    if loadfromjson is None:
-                        loadfromjson_ = None
-                    elif is_iterable(loadfromjson):
+                    if is_iterable(loadfromjson):
                         loadfromjson_ = loadfromjson[i]            
-                    elif loadfromjson == 'auto':
-                        loadfromjson_ = loadfromjson
                     else:
-                        self._report('Bad type: loadfromjson', True)
-                        return None
+                        loadfromjson_ = loadfromjson
                     
                     args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_, on_dataset, on_dataset_kwargs))
                     
