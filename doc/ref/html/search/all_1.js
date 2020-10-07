@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['add2db_15',['add2db',['../namespacerusstat_1_1russtat.html#afbd364890b21bf07d2246d5fe047c3d9',1,'russtat::russtat']]]
+  ['add2db_15',['add2db',['../namespacerusstat_1_1russtat.html#a5556f149ae91629ec65793b92a5d6a9e',1,'russtat::russtat']]]
 ];

@@ -4,7 +4,7 @@ var searchData=
   ['_5f_5fcall_5f_5f_1',['__call__',['../classrusstat_1_1psdb_1_1_psdb.html#a9cbf259882542db9fb16ba21d616dfd9',1,'russtat::psdb::Psdb']]],
   ['_5f_5fdel_5f_5f_2',['__del__',['../classrusstat_1_1psdb_1_1_psdb.html#a1ec67959c1fb9bd19858e6e1be93a04a',1,'russtat::psdb::Psdb']]],
   ['_5f_5fgetitem_5f_5f_3',['__getitem__',['../classrusstat_1_1rsengine_1_1_russtat.html#a966b733c988e85c03b2835dbec48e49f',1,'russtat::rsengine::Russtat']]],
-  ['_5f_5finit_5f_5f_4',['__init__',['../classrusstat_1_1psdb_1_1_psdb.html#ac9e74dfc804b07229e5bae4a4840430a',1,'russtat.psdb.Psdb.__init__()'],['../classrusstat_1_1rsengine_1_1_russtat.html#ae1627289ad3f1d271b577b9719213f72',1,'russtat.rsengine.Russtat.__init__()']]],
+  ['_5f_5finit_5f_5f_4',['__init__',['../classrusstat_1_1psdb_1_1_psdb.html#ac9e74dfc804b07229e5bae4a4840430a',1,'russtat.psdb.Psdb.__init__()'],['../classrusstat_1_1rsengine_1_1_russtat.html#a6d8fc5c0a7640dd364dda1d8e35334bd',1,'russtat.rsengine.Russtat.__init__()']]],
   ['_5f_5finit_5f_5f_2epy_5',['__init__.py',['../____init_____8py.html',1,'']]],
   ['_5f_5fiter_5f_5f_6',['__iter__',['../classrusstat_1_1rsengine_1_1_russtat.html#a730bcbf3622c3f07e9904584b8124e2a',1,'russtat::rsengine::Russtat']]],
   ['_5f_5flen_5f_5f_7',['__len__',['../classrusstat_1_1rsengine_1_1_russtat.html#af11bdf6ee9738672f465cc29d9f9ce78',1,'russtat::rsengine::Russtat']]],

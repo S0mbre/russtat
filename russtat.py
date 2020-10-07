@@ -70,17 +70,22 @@ def add2db(ds, dbname='russtat', user='postgres', password=None,
             logfile.close()
 
 ## Main function that creates the Russtat engine and retrieves / stores data.
-def main(): 
+def main(update_list=False, start_ds=0, end_ds=-1, pwd=None, logfile=None): 
     # create data retrieving engine
-    rs = Russtat(update_list=False)
+    update_list = bool(update_list)
+    rs = Russtat(update_list=update_list)
     # print number of available datasets
     print(f":: {len(rs)} datasets")
 
     # ask DB password
-    dbpassword = input('Enter DB password:')
+    dbpassword = input('Enter DB password:') if pwd is None else pwd
     # start operation using multiple processes
-    res = rs.get_many(rs[5000:5200], on_dataset=add2db, save2json=None,
-                      on_dataset_kwargs={'password': dbpassword, 'logfile': None}, 
+    start_ds = int(start_ds)
+    end_ds = int(end_ds)
+    if end_ds == -1: end_ds = len(rs)
+    res = rs.get_many(rs[start_ds:end_ds], 
+                      on_dataset=add2db, save2json=None, loadfromjson='auto', del_xml=True,
+                      on_dataset_kwargs={'password': dbpassword, 'logfile': logfile}, 
                       on_error=print).get()
     # print summary
     if res:
@@ -94,4 +99,9 @@ def main():
 
 ## Program entry point.
 if __name__ == '__main__':
-    main()
+    args = sys.argv
+    L = len(args)
+    if L == 1:
+        main()
+    else:
+        main(*args[1:])

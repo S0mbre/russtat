@@ -82,9 +82,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:afbd364890b21bf07d2246d5fe047c3d9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerusstat_1_1russtat.html#afbd364890b21bf07d2246d5fe047c3d9">add2db</a> (ds, password)</td></tr>
-<tr class="memdesc:afbd364890b21bf07d2246d5fe047c3d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback procedure for dataset processing: loads dataset into PSQL database.  <a href="namespacerusstat_1_1russtat.html#afbd364890b21bf07d2246d5fe047c3d9">More...</a><br /></td></tr>
-<tr class="separator:afbd364890b21bf07d2246d5fe047c3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5556f149ae91629ec65793b92a5d6a9e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerusstat_1_1russtat.html#a5556f149ae91629ec65793b92a5d6a9e">add2db</a> (ds, dbname='russtat', user='postgres', password=None, host='127.0.0.1', port='5432', logfile=None)</td></tr>
+<tr class="memdesc:a5556f149ae91629ec65793b92a5d6a9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback procedure for dataset processing: loads dataset into PSQL database.  <a href="namespacerusstat_1_1russtat.html#a5556f149ae91629ec65793b92a5d6a9e">More...</a><br /></td></tr>
+<tr class="separator:a5556f149ae91629ec65793b92a5d6a9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada019b0043668137918efd137b88e0b4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerusstat_1_1russtat.html#ada019b0043668137918efd137b88e0b4">main</a> ()</td></tr>
 <tr class="memdesc:ada019b0043668137918efd137b88e0b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main function that creates the Russtat engine and retrieves / stores data.  <a href="namespacerusstat_1_1russtat.html#ada019b0043668137918efd137b88e0b4">More...</a><br /></td></tr>
 <tr class="separator:ada019b0043668137918efd137b88e0b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -92,8 +92,8 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Application entry point. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="afbd364890b21bf07d2246d5fe047c3d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbd364890b21bf07d2246d5fe047c3d9">&#9670;&nbsp;</a></span>add2db()</h2>
+<a id="a5556f149ae91629ec65793b92a5d6a9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5556f149ae91629ec65793b92a5d6a9e">&#9670;&nbsp;</a></span>add2db()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -108,7 +108,37 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>password</em>&#160;</td>
+          <td class="paramname"><em>dbname</em> = <code>'russtat'</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>user</em> = <code>'postgres'</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>password</em> = <code>None</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>host</em> = <code>'127.0.0.1'</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>port</em> = <code>'5432'</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>logfile</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -121,8 +151,13 @@ Functions</h2></td></tr>
 <p>Callback procedure for dataset processing: loads dataset into PSQL database. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ds</td><td><code>dict</code> The stats dataset as a dictionary object &ndash; see <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a3c7f0273f913ddcf589002f2bae06bc1">rsengine::Russtat::get_one()</a> </td></tr>
-    <tr><td class="paramname">password</td><td><code>str</code> The database password (default = postgres) </td></tr>
+    <tr><td class="paramname">ds</td><td><code>dict</code> The stats dataset as a dictionary object &ndash; see <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a3c7f0273f913ddcf589002f2bae06bc1" title="Retrieves and parses a single EMISS dataset from an XML/JSON file, optionally saving it as JSON and p...">rsengine::Russtat::get_one()</a> </td></tr>
+    <tr><td class="paramname">dbname</td><td><code>str</code> name / path of the Postgres DB on the server </td></tr>
+    <tr><td class="paramname">user</td><td><code>str</code> Postgres DB user name (default = 'postgres') </td></tr>
+    <tr><td class="paramname">password</td><td><code>str</code>|<code>None</code> Postgres DB password (default = <code>None</code>, means it will be asked) </td></tr>
+    <tr><td class="paramname">host</td><td><code>str</code> Postgres DB server location (default = localhost) </td></tr>
+    <tr><td class="paramname">port</td><td><code>str</code> Postgres DB server port (default is 5432) </td></tr>
+    <tr><td class="paramname">logfile</td><td><code>str</code>|<code>None</code> Output stream for notification messages; <code>None</code> means STDOUT, otherwise, a valid path is expected </td></tr>
   </table>
   </dd>
 </dl>

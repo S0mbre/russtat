@@ -103,10 +103,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae48f245c26a38cdcfc4516acb4596b0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches the result(s) of an SQL / PSQL command.  <a href="classrusstat_1_1psdb_1_1_psdb.html#ae48f245c26a38cdcfc4516acb4596b0d">More...</a><br /></td></tr>
 <tr class="separator:ae48f245c26a38cdcfc4516acb4596b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af58c7b5c9cfd44ada2cfbb152dc00243"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1psdb_1_1_psdb.html#af58c7b5c9cfd44ada2cfbb152dc00243">__bool__</a> (self)</td></tr>
-<tr class="memdesc:af58c7b5c9cfd44ada2cfbb152dc00243"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overloaded bool() operator returns True if the DB connection is active, False otherwise.  <a href="classrusstat_1_1psdb_1_1_psdb.html#af58c7b5c9cfd44ada2cfbb152dc00243">More...</a><br /></td></tr>
+<tr class="memdesc:af58c7b5c9cfd44ada2cfbb152dc00243"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overloaded <code>bool()</code> operator returns True if the DB connection is active, False otherwise.  <a href="classrusstat_1_1psdb_1_1_psdb.html#af58c7b5c9cfd44ada2cfbb152dc00243">More...</a><br /></td></tr>
 <tr class="separator:af58c7b5c9cfd44ada2cfbb152dc00243"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cbf259882542db9fb16ba21d616dfd9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1psdb_1_1_psdb.html#a9cbf259882542db9fb16ba21d616dfd9">__call__</a> (self)</td></tr>
-<tr class="memdesc:a9cbf259882542db9fb16ba21d616dfd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overloaded () operator returns current cursor object or <code>None</code> on failure.  <a href="classrusstat_1_1psdb_1_1_psdb.html#a9cbf259882542db9fb16ba21d616dfd9">More...</a><br /></td></tr>
+<tr class="memdesc:a9cbf259882542db9fb16ba21d616dfd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overloaded <code>()</code> operator returns current cursor object or <code>None</code> on failure.  <a href="classrusstat_1_1psdb_1_1_psdb.html#a9cbf259882542db9fb16ba21d616dfd9">More...</a><br /></td></tr>
 <tr class="separator:a9cbf259882542db9fb16ba21d616dfd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -177,7 +177,7 @@ Private Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">dbname</td><td><code>str</code> name / path of the Postgres DB on the server </td></tr>
     <tr><td class="paramname">user</td><td><code>str</code> Postgres DB user name (default = 'postgres') </td></tr>
-    <tr><td class="paramname">password</td><td><code>str</code>|<code>None</code> Postgres DB password (default = None, means it will be asked) </td></tr>
+    <tr><td class="paramname">password</td><td><code>str</code>|<code>None</code> Postgres DB password (default = <code>None</code>, means it will be asked) </td></tr>
     <tr><td class="paramname">host</td><td><code>str</code> Postgres DB server location (default = localhost) </td></tr>
     <tr><td class="paramname">port</td><td><code>str</code> Postgres DB server port (default is 5432) </td></tr>
   </table>
@@ -223,7 +223,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Overloaded bool() operator returns True if the DB connection is active, False otherwise. </p>
+<p>Overloaded <code>bool()</code> operator returns True if the DB connection is active, False otherwise. </p>
 
 </div>
 </div>
@@ -243,7 +243,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Overloaded () operator returns current cursor object or <code>None</code> on failure. </p>
+<p>Overloaded <code>()</code> operator returns current cursor object or <code>None</code> on failure. </p>
 
 </div>
 </div>

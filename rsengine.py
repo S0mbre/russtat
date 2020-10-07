@@ -14,7 +14,9 @@ from datetime import datetime as dt, timedelta
 from multiprocessing import Pool
 from globs import DEBUGGING
 
+## `str` permanent URL of the EMISS dataset list
 URL_EMISS_LIST = 'https://fedstat.ru/opendata/list.xml'
+## `dict` EMISS XML dataset schemas
 XML_NS = {'message': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message", 
         'common': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/common",
         'compact': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/compact",
@@ -27,6 +29,8 @@ XML_NS = {'message': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message"
 
 # --------------------------------------------------------------- #
 
+## Checks if an object is iterable (e.g. a collection or iterator).
+# @returns `bool` `True` if `obj` is iterable / `False` if not
 def is_iterable(obj):
     if isinstance(obj, str): return False
     try:
@@ -37,30 +41,83 @@ def is_iterable(obj):
 
 # --------------------------------------------------------------- # 
 
+## @brief EMISS data retrieving and processing engine. 
+# Downloads source XML's, parses them into Python dictionaries and passes
+# on to a custom callback function. Datasets can optionally to loaded from
+# and saved as JSON files, to maximize portability. Batch processing is
+# enhanced by multiprocessing, to handle datasets in parallel taking advantage
+# of your CPU's multiple cores.
 class Russtat:
 
-    def __init__(self, root_folder='', update_list=False, connection_timeout=10):        
+    ## @param root_folder `str` path to the data directory where the source XML
+    # files and JSON files will be saved / searched (relative to project dir or absolute).
+    # Default is empty string, which stands for the project root directory.
+    # @param update_list `bool` whether the list of datasets ('list_json.json')
+    # must be refreshed from the server (default = `False`). If 'list_json.json'
+    # is absent from `root_folder`, it will be downloaded in any case.
+    # @param connection_timeout `float` | `2-tuple` timeout in seconds
+    # for server connection / data reception. If it's a single value (`float`),
+    # it will be used for both connection and data timeout; if it's a `tuple`,
+    # the first value stands for connection, the second for data timeout.
+    def __init__(self, root_folder='', update_list=False, connection_timeout=10):    
+        ## `str` path to the root data directory for XML / JSON files
         self.root_folder = root_folder
+        ## `list` list of available statistical datasets on the EMISS server
         self.datasets = []
+        ## `iterator` iterator for Russtat::datasets
         self._iter = None
+        ## `float` | `2-tuple` timeout in seconds for server connection / data reception
         self.connection_timeout = connection_timeout
         self.update_dataset_list(overwrite=update_list, loadfromjson='list_json.json' if not update_list else '')
 
+    ## Iterator method to iterate the available remote datasets, e.g.
+    # ```
+    # for dataset in Russtat():
+    #     print(dataset['title'])
+    # ```
+    # @returns Russtat::_iter
     def __iter__(self):
         self._iter = self.datasets.__iter__()
         return self._iter
 
+    ## Next iterator in the available remote datasets.
+    # @see \_\_iter\_\_()
     def next(self):
         if not self.datasets:
             raise StopIteration
         return next(self._iter)
 
+    ## len() function overload.
+    # @returns `int` number of available EMISS datasets on the server
     def __len__(self):
         return len(self.datasets)
 
+    ## bool() type cast operator overload.
+    # @returns `bool` `True` if there is at least one EMISS dataset available.
     def __bool__(self):
         return bool(self.__len__())
 
+    ## Indexing operator [] overload.
+    # @param `int` | `str` | `slice` dataset index: numerical 
+    # (position of dataset in Russtat::datasets) or string (full title of the dataset)
+    # @returns `dict` | `list of dict` | `None` found dataset(s) from Russtat::datasets 
+    # or `None` if nothing is found 
+    # <br><br><b>EXAMPLES:</b><br>
+    # ```
+    # engine = Russtat()
+    #
+    # # get first dataset
+    # ds = engine[0]
+    #
+    # # get first 10 datasets
+    # dsets = engine[:10]
+    #
+    # # get last 100 datasets
+    # dsets = engine[-100:]
+    #
+    # # get dataset with title 'Количество дел, принятых  к производству следователями'
+    # ds = engine['Количество дел, принятых  к производству следователями']
+    # ``` 
     def __getitem__(self, key):
         if isinstance(key, str):
             for ds in self.datasets:
@@ -73,6 +130,24 @@ class Russtat:
             return self.datasets[key.start:key.stop:key.step]
         raise TypeError
 
+    ## Updates the dataset list from the server, downloading and parsing rsengine::URL_EMISS_LIST.
+    # @param xmlfilename `str` filename to store the downloaded XML file 
+    # (relative to Russtat::root_folder or absolute)
+    # @param xml_only `bool` allows to check that the downloaded file is in XML format:
+    # if `True` (default), other file formats will not be accepted and downloaded
+    # @param overwrite `bool` set to `True` to force update of the existing XML in the 
+    # target directory; if `False` (default), the existing XML will not be overwritten
+    # @param del_xml `bool` set tot `True` (default) to delete the XML file after
+    # downloading and parsing into Russtat::datasets; `False` to keep the XML file
+    # @param save2json `str` | `None` | `bool` if a string is passed, it must be
+    # the file name of the JSON file to save the parsed dataset list to
+    # (default = 'list_json.json'). If `None` or `False`, JSON is not saved.
+    # @param loadfromjson `str` | `None` | `bool` if a string is passed, it must be
+    # the file name of the JSON file to load the dataset list from
+    # (default = 'list_json.json'). If a valid file is found, the list will not be
+    # downloaded / parsed from XML, but loaded directly from JSON. If `None` or `False`, 
+    # the dataset list will be instead retrieved from the server or stored XML file 
+    # (see `xmlfilename` parameter).
     def update_dataset_list(self, xmlfilename='list.xml', xml_only=True, overwrite=False, del_xml=True, 
                             save2json='list_json.json', loadfromjson='list_json.json'):
         self.datasets = []
@@ -134,6 +209,25 @@ class Russtat:
             except Exception as err:
                 self._report(err)
 
+    ## Searches for datasets in their 'title' field for a given pattern.
+    # @param pattern `str` substring / pattern to search for
+    # @param regex `bool` whether the pattern is a simple substring or a regular expression
+    # @param case_sense `bool` whether the search must be case-sensitive or not
+    # @param fullmatch `bool` whether the search must match the entire pattern
+    # @returns `list` list of dataset objects found
+    # <br><br><b>EXAMPLES:</b><br>
+    # ```
+    # engine = Russtat()
+    # 
+    # # simple search: all datasets containing 'документов'
+    # res = engine.find_datasets('документов')
+    # 
+    # # regex search: all datasets containing 'женщ' or 'мужч'
+    # res = engine.find_datasets('женщ|мужч', True)
+    # 
+    # # more complex regex search
+    # res = engine.find_datasets(r'([\w\s,\-]*)(техн)([\w\s,\-]*)(отход)', True)
+    # ```
     def find_datasets(self, pattern, regex=False, case_sense=False, fullmatch=False):
         results = []
         if regex:
@@ -156,10 +250,28 @@ class Russtat:
         self._report(f"Found {len(results)} matches for query '{pattern}'")
         return results
 
+    ## Prints a message to a file stream / console accounting for globs::DEBUGGING flag.
+    # @param message `str` message to output
+    # @param force_print `bool` set to `True` to output message disregarding globs::DEBUGGING
+    # @param file `file` file stream to output the message to (default = STDOUT)
+    # @param end `str` message ending suffix (default = new line symbol)
+    # @param flush `bool` `True` to flush the IO buffer immediately
     def _report(self, message, force_print=False, file=sys.stdout, end='\n', flush=False):
         if force_print or DEBUGGING:
             print(message, end=end, file=file, flush=flush)
 
+    ## Gets the value (text) of a given XML node / children with an optional default value.
+    # @param node `ElementTree node` the parent XML node
+    # @param tags `list` | `str` | `None` a single child tag or list of child tags in
+    # hierarchical order (`[child, sub-child, sub-sub-child, ...]`) to get the target node.
+    # If `None`, the parent node is the target one.
+    # @param default `str` default value returned in case of failure
+    # @param ns `dict` XML namespace schema (default = rsengine::XML_NS)
+    # @param strip `bool` whether to apply `strip()` to the retrieved text value
+    # to get rid of leading / trailing spaces
+    # @returns `str` found value / `default` on failure
+    # @see [Python ElementTree API](https://docs.python.org/3.8/library/xml.etree.elementtree.html)
+    # @see \_get_attr()
     def _get_text(self, node, tags=None, default='', ns=XML_NS, strip=True):
         if node is None: return default
         if tags:
@@ -172,6 +284,20 @@ class Russtat:
                 if node is None: return default
         return node.text.strip() if strip else node.text
     
+    ## Gets the value (text) of a given attribute of an XML node / its children 
+    # with an optional default value.
+    # @param node `ElementTree node` the parent XML node
+    # @param attr `str` the attribute name (key)
+    # @param tags `list` | `str` | `None` a single child tag or list of child tags in
+    # hierarchical order (`[child, sub-child, sub-sub-child, ...]`) to get the target node.
+    # If `None`, the parent node is the target one.
+    # @param default `str` default value returned in case of failure
+    # @param ns `dict` XML namespace schema (default = rsengine::XML_NS)
+    # @param strip `bool` whether to apply `strip()` to the retrieved text value
+    # to get rid of leading / trailing spaces
+    # @returns `str` found value / `default` on failure
+    # @see [Python ElementTree API](https://docs.python.org/3.8/library/xml.etree.elementtree.html)
+    # @see \_get_text()
     def _get_attr(self, node, attr, tags=None, default='', ns=XML_NS, strip=True):
         if node is None: return default
         if tags:
@@ -186,6 +312,15 @@ class Russtat:
         if sub is None: return default        
         return sub.strip() if strip else sub
 
+    ## Parses and collects the CodeLists section of a dataset XML.
+    # @param ds_rootnode `ElementTree node` the parent node containing 'CodeLists'
+    # @returns `dict` CodeLists section converted into a dictionary in the format:<br>
+    # ```
+    # {
+    #  'code-name': {'name': '<full name>', 'values': [('<id>', '<description>'), ...]},
+    #  'code-name': {...}
+    # }
+    # ```
     def _get_codes(self, ds_rootnode):
         codelists = ds_rootnode.find('message:CodeLists', XML_NS)
         d_codes = {}
@@ -198,48 +333,75 @@ class Russtat:
                                         for code in item.iterfind('structure:Code', XML_NS)]}
         return d_codes
 
+    ## Parses and collects the DataSet section of a dataset XML.
+    # @param ds_rootnode `ElementTree node` the parent node containing 'DataSet'
+    # @param codes `dict` CodeLists section as a dictionary -- see \_get_codes()
+    # @param max_row `int` limit of data points to collect from the XML
+    # (`-1` = no limit)
+    # @returns `list` DataSet section as a list of data values in the format:<br>
+    # ```
+    # [('classifier', 'class', 'unit', 'period of observation', int('observation year'), float('observation value')), ...]
+    # ```
     def _get_data(self, ds_rootnode, codes, max_row=-1):
         n = 0
         dataset = ds_rootnode.find('message:DataSet', XML_NS)
-        if not dataset: return []
+        if not dataset:             
+            return []
         data = []
         for item in dataset.iterfind('generic:Series', XML_NS):
             
             try:
-                key = item.find('generic:SeriesKey', XML_NS).find('generic:Value', XML_NS)
-                key_concept = self._get_attr(key, 'concept')
-                key_key = self._get_attr(key, 'value')
-                classifier, cl = ('', '')
-                
-                for code in codes:
-                    if code == key_concept:
-                        classifier = codes[code]['name']
-                        for val in codes[code]['values']:
-                            if val[0] == key_key:
-                                cl = val[1]
-                                break
-                        break
-                        
+
+                # period and unit
                 per, ei = ('', '')
-                for attr in item.find('generic:Attributes', XML_NS).iterfind('generic:Value', XML_NS):
-                    concept = self._get_attr(attr, 'concept')
-                    val = self._get_attr(attr, 'value')
-                    if concept == 'EI':
-                        ei = val
-                    elif concept == 'PERIOD':
-                        per = val
-                obs = item.find('generic:Obs', XML_NS)
                 try:
-                    tim = int(self._get_text(obs, 'generic:Time', '0'))
-                except ValueError:
+                    for attr in item.find('generic:Attributes', XML_NS).iterfind('generic:Value', XML_NS):
+                        concept = self._get_attr(attr, 'concept')
+                        val = self._get_attr(attr, 'value')
+                        if concept == 'EI':
+                            ei = val
+                        elif concept == 'PERIOD':
+                            per = val
+                except:
+                    per, ei = ('', '')
+
+                # year
+                try:
+                    tim = int(self._get_text(item, ['generic:Obs', 'generic:Time'], '0'))
+                except:
                     tim = 0
+
+                # value
                 try:
-                    val = float(self._get_attr(obs, 'value', 'generic:ObsValue', '0.0'))
-                except ValueError:
+                    val = float(self._get_attr(item, 'value', ['generic:Obs', 'generic:ObsValue'], '0.0').replace(',', '.').replace(' ', ''))
+                except:
                     val = 0.0
-                data.append((classifier, cl, ei, per, tim, val))
-                n += 1
-                if max_row > 0 and n > max_row: break
+
+                # classifier and class
+                try:
+                    for key_item in item.find('generic:SeriesKey', XML_NS).iterfind('generic:Value', XML_NS):                
+                    
+                        key_concept = self._get_attr(key_item, 'concept')
+                        key_key = self._get_attr(key_item, 'value')
+                        classifier, cl = ('', '')
+                        
+                        for code in codes:
+                            if code == key_concept:
+                                classifier = codes[code]['name']
+                                for cval in codes[code]['values']:
+                                    if cval[0] == key_key:
+                                        cl = cval[1]
+                                        break
+                                break
+                        
+                        data.append((classifier, cl, ei, per, tim, val))
+                        n += 1
+                        if max_row > 0 and n > max_row: break
+                        
+                except:
+                    data.append(('', '', ei, per, tim, val))
+                    n += 1
+                    if max_row > 0 and n > max_row: break
 
             except Exception as err:
                 self._report(err)
@@ -247,6 +409,76 @@ class Russtat:
 
         return data
 
+    ## Retrieves and parses a single EMISS dataset from an XML/JSON file,
+    # optionally saving it as JSON and passing into a custom callback.
+    # @param dataset `dict` | `int` | `str` the source dataset to parse or find
+    # in the available datasets list.<br>
+    # If it's a dictionary, it must have the following keys:<br>
+    # ```
+    # {
+    #    "identifier": "<dataset ID, coincides with source XML file name>",
+    #    "title": "<dataset title>",
+    #    "link": "<full URL to source XML at https://fedstat.ru/opendata/>",
+    #    "format": "xml" #          <-- ONLY XML ACCEPTED!
+    # }
+    # ```
+    # If it's an integer, it must be the index of a dataset in Russtat::datasets.<br>
+    # If it's a string, it means part of the dataset title to find using simple search
+    # -- see find_datasets().
+    # @param xmlfilename `str` output file name for the downloaded XML; if 'auto' is
+    # passed, the dataset 'identifier' key will be used to generate the file name.
+    # @param overwrite `bool` whether to overwrite the existing XML file on name conflict
+    # @param del_xml `bool` set to `True` to delete the XML file after successful operation
+    # @param save2json `str` | `None` | `bool` if a string is passed, it must be
+    # the file name of the JSON file to save the parsed data or 'auto' to generate
+    # the file name automatically from the XML file name. Otherwise, `None` or `False`
+    # means that no JSON file will be created.
+    # @param loadfromjson `str` | `None` | `bool` same as `save2json`, but for loading
+    # the dataset. If it's a non-null string ('auto' or file name), the dataset will
+    # be loaded directly from that JSON file, without downloading and parsing the XML.
+    # @param on_dataset `callback` | `None` callback function to pass the parsed dataset object (dictionary).
+    # It must take at least the dataset as its first (positional) parameter and 
+    # may also have arbitrary keyword parameters (see `on_dataset_kwargs`).
+    # @param on_dataset_kwargs `dict` | `None` optional keyword parameters passed to the
+    # callback function (`on_dataset`); if `None`, no such parameters are passed
+    # @returns `dict` | `None` the parsed dataset as a dictionary with these keys:<br>
+    # ```
+    # {
+    #   'prepared': None,   # datetime: date/time when the dataset was retrieved from EMISS, e.g. 2020-10-07 03:13:25
+    #   'id': '',           # int: dataset ID, e.g. '6804027'
+    #   'agency_id': '',    # int: agency ID, e.g. '48'
+    #   'codes': {},        # dict: codes, e.g. {'OKSM': {'name': 'ОКСМ', 'values': [('643', 'Российская Федерация')]}}
+    #   'full_name': '',    # str: full dataset name, e.g. 'Личные переводы в процентном отношении к валовому внутреннему продукту'
+    #   'unit': '',         # str: unit of measurement, e.g. 'процент'
+    #   'periodicity': {    # dict: dataset periodicity
+    #       'value': '',    # str: periodicty description, e.g. 'Квартальная - за отчетный квартал'
+    #       'releases': '', # str: this release period, e.g. '30 апреля'
+    #       'next': None    # datetime: next release date/time, e.g. 2021-04-30 00:00:00
+    #   }, 
+    #   'data_range': (-1, -1),     # tuple of int: start and end years of the observations, e.g. (2014, 2019)
+    #   'updated': None,    # datetime: date/time when the dataset was last updated, e.g. 2020-08-27 17:08:38
+    #   'methodology': '',  # str: dataset methodology description, e.g. 'Личные переводы в процентном отношении к валовому внутреннему продукту'
+    #   'agency_name': '',  # str: preparing agency, e.g. 'Центральный банк Российской Федерации'
+    #   'agency_dept': '',  # str: agency responsible department, e.g. 'Департамент статистики'
+    #   'classifier': {     # dict: dataset thematic classification
+    #       'id': '',       # str: internal classifier number, e.g. '2.8'
+    #       'path': ''      # str: classifier path/name, e.g. 'По федеральному плану ... / ... / Показатели ... развития Российской Федерации'
+    #   }, 
+    #   'prepared_by': {    # dict: who the dataset was prepared by    
+    #       'name': '',     # str: name of responsible person
+    #       'contacts': ''  # str: contact e-mail / phones etc.
+    #   }, 
+    #   'data': []          # observation data, see _get_data()
+    # }
+    # ```
+    # In case of failure, `None` is returned.
+    # @warning If you plan to read data regularly from your datasets, I recommend setting
+    # `save2json` and `loadfromjson` to 'auto' to ensure that datasets are downloaded and
+    # parsed from the source XML files <b>only once</b> and then just loaded from the 
+    # stored JSON files in your local directory. This will significantly increase the 
+    # data processing speed, since no remote requests / downloads or heavy-weight XML
+    # parsing will be needed once you've got them downloaded initially.
+    # @see get_many()
     def get_one(self, dataset, xmlfilename='auto', overwrite=True, del_xml=True, 
                 save2json='auto', loadfromjson='auto', on_dataset=None, on_dataset_kwargs=None):
 
@@ -325,7 +557,7 @@ class Russtat:
                 self._report(err)
                 return None
 
-        ds = {'prepared': None, 'id': -1, 'agency_id': -1, 'codes': {}, 
+        ds = {'prepared': None, 'id': '', 'agency_id': '', 'codes': {}, 
               'full_name': '', 'unit': '', 'periodicity': {'value': '', 'releases': '', 'next': None}, 
               'data_range': (-1, -1), 'updated': None, 'methodology': '', 'agency_name': '', 'agency_dept': '', 
               'classifier': {'id': '', 'path': ''}, 'prepared_by': {'name': '', 'contacts': ''}, 'data': []}
@@ -397,7 +629,42 @@ class Russtat:
 
         return ds
 
-    def get_many(self, datasets=None, xmlfilenames='auto', overwrite=True, del_xml=True, 
+    ## @brief Retrieves and parses multiple EMISS datasets from XML/JSON files,
+    # optionally saving them as JSON and passing into a custom callback.
+    # This is the batch version of get_one().
+    # @param datasets `iterable` | `str` | `int` | `None` the source datasets to find and parse.
+    # May be passed as a list or any iterable of dataset dictionaries, string or integer
+    # indices, or a single integer / string index (see `dataset` parameter in get_one()). 
+    # If `None` is passed, <b>ALL</b> the available datasets in Russtat::datasets will
+    # be processed (which may not be what you need, so check out!). The default value is 0,
+    # i.e. only the first dataset in Russtat::datasets.<br> 
+    # Also, if `loadfromjson` is a list of file names or a single file name (not 'auto') 
+    # and `datasets` is `None`, the datasets will be loaded directly from the indicated JSON files.
+    # @param xmlfilenames `str` | `iterable` output file name(s) for the downloaded XMLs --
+    # see `xmlfilename` parameter in get_one() for details
+    # @param overwrite `bool` whether to overwrite the existing XML files on name conflict
+    # @param del_xml `bool` set to `True` to delete the XML file after successful operation
+    # @param save2json `str` | `iterable` output file name(s) for JSON files --
+    # see `save2json` parameter in get_one() for details
+    # @param loadfromjson `str` | `iterable` input file name(s) to load datasets from JSON files --
+    # see `loadfromjson` parameter in get_one() for details
+    # @param processes `int` | `str` number of processes to parallelize the operation;
+    # set to 'auto' to use a default value (auto-calculated by the number of CPU cores)
+    # @param wait `bool` set to `True` to wait for all the processes to finish before
+    # returning the result; `False` means return the async result immediately and handle it
+    # in the calling procedure (without waiting for the processes to finish)
+    # @param on_dataset `callback` | `None` callback function to pass the parsed dataset object --
+    # see `on_dataset` parameter in get_one() for details
+    # @param on_dataset_kwargs `dict` | `None` optional keyword parameters passed to the
+    # callback function (`on_dataset`) -- see `on_dataset_kwargs` parameter in get_one() for details
+    # @param on_results_ready `callback` | `None` callback function triggered when the results are
+    # ready, i.e. all the parallel processes have returned results (accepts the list of returned
+    # results as its single parameter)
+    # @param on_error `callback` | `None` callback function triggered when an exception occurs
+    # during the multiprocessing operation (its single argument is the exception object raised)
+    # @param on_stopcheck  `callback` | `None` <PLACEHOLDER, NOT USED>
+    # @returns `AsyncResult` awaitable result object -- see [Python docs](https://docs.python.org/3.8/library/multiprocessing.html#multiprocessing.pool.AsyncResult)
+    def get_many(self, datasets=0, xmlfilenames='auto', overwrite=True, del_xml=True, 
               save2json='auto', loadfromjson='auto',
               processes='auto', wait=True, on_dataset=None, on_dataset_kwargs=None,
               on_results_ready=None, on_error=None, on_stopcheck=None):

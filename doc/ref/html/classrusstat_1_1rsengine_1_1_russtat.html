@@ -80,58 +80,84 @@ $(function() {
 <div class="title">russtat.rsengine.Russtat Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>EMISS data retrieving and processing engine.  
+ <a href="classrusstat_1_1rsengine_1_1_russtat.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae1627289ad3f1d271b577b9719213f72"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ae1627289ad3f1d271b577b9719213f72">__init__</a> (self, <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac766e8e2133d4a5efa4780e165c775ef">root_folder</a>='', update_list=False)</td></tr>
-<tr class="separator:ae1627289ad3f1d271b577b9719213f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d8fc5c0a7640dd364dda1d8e35334bd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a6d8fc5c0a7640dd364dda1d8e35334bd">__init__</a> (self, <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac766e8e2133d4a5efa4780e165c775ef">root_folder</a>='', update_list=False, <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a4fcdb5cb6a097b8012c852da2f8ed480">connection_timeout</a>=10)</td></tr>
+<tr class="separator:a6d8fc5c0a7640dd364dda1d8e35334bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a730bcbf3622c3f07e9904584b8124e2a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a730bcbf3622c3f07e9904584b8124e2a">__iter__</a> (self)</td></tr>
+<tr class="memdesc:a730bcbf3622c3f07e9904584b8124e2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator method to iterate the available remote datasets, e.g.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a730bcbf3622c3f07e9904584b8124e2a">More...</a><br /></td></tr>
 <tr class="separator:a730bcbf3622c3f07e9904584b8124e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f3383b0b66b45a0332ec607ca0778f7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a8f3383b0b66b45a0332ec607ca0778f7">next</a> (self)</td></tr>
+<tr class="memdesc:a8f3383b0b66b45a0332ec607ca0778f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Next iterator in the available remote datasets.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a8f3383b0b66b45a0332ec607ca0778f7">More...</a><br /></td></tr>
 <tr class="separator:a8f3383b0b66b45a0332ec607ca0778f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af11bdf6ee9738672f465cc29d9f9ce78"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#af11bdf6ee9738672f465cc29d9f9ce78">__len__</a> (self)</td></tr>
+<tr class="memdesc:af11bdf6ee9738672f465cc29d9f9ce78"><td class="mdescLeft">&#160;</td><td class="mdescRight">len() function overload.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#af11bdf6ee9738672f465cc29d9f9ce78">More...</a><br /></td></tr>
 <tr class="separator:af11bdf6ee9738672f465cc29d9f9ce78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b56db798ace9cc16c494ed31aae7653"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a8b56db798ace9cc16c494ed31aae7653">__bool__</a> (self)</td></tr>
+<tr class="memdesc:a8b56db798ace9cc16c494ed31aae7653"><td class="mdescLeft">&#160;</td><td class="mdescRight">bool() type cast operator overload.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a8b56db798ace9cc16c494ed31aae7653">More...</a><br /></td></tr>
 <tr class="separator:a8b56db798ace9cc16c494ed31aae7653"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a966b733c988e85c03b2835dbec48e49f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a966b733c988e85c03b2835dbec48e49f">__getitem__</a> (self, key)</td></tr>
+<tr class="memdesc:a966b733c988e85c03b2835dbec48e49f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indexing operator [] overload.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a966b733c988e85c03b2835dbec48e49f">More...</a><br /></td></tr>
 <tr class="separator:a966b733c988e85c03b2835dbec48e49f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a530fd57b90bf8798228cdcf41320b355"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a530fd57b90bf8798228cdcf41320b355">update_dataset_list</a> (self, xmlfilename='list.xml', xml_only=True, overwrite=False, del_xml=True, save2json='list_json.json', loadfromjson='list_json.json')</td></tr>
+<tr class="memdesc:a530fd57b90bf8798228cdcf41320b355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the dataset list from the server, downloading and parsing <a class="el" href="namespacerusstat_1_1rsengine.html#a3d861cb137ad164dfcabdef20bbde273" title="str permanent URL of the EMISS dataset list">rsengine::URL_EMISS_LIST</a>.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a530fd57b90bf8798228cdcf41320b355">More...</a><br /></td></tr>
 <tr class="separator:a530fd57b90bf8798228cdcf41320b355"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed264409158fa92bc3fa5432a5b2d292"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#aed264409158fa92bc3fa5432a5b2d292">find_datasets</a> (self, pattern, regex=False, case_sense=False, fullmatch=False)</td></tr>
+<tr class="memdesc:aed264409158fa92bc3fa5432a5b2d292"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches for datasets in their 'title' field for a given pattern.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#aed264409158fa92bc3fa5432a5b2d292">More...</a><br /></td></tr>
 <tr class="separator:aed264409158fa92bc3fa5432a5b2d292"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c7f0273f913ddcf589002f2bae06bc1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a3c7f0273f913ddcf589002f2bae06bc1">get_one</a> (self, dataset, xmlfilename='auto', overwrite=True, del_xml=True, save2json='auto', loadfromjson='auto', on_dataset=None, on_dataset_kwargs=None)</td></tr>
+<tr class="memdesc:a3c7f0273f913ddcf589002f2bae06bc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves and parses a single EMISS dataset from an XML/JSON file, optionally saving it as JSON and passing into a custom callback.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a3c7f0273f913ddcf589002f2bae06bc1">More...</a><br /></td></tr>
 <tr class="separator:a3c7f0273f913ddcf589002f2bae06bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c2b946e1b6dd451416d6e5210ecb05e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a8c2b946e1b6dd451416d6e5210ecb05e">get_many</a> (self, <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184">datasets</a>=None, xmlfilenames='auto', overwrite=True, del_xml=True, save2json='auto', loadfromjson='auto', processes='auto', wait=True, on_dataset=None, on_dataset_kwargs=None, on_results_ready=None, on_error=None, on_stopcheck=None)</td></tr>
-<tr class="separator:a8c2b946e1b6dd451416d6e5210ecb05e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47d47a92c20dbbe8a440b7aa337a15e7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a47d47a92c20dbbe8a440b7aa337a15e7">get_many</a> (self, <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184">datasets</a>=0, xmlfilenames='auto', overwrite=True, del_xml=True, save2json='auto', loadfromjson='auto', processes='auto', wait=True, on_dataset=None, on_dataset_kwargs=None, on_results_ready=None, on_error=None, on_stopcheck=None)</td></tr>
+<tr class="memdesc:a47d47a92c20dbbe8a440b7aa337a15e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves and parses multiple EMISS datasets from XML/JSON files, optionally saving them as JSON and passing into a custom callback.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a47d47a92c20dbbe8a440b7aa337a15e7">More...</a><br /></td></tr>
+<tr class="separator:a47d47a92c20dbbe8a440b7aa337a15e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ac766e8e2133d4a5efa4780e165c775ef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac766e8e2133d4a5efa4780e165c775ef">root_folder</a></td></tr>
+<tr class="memdesc:ac766e8e2133d4a5efa4780e165c775ef"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>str</code> path to the root data directory for XML / JSON files  <a href="classrusstat_1_1rsengine_1_1_russtat.html#ac766e8e2133d4a5efa4780e165c775ef">More...</a><br /></td></tr>
 <tr class="separator:ac766e8e2133d4a5efa4780e165c775ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac46da38335b4b8915a99e5a49d1df184"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184">datasets</a></td></tr>
+<tr class="memdesc:ac46da38335b4b8915a99e5a49d1df184"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>list</code> list of available statistical datasets on the EMISS server  <a href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184">More...</a><br /></td></tr>
 <tr class="separator:ac46da38335b4b8915a99e5a49d1df184"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fcdb5cb6a097b8012c852da2f8ed480"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a4fcdb5cb6a097b8012c852da2f8ed480">connection_timeout</a></td></tr>
+<tr class="memdesc:a4fcdb5cb6a097b8012c852da2f8ed480"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>float</code> | <code>2-tuple</code> timeout in seconds for server connection / data reception  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a4fcdb5cb6a097b8012c852da2f8ed480">More...</a><br /></td></tr>
+<tr class="separator:a4fcdb5cb6a097b8012c852da2f8ed480"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a63cbb433617afb2bed1a19f415dfc6e5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a63cbb433617afb2bed1a19f415dfc6e5">_report</a> (self, message, force_print=False, file=sys.stdout, end='\n', flush=False)</td></tr>
+<tr class="memdesc:a63cbb433617afb2bed1a19f415dfc6e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a message to a file stream / console accounting for globs::DEBUGGING flag.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a63cbb433617afb2bed1a19f415dfc6e5">More...</a><br /></td></tr>
 <tr class="separator:a63cbb433617afb2bed1a19f415dfc6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a198c08ae148663a114c7db477e21b1bd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a198c08ae148663a114c7db477e21b1bd">_get_text</a> (self, node, tags=None, default='', ns=<a class="el" href="namespacerusstat_1_1rsengine.html#a617d29b5c3f7bfa079b7d36341e698ef">XML_NS</a>, strip=True)</td></tr>
+<tr class="memdesc:a198c08ae148663a114c7db477e21b1bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value (text) of a given XML node / children with an optional default value.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a198c08ae148663a114c7db477e21b1bd">More...</a><br /></td></tr>
 <tr class="separator:a198c08ae148663a114c7db477e21b1bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1bfc8323b9d8fc37bc252a2de3a8f67"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac1bfc8323b9d8fc37bc252a2de3a8f67">_get_attr</a> (self, node, attr, tags=None, default='', ns=<a class="el" href="namespacerusstat_1_1rsengine.html#a617d29b5c3f7bfa079b7d36341e698ef">XML_NS</a>, strip=True)</td></tr>
+<tr class="memdesc:ac1bfc8323b9d8fc37bc252a2de3a8f67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value (text) of a given attribute of an XML node / its children with an optional default value.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#ac1bfc8323b9d8fc37bc252a2de3a8f67">More...</a><br /></td></tr>
 <tr class="separator:ac1bfc8323b9d8fc37bc252a2de3a8f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8ad7832f2159cfdf00c5983b0ee3971"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ae8ad7832f2159cfdf00c5983b0ee3971">_get_codes</a> (self, ds_rootnode)</td></tr>
+<tr class="memdesc:ae8ad7832f2159cfdf00c5983b0ee3971"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses and collects the CodeLists section of a dataset XML.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#ae8ad7832f2159cfdf00c5983b0ee3971">More...</a><br /></td></tr>
 <tr class="separator:ae8ad7832f2159cfdf00c5983b0ee3971"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5211aa7ce3aca545b7a91ad11f09ce2"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac5211aa7ce3aca545b7a91ad11f09ce2">_get_data</a> (self, ds_rootnode, codes, max_row=-1)</td></tr>
+<tr class="memdesc:ac5211aa7ce3aca545b7a91ad11f09ce2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses and collects the DataSet section of a dataset XML.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#ac5211aa7ce3aca545b7a91ad11f09ce2">More...</a><br /></td></tr>
 <tr class="separator:ac5211aa7ce3aca545b7a91ad11f09ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a7007251056f4ab7e2e519d4a3cfe2446"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a7007251056f4ab7e2e519d4a3cfe2446">_iter</a></td></tr>
+<tr class="memdesc:a7007251056f4ab7e2e519d4a3cfe2446"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>iterator</code> iterator for <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184" title="list list of available statistical datasets on the EMISS server">Russtat::datasets</a>  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a7007251056f4ab7e2e519d4a3cfe2446">More...</a><br /></td></tr>
 <tr class="separator:a7007251056f4ab7e2e519d4a3cfe2446"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae1627289ad3f1d271b577b9719213f72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1627289ad3f1d271b577b9719213f72">&#9670;&nbsp;</a></span>__init__()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>EMISS data retrieving and processing engine. </p>
+<p>Downloads source XML's, parses them into Python dictionaries and passes on to a custom callback function. Datasets can optionally to loaded from and saved as JSON files, to maximize portability. Batch processing is enhanced by multiprocessing, to handle datasets in parallel taking advantage of your CPU's multiple cores. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a6d8fc5c0a7640dd364dda1d8e35334bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d8fc5c0a7640dd364dda1d8e35334bd">&#9670;&nbsp;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -152,7 +178,13 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>update_list</em> = <code>False</code>&#160;</td>
+          <td class="paramname"><em>update_list</em> = <code>False</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>connection_timeout</em> = <code>10</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -161,6 +193,14 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">root_folder</td><td><code>str</code> path to the data directory where the source XML files and JSON files will be saved / searched (relative to project dir or absolute). Default is empty string, which stands for the project root directory. </td></tr>
+    <tr><td class="paramname">update_list</td><td><code>bool</code> whether the list of datasets ('list_json.json') must be refreshed from the server (default = <code>False</code>). If 'list_json.json' is absent from <code>root_folder</code>, it will be downloaded in any case. </td></tr>
+    <tr><td class="paramname">connection_timeout</td><td><code>float</code> | <code>2-tuple</code> timeout in seconds for server connection / data reception. If it's a single value (<code>float</code>), it will be used for both connection and data timeout; if it's a <code>tuple</code>, the first value stands for connection, the second for data timeout. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -180,6 +220,9 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>bool() type cast operator overload. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>bool</code> <code>True</code> if there is at least one EMISS dataset available. </dd></dl>
 
 </div>
 </div>
@@ -209,6 +252,31 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Indexing operator [] overload. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">&lt;tt&gt;int&lt;/tt&gt;</td><td>| <code>str</code> | <code>slice</code> dataset index: numerical (position of dataset in <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184" title="list list of available statistical datasets on the EMISS server">Russtat::datasets</a>) or string (full title of the dataset) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> | <code>list of dict</code> | <code>None</code> found dataset(s) from <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184" title="list list of available statistical datasets on the EMISS server">Russtat::datasets</a> or <code>None</code> if nothing is found <br  />
+<br  />
+<b>EXAMPLES:</b><br  />
+ <div class="fragment"><div class="line">engine = Russtat()</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># get first dataset</span></div>
+<div class="line">ds = engine[0]</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># get first 10 datasets</span></div>
+<div class="line">dsets = engine[:10]</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># get last 100 datasets</span></div>
+<div class="line">dsets = engine[-100:]</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># get dataset with title &#39;Количество дел, принятых  к производству следователями&#39;</span></div>
+<div class="line">ds = engine[<span class="stringliteral">&#39;Количество дел, принятых  к производству следователями&#39;</span>]</div>
+</div><!-- fragment --> </dd></dl>
+
 </div>
 </div>
 <a id="a730bcbf3622c3f07e9904584b8124e2a"></a>
@@ -227,6 +295,11 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Iterator method to iterate the available remote datasets, e.g. </p>
+<div class="fragment"><div class="line"><span class="keywordflow">for</span> dataset <span class="keywordflow">in</span> Russtat():</div>
+<div class="line">    print(dataset[<span class="stringliteral">&#39;title&#39;</span>])</div>
+</div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a7007251056f4ab7e2e519d4a3cfe2446" title="iterator iterator for Russtat::datasets">Russtat::_iter</a> </dd></dl>
+
 </div>
 </div>
 <a id="af11bdf6ee9738672f465cc29d9f9ce78"></a>
@@ -244,6 +317,9 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>len() function overload. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>int</code> number of available EMISS datasets on the server </dd></dl>
 
 </div>
 </div>
@@ -311,6 +387,23 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Gets the value (text) of a given attribute of an XML node / its children with an optional default value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td><code>ElementTree node</code> the parent XML node </td></tr>
+    <tr><td class="paramname">attr</td><td><code>str</code> the attribute name (key) </td></tr>
+    <tr><td class="paramname">tags</td><td><code>list</code> | <code>str</code> | <code>None</code> a single child tag or list of child tags in hierarchical order (<code>[child, sub-child, sub-sub-child, ...]</code>) to get the target node. If <code>None</code>, the parent node is the target one. </td></tr>
+    <tr><td class="paramname">default</td><td><code>str</code> default value returned in case of failure </td></tr>
+    <tr><td class="paramname">ns</td><td><code>dict</code> XML namespace schema (default = <a class="el" href="namespacerusstat_1_1rsengine.html#a617d29b5c3f7bfa079b7d36341e698ef" title="dict EMISS XML dataset schemas">rsengine::XML_NS</a>) </td></tr>
+    <tr><td class="paramname">strip</td><td><code>bool</code> whether to apply <code>strip()</code> to the retrieved text value to get rid of leading / trailing spaces </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>str</code> found value / <code>default</code> on failure </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://docs.python.org/3.8/library/xml.etree.elementtree.html">Python ElementTree API</a> </dd>
+<dd>
+<a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a198c08ae148663a114c7db477e21b1bd" title="Gets the value (text) of a given XML node / children with an optional default value.">_get_text()</a> </dd></dl>
+
 </div>
 </div>
 <a id="ae8ad7832f2159cfdf00c5983b0ee3971"></a>
@@ -346,6 +439,20 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Parses and collects the CodeLists section of a dataset XML. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ds_rootnode</td><td><code>ElementTree node</code> the parent node containing 'CodeLists' </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> CodeLists section converted into a dictionary in the format:<br  />
+ <div class="fragment"><div class="line">{</div>
+<div class="line"> <span class="stringliteral">&#39;code-name&#39;</span>: {<span class="stringliteral">&#39;name&#39;</span>: <span class="stringliteral">&#39;&lt;full name&gt;&#39;</span>, <span class="stringliteral">&#39;values&#39;</span>: [(<span class="stringliteral">&#39;&lt;id&gt;&#39;</span>, <span class="stringliteral">&#39;&lt;description&gt;&#39;</span>), ...]},</div>
+<div class="line"> <span class="stringliteral">&#39;code-name&#39;</span>: {...}</div>
+<div class="line">}</div>
+</div><!-- fragment --> </dd></dl>
 
 </div>
 </div>
@@ -394,6 +501,19 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Parses and collects the DataSet section of a dataset XML. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ds_rootnode</td><td><code>ElementTree node</code> the parent node containing 'DataSet' </td></tr>
+    <tr><td class="paramname">codes</td><td><code>dict</code> CodeLists section as a dictionary &ndash; see <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ae8ad7832f2159cfdf00c5983b0ee3971" title="Parses and collects the CodeLists section of a dataset XML.">_get_codes()</a> </td></tr>
+    <tr><td class="paramname">max_row</td><td><code>int</code> limit of data points to collect from the XML (<code>-1</code> = no limit) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> DataSet section as a list of data values in the format:<br  />
+ <div class="fragment"><div class="line">[(<span class="stringliteral">&#39;classifier&#39;</span>, <span class="stringliteral">&#39;class&#39;</span>, <span class="stringliteral">&#39;unit&#39;</span>, <span class="stringliteral">&#39;period of observation&#39;</span>, int(<span class="stringliteral">&#39;observation year&#39;</span>), float(<span class="stringliteral">&#39;observation value&#39;</span>)), ...]</div>
+</div><!-- fragment --> </dd></dl>
 
 </div>
 </div>
@@ -455,6 +575,22 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Gets the value (text) of a given XML node / children with an optional default value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td><code>ElementTree node</code> the parent XML node </td></tr>
+    <tr><td class="paramname">tags</td><td><code>list</code> | <code>str</code> | <code>None</code> a single child tag or list of child tags in hierarchical order (<code>[child, sub-child, sub-sub-child, ...]</code>) to get the target node. If <code>None</code>, the parent node is the target one. </td></tr>
+    <tr><td class="paramname">default</td><td><code>str</code> default value returned in case of failure </td></tr>
+    <tr><td class="paramname">ns</td><td><code>dict</code> XML namespace schema (default = <a class="el" href="namespacerusstat_1_1rsengine.html#a617d29b5c3f7bfa079b7d36341e698ef" title="dict EMISS XML dataset schemas">rsengine::XML_NS</a>) </td></tr>
+    <tr><td class="paramname">strip</td><td><code>bool</code> whether to apply <code>strip()</code> to the retrieved text value to get rid of leading / trailing spaces </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>str</code> found value / <code>default</code> on failure </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://docs.python.org/3.8/library/xml.etree.elementtree.html">Python ElementTree API</a> </dd>
+<dd>
+<a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac1bfc8323b9d8fc37bc252a2de3a8f67" title="Gets the value (text) of a given attribute of an XML node / its children with an optional default val...">_get_attr()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a63cbb433617afb2bed1a19f415dfc6e5"></a>
@@ -515,6 +651,18 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Prints a message to a file stream / console accounting for globs::DEBUGGING flag. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td><code>str</code> message to output </td></tr>
+    <tr><td class="paramname">force_print</td><td><code>bool</code> set to <code>True</code> to output message disregarding globs::DEBUGGING </td></tr>
+    <tr><td class="paramname">file</td><td><code>file</code> file stream to output the message to (default = STDOUT) </td></tr>
+    <tr><td class="paramname">end</td><td><code>str</code> message ending suffix (default = new line symbol) </td></tr>
+    <tr><td class="paramname">flush</td><td><code>bool</code> <code>True</code> to flush the IO buffer immediately </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="aed264409158fa92bc3fa5432a5b2d292"></a>
@@ -561,10 +709,35 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Searches for datasets in their 'title' field for a given pattern. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pattern</td><td><code>str</code> substring / pattern to search for </td></tr>
+    <tr><td class="paramname">regex</td><td><code>bool</code> whether the pattern is a simple substring or a regular expression </td></tr>
+    <tr><td class="paramname">case_sense</td><td><code>bool</code> whether the search must be case-sensitive or not </td></tr>
+    <tr><td class="paramname">fullmatch</td><td><code>bool</code> whether the search must match the entire pattern </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>list</code> list of dataset objects found <br  />
+<br  />
+<b>EXAMPLES:</b><br  />
+ <div class="fragment"><div class="line">engine = Russtat()</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># simple search: all datasets containing &#39;документов&#39;</span></div>
+<div class="line">res = engine.find_datasets(<span class="stringliteral">&#39;документов&#39;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># regex search: all datasets containing &#39;женщ&#39; or &#39;мужч&#39;</span></div>
+<div class="line">res = engine.find_datasets(<span class="stringliteral">&#39;женщ|мужч&#39;</span>, <span class="keyword">True</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># more complex regex search</span></div>
+<div class="line">res = engine.find_datasets(<span class="stringliteral">r&#39;([\w\s,\-]*)(техн)([\w\s,\-]*)(отход)&#39;</span>, <span class="keyword">True</span>)</div>
+</div><!-- fragment --> </dd></dl>
+
 </div>
 </div>
-<a id="a8c2b946e1b6dd451416d6e5210ecb05e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c2b946e1b6dd451416d6e5210ecb05e">&#9670;&nbsp;</a></span>get_many()</h2>
+<a id="a47d47a92c20dbbe8a440b7aa337a15e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47d47a92c20dbbe8a440b7aa337a15e7">&#9670;&nbsp;</a></span>get_many()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -579,7 +752,7 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>datasets</em> = <code>None</code>, </td>
+          <td class="paramname"><em>datasets</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -661,6 +834,28 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Retrieves and parses multiple EMISS datasets from XML/JSON files, optionally saving them as JSON and passing into a custom callback. </p>
+<p>This is the batch version of <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a3c7f0273f913ddcf589002f2bae06bc1" title="Retrieves and parses a single EMISS dataset from an XML/JSON file, optionally saving it as JSON and p...">get_one()</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">datasets</td><td><code>iterable</code> | <code>str</code> | <code>int</code> | <code>None</code> the source datasets to find and parse. May be passed as a list or any iterable of dataset dictionaries, string or integer indices, or a single integer / string index (see <code>dataset</code> parameter in <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a3c7f0273f913ddcf589002f2bae06bc1" title="Retrieves and parses a single EMISS dataset from an XML/JSON file, optionally saving it as JSON and p...">get_one()</a>). If <code>None</code> is passed, <b>ALL</b> the available datasets in <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184" title="list list of available statistical datasets on the EMISS server">Russtat::datasets</a> will be processed (which may not be what you need, so check out!). The default value is 0, i.e. only the first dataset in <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184" title="list list of available statistical datasets on the EMISS server">Russtat::datasets</a>.<br  />
+ Also, if <code>loadfromjson</code> is a list of file names or a single file name (not 'auto') and <code>datasets</code> is <code>None</code>, the datasets will be loaded directly from the indicated JSON files. </td></tr>
+    <tr><td class="paramname">xmlfilenames</td><td><code>str</code> | <code>iterable</code> output file name(s) for the downloaded XMLs &ndash; see <code>xmlfilename</code> parameter in <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a3c7f0273f913ddcf589002f2bae06bc1" title="Retrieves and parses a single EMISS dataset from an XML/JSON file, optionally saving it as JSON and p...">get_one()</a> for details </td></tr>
+    <tr><td class="paramname">overwrite</td><td><code>bool</code> whether to overwrite the existing XML files on name conflict </td></tr>
+    <tr><td class="paramname">del_xml</td><td><code>bool</code> set to <code>True</code> to delete the XML file after successful operation </td></tr>
+    <tr><td class="paramname">save2json</td><td><code>str</code> | <code>iterable</code> output file name(s) for JSON files &ndash; see <code>save2json</code> parameter in <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a3c7f0273f913ddcf589002f2bae06bc1" title="Retrieves and parses a single EMISS dataset from an XML/JSON file, optionally saving it as JSON and p...">get_one()</a> for details </td></tr>
+    <tr><td class="paramname">loadfromjson</td><td><code>str</code> | <code>iterable</code> input file name(s) to load datasets from JSON files &ndash; see <code>loadfromjson</code> parameter in <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a3c7f0273f913ddcf589002f2bae06bc1" title="Retrieves and parses a single EMISS dataset from an XML/JSON file, optionally saving it as JSON and p...">get_one()</a> for details </td></tr>
+    <tr><td class="paramname">processes</td><td><code>int</code> | <code>str</code> number of processes to parallelize the operation; set to 'auto' to use a default value (auto-calculated by the number of CPU cores) </td></tr>
+    <tr><td class="paramname">wait</td><td><code>bool</code> set to <code>True</code> to wait for all the processes to finish before returning the result; <code>False</code> means return the async result immediately and handle it in the calling procedure (without waiting for the processes to finish) </td></tr>
+    <tr><td class="paramname">on_dataset</td><td><code>callback</code> | <code>None</code> callback function to pass the parsed dataset object &ndash; see <code>on_dataset</code> parameter in <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a3c7f0273f913ddcf589002f2bae06bc1" title="Retrieves and parses a single EMISS dataset from an XML/JSON file, optionally saving it as JSON and p...">get_one()</a> for details </td></tr>
+    <tr><td class="paramname">on_dataset_kwargs</td><td><code>dict</code> | <code>None</code> optional keyword parameters passed to the callback function (<code>on_dataset</code>) &ndash; see <code>on_dataset_kwargs</code> parameter in <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a3c7f0273f913ddcf589002f2bae06bc1" title="Retrieves and parses a single EMISS dataset from an XML/JSON file, optionally saving it as JSON and p...">get_one()</a> for details </td></tr>
+    <tr><td class="paramname">on_results_ready</td><td><code>callback</code> | <code>None</code> callback function triggered when the results are ready, i.e. all the parallel processes have returned results (accepts the list of returned results as its single parameter) </td></tr>
+    <tr><td class="paramname">on_error</td><td><code>callback</code> | <code>None</code> callback function triggered when an exception occurs during the multiprocessing operation (its single argument is the exception object raised) </td></tr>
+    <tr><td class="paramname">on_stopcheck</td><td><code>callback</code> | <code>None</code> &lt;PLACEHOLDER, NOT USED&gt; </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>AsyncResult</code> awaitable result object &ndash; see <a href="https://docs.python.org/3.8/library/multiprocessing.html#multiprocessing.pool.AsyncResult">Python docs</a> </dd></dl>
+
 </div>
 </div>
 <a id="a3c7f0273f913ddcf589002f2bae06bc1"></a>
@@ -731,6 +926,66 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Retrieves and parses a single EMISS dataset from an XML/JSON file, optionally saving it as JSON and passing into a custom callback. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataset</td><td><code>dict</code> | <code>int</code> | <code>str</code> the source dataset to parse or find in the available datasets list.<br  />
+ If it's a dictionary, it must have the following keys:<br  />
+ <div class="fragment"><div class="line">{</div>
+<div class="line">   <span class="stringliteral">&quot;identifier&quot;</span>: <span class="stringliteral">&quot;&lt;dataset ID, coincides with source XML file name&gt;&quot;</span>,</div>
+<div class="line">   <span class="stringliteral">&quot;title&quot;</span>: <span class="stringliteral">&quot;&lt;dataset title&gt;&quot;</span>,</div>
+<div class="line">   <span class="stringliteral">&quot;link&quot;</span>: <span class="stringliteral">&quot;&lt;full URL to source XML at https://fedstat.ru/opendata/&gt;&quot;</span>,</div>
+<div class="line">   <span class="stringliteral">&quot;format&quot;</span>: <span class="stringliteral">&quot;xml&quot;</span> <span class="comment">#          &lt;-- ONLY XML ACCEPTED!</span></div>
+<div class="line">}</div>
+</div><!-- fragment --></td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If it's an integer, it must be the index of a dataset in <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184" title="list list of available statistical datasets on the EMISS server">Russtat::datasets</a>.<br  />
+ If it's a string, it means part of the dataset title to find using simple search &ndash; see <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#aed264409158fa92bc3fa5432a5b2d292" title="Searches for datasets in their &#39;title&#39; field for a given pattern.">find_datasets()</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xmlfilename</td><td><code>str</code> output file name for the downloaded XML; if 'auto' is passed, the dataset 'identifier' key will be used to generate the file name. </td></tr>
+    <tr><td class="paramname">overwrite</td><td><code>bool</code> whether to overwrite the existing XML file on name conflict </td></tr>
+    <tr><td class="paramname">del_xml</td><td><code>bool</code> set to <code>True</code> to delete the XML file after successful operation </td></tr>
+    <tr><td class="paramname">save2json</td><td><code>str</code> | <code>None</code> | <code>bool</code> if a string is passed, it must be the file name of the JSON file to save the parsed data or 'auto' to generate the file name automatically from the XML file name. Otherwise, <code>None</code> or <code>False</code> means that no JSON file will be created. </td></tr>
+    <tr><td class="paramname">loadfromjson</td><td><code>str</code> | <code>None</code> | <code>bool</code> same as <code>save2json</code>, but for loading the dataset. If it's a non-null string ('auto' or file name), the dataset will be loaded directly from that JSON file, without downloading and parsing the XML. </td></tr>
+    <tr><td class="paramname">on_dataset</td><td><code>callback</code> | <code>None</code> callback function to pass the parsed dataset object (dictionary). It must take at least the dataset as its first (positional) parameter and may also have arbitrary keyword parameters (see <code>on_dataset_kwargs</code>). </td></tr>
+    <tr><td class="paramname">on_dataset_kwargs</td><td><code>dict</code> | <code>None</code> optional keyword parameters passed to the callback function (<code>on_dataset</code>); if <code>None</code>, no such parameters are passed </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>dict</code> | <code>None</code> the parsed dataset as a dictionary with these keys:<br  />
+ <div class="fragment"><div class="line">{</div>
+<div class="line">  <span class="stringliteral">&#39;prepared&#39;</span>: <span class="keywordtype">None</span>,   <span class="comment"># datetime: date/time when the dataset was retrieved from EMISS, e.g. 2020-10-07 03:13:25</span></div>
+<div class="line">  <span class="stringliteral">&#39;id&#39;</span>: <span class="stringliteral">&#39;&#39;</span>,           <span class="comment"># int: dataset ID, e.g. &#39;6804027&#39;</span></div>
+<div class="line">  <span class="stringliteral">&#39;agency_id&#39;</span>: <span class="stringliteral">&#39;&#39;</span>,    <span class="comment"># int: agency ID, e.g. &#39;48&#39;</span></div>
+<div class="line">  <span class="stringliteral">&#39;codes&#39;</span>: {},        <span class="comment"># dict: codes, e.g. {&#39;OKSM&#39;: {&#39;name&#39;: &#39;ОКСМ&#39;, &#39;values&#39;: [(&#39;643&#39;, &#39;Российская Федерация&#39;)]}}</span></div>
+<div class="line">  <span class="stringliteral">&#39;full_name&#39;</span>: <span class="stringliteral">&#39;&#39;</span>,    <span class="comment"># str: full dataset name, e.g. &#39;Личные переводы в процентном отношении к валовому внутреннему продукту&#39;</span></div>
+<div class="line">  <span class="stringliteral">&#39;unit&#39;</span>: <span class="stringliteral">&#39;&#39;</span>,         <span class="comment"># str: unit of measurement, e.g. &#39;процент&#39;</span></div>
+<div class="line">  <span class="stringliteral">&#39;periodicity&#39;</span>: {    <span class="comment"># dict: dataset periodicity</span></div>
+<div class="line">      <span class="stringliteral">&#39;value&#39;</span>: <span class="stringliteral">&#39;&#39;</span>,    <span class="comment"># str: periodicty description, e.g. &#39;Квартальная - за отчетный квартал&#39;</span></div>
+<div class="line">      <span class="stringliteral">&#39;releases&#39;</span>: <span class="stringliteral">&#39;&#39;</span>, <span class="comment"># str: this release period, e.g. &#39;30 апреля&#39;</span></div>
+<div class="line">      <span class="stringliteral">&#39;next&#39;</span>: <span class="keywordtype">None</span>    <span class="comment"># datetime: next release date/time, e.g. 2021-04-30 00:00:00</span></div>
+<div class="line">  }, </div>
+<div class="line">  <span class="stringliteral">&#39;data_range&#39;</span>: (-1, -1),     <span class="comment"># tuple of int: start and end years of the observations, e.g. (2014, 2019)</span></div>
+<div class="line">  <span class="stringliteral">&#39;updated&#39;</span>: <span class="keywordtype">None</span>,    <span class="comment"># datetime: date/time when the dataset was last updated, e.g. 2020-08-27 17:08:38</span></div>
+<div class="line">  <span class="stringliteral">&#39;methodology&#39;</span>: <span class="stringliteral">&#39;&#39;</span>,  <span class="comment"># str: dataset methodology description, e.g. &#39;Личные переводы в процентном отношении к валовому внутреннему продукту&#39;</span></div>
+<div class="line">  <span class="stringliteral">&#39;agency_name&#39;</span>: <span class="stringliteral">&#39;&#39;</span>,  <span class="comment"># str: preparing agency, e.g. &#39;Центральный банк Российской Федерации&#39;</span></div>
+<div class="line">  <span class="stringliteral">&#39;agency_dept&#39;</span>: <span class="stringliteral">&#39;&#39;</span>,  <span class="comment"># str: agency responsible department, e.g. &#39;Департамент статистики&#39;</span></div>
+<div class="line">  <span class="stringliteral">&#39;classifier&#39;</span>: {     <span class="comment"># dict: dataset thematic classification</span></div>
+<div class="line">      <span class="stringliteral">&#39;id&#39;</span>: <span class="stringliteral">&#39;&#39;</span>,       <span class="comment"># str: internal classifier number, e.g. &#39;2.8&#39;</span></div>
+<div class="line">      <span class="stringliteral">&#39;path&#39;</span>: <span class="stringliteral">&#39;&#39;</span>      <span class="comment"># str: classifier path/name, e.g. &#39;По федеральному плану ... / ... / Показатели ... развития Российской Федерации&#39;</span></div>
+<div class="line">  }, </div>
+<div class="line">  <span class="stringliteral">&#39;prepared_by&#39;</span>: {    <span class="comment"># dict: who the dataset was prepared by    </span></div>
+<div class="line">      <span class="stringliteral">&#39;name&#39;</span>: <span class="stringliteral">&#39;&#39;</span>,     <span class="comment"># str: name of responsible person</span></div>
+<div class="line">      <span class="stringliteral">&#39;contacts&#39;</span>: <span class="stringliteral">&#39;&#39;</span>  <span class="comment"># str: contact e-mail / phones etc.</span></div>
+<div class="line">  }, </div>
+<div class="line">  <span class="stringliteral">&#39;data&#39;</span>: []          <span class="comment"># observation data, see _get_data()</span></div>
+<div class="line">}</div>
+</div><!-- fragment --></dd></dl>
+<p>In case of failure, <code>None</code> is returned. </p><dl class="section warning"><dt>Warning</dt><dd>If you plan to read data regularly from your datasets, I recommend setting <code>save2json</code> and <code>loadfromjson</code> to 'auto' to ensure that datasets are downloaded and parsed from the source XML files <b>only once</b> and then just loaded from the stored JSON files in your local directory. This will significantly increase the data processing speed, since no remote requests / downloads or heavy-weight XML parsing will be needed once you've got them downloaded initially. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a47d47a92c20dbbe8a440b7aa337a15e7" title="Retrieves and parses multiple EMISS datasets from XML/JSON files, optionally saving them as JSON and ...">get_many()</a> </dd></dl>
+
 </div>
 </div>
 <a id="a8f3383b0b66b45a0332ec607ca0778f7"></a>
@@ -748,6 +1003,9 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Next iterator in the available remote datasets. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a730bcbf3622c3f07e9904584b8124e2a" title="Iterator method to iterate the available remote datasets, e.g.">__iter__()</a> </dd></dl>
 
 </div>
 </div>
@@ -807,6 +1065,19 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Updates the dataset list from the server, downloading and parsing <a class="el" href="namespacerusstat_1_1rsengine.html#a3d861cb137ad164dfcabdef20bbde273" title="str permanent URL of the EMISS dataset list">rsengine::URL_EMISS_LIST</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xmlfilename</td><td><code>str</code> filename to store the downloaded XML file (relative to <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac766e8e2133d4a5efa4780e165c775ef" title="str path to the root data directory for XML / JSON files">Russtat::root_folder</a> or absolute) </td></tr>
+    <tr><td class="paramname">xml_only</td><td><code>bool</code> allows to check that the downloaded file is in XML format: if <code>True</code> (default), other file formats will not be accepted and downloaded </td></tr>
+    <tr><td class="paramname">overwrite</td><td><code>bool</code> set to <code>True</code> to force update of the existing XML in the target directory; if <code>False</code> (default), the existing XML will not be overwritten </td></tr>
+    <tr><td class="paramname">del_xml</td><td><code>bool</code> set tot <code>True</code> (default) to delete the XML file after downloading and parsing into <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184" title="list list of available statistical datasets on the EMISS server">Russtat::datasets</a>; <code>False</code> to keep the XML file </td></tr>
+    <tr><td class="paramname">save2json</td><td><code>str</code> | <code>None</code> | <code>bool</code> if a string is passed, it must be the file name of the JSON file to save the parsed dataset list to (default = 'list_json.json'). If <code>None</code> or <code>False</code>, JSON is not saved. </td></tr>
+    <tr><td class="paramname">loadfromjson</td><td><code>str</code> | <code>None</code> | <code>bool</code> if a string is passed, it must be the file name of the JSON file to load the dataset list from (default = 'list_json.json'). If a valid file is found, the list will not be downloaded / parsed from XML, but loaded directly from JSON. If <code>None</code> or <code>False</code>, the dataset list will be instead retrieved from the server or stored XML file (see <code>xmlfilename</code> parameter). </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -830,6 +1101,24 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p><code>iterator</code> iterator for <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184" title="list list of available statistical datasets on the EMISS server">Russtat::datasets</a> </p>
+
+</div>
+</div>
+<a id="a4fcdb5cb6a097b8012c852da2f8ed480"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fcdb5cb6a097b8012c852da2f8ed480">&#9670;&nbsp;</a></span>connection_timeout</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">russtat.rsengine.Russtat.connection_timeout</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>float</code> | <code>2-tuple</code> timeout in seconds for server connection / data reception </p>
+
 </div>
 </div>
 <a id="ac46da38335b4b8915a99e5a49d1df184"></a>
@@ -844,6 +1133,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><code>list</code> list of available statistical datasets on the EMISS server </p>
+
 </div>
 </div>
 <a id="ac766e8e2133d4a5efa4780e165c775ef"></a>
@@ -857,6 +1148,8 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><code>str</code> path to the root data directory for XML / JSON files </p>
 
 </div>
 </div>
