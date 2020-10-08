@@ -85,6 +85,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a5556f149ae91629ec65793b92a5d6a9e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerusstat_1_1russtat.html#a5556f149ae91629ec65793b92a5d6a9e">add2db</a> (ds, dbname='russtat', user='postgres', password=None, host='127.0.0.1', port='5432', logfile=None)</td></tr>
 <tr class="memdesc:a5556f149ae91629ec65793b92a5d6a9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback procedure for dataset processing: loads dataset into PSQL database.  <a href="namespacerusstat_1_1russtat.html#a5556f149ae91629ec65793b92a5d6a9e">More...</a><br /></td></tr>
 <tr class="separator:a5556f149ae91629ec65793b92a5d6a9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afef2b80ddc7ca1a86ba624410bf481b4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerusstat_1_1russtat.html#afef2b80ddc7ca1a86ba624410bf481b4">update_db</a> (update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=None, logfile=None)</td></tr>
+<tr class="memdesc:afef2b80ddc7ca1a86ba624410bf481b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the database.  <a href="namespacerusstat_1_1russtat.html#afef2b80ddc7ca1a86ba624410bf481b4">More...</a><br /></td></tr>
+<tr class="separator:afef2b80ddc7ca1a86ba624410bf481b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada019b0043668137918efd137b88e0b4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerusstat_1_1russtat.html#ada019b0043668137918efd137b88e0b4">main</a> ()</td></tr>
 <tr class="memdesc:ada019b0043668137918efd137b88e0b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main function that creates the Russtat engine and retrieves / stores data.  <a href="namespacerusstat_1_1russtat.html#ada019b0043668137918efd137b88e0b4">More...</a><br /></td></tr>
 <tr class="separator:ada019b0043668137918efd137b88e0b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,6 +183,71 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Main function that creates the Russtat engine and retrieves / stores data. </p>
+
+</div>
+</div>
+<a id="afef2b80ddc7ca1a86ba624410bf481b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afef2b80ddc7ca1a86ba624410bf481b4">&#9670;&nbsp;</a></span>update_db()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def russtat.russtat.update_db </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>update_list</em> = <code>False</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>start_ds</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>end_ds</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>skip_existing</em> = <code>True</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>pwd</em> = <code>None</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>logfile</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Updates the database. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">update_list</td><td><code>bool</code> whether to refresh the dataset list from the server </td></tr>
+    <tr><td class="paramname">start_ds</td><td><code>int</code> start dataset index to upload to DB </td></tr>
+    <tr><td class="paramname">end_ds</td><td><code>int</code> last dataset index to upload to DB (<code>-1</code> = no limit) </td></tr>
+    <tr><td class="paramname">skip_existing</td><td><code>bool</code> set to <code>True</code> to skip existing datasets (on title coincidence) </td></tr>
+    <tr><td class="paramname">pwd</td><td><code>str</code> | <code>None</code> database password (leave <code>None</code> to ask user) </td></tr>
+    <tr><td class="paramname">logfile</td><td><code>str</code> | <code>None</code> output file to print messages (<code>None</code> = STDOUT) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

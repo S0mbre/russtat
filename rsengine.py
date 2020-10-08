@@ -738,3 +738,17 @@ class Russtat:
             except Exception as err:
                 self._report(err, True)
                 return None
+
+    def filter_datasets_only_new(self, db, datasets=None):
+        if datasets is None: datasets = self.datasets
+        datasets = set(ds['title'] for ds in datasets)
+        res = db.fetch('select distinct name from datasets')
+        existing_ds = set(t[0] for t in res) if res else set()
+        return list(datasets - existing_ds)
+
+    def filter_datasets_only_existing(self, db, datasets=None):
+        if datasets is None: datasets = self.datasets
+        datasets = set(ds['title'] for ds in datasets)
+        res = db.fetch('select distinct name from datasets')
+        existing_ds = set(t[0] for t in res) if res else set()
+        return list(datasets & existing_ds)

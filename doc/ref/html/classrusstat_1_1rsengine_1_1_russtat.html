@@ -115,6 +115,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a47d47a92c20dbbe8a440b7aa337a15e7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a47d47a92c20dbbe8a440b7aa337a15e7">get_many</a> (self, <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184">datasets</a>=0, xmlfilenames='auto', overwrite=True, del_xml=True, save2json='auto', loadfromjson='auto', processes='auto', wait=True, on_dataset=None, on_dataset_kwargs=None, on_results_ready=None, on_error=None, on_stopcheck=None)</td></tr>
 <tr class="memdesc:a47d47a92c20dbbe8a440b7aa337a15e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves and parses multiple EMISS datasets from XML/JSON files, optionally saving them as JSON and passing into a custom callback.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a47d47a92c20dbbe8a440b7aa337a15e7">More...</a><br /></td></tr>
 <tr class="separator:a47d47a92c20dbbe8a440b7aa337a15e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03a24920456c20e11b2268c23c01b601"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a03a24920456c20e11b2268c23c01b601">filter_datasets_only_new</a> (self, db, <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184">datasets</a>=None)</td></tr>
+<tr class="separator:a03a24920456c20e11b2268c23c01b601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9882faac9e8a500fa0938b0326d610fc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a9882faac9e8a500fa0938b0326d610fc">filter_datasets_only_existing</a> (self, db, <a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#ac46da38335b4b8915a99e5a49d1df184">datasets</a>=None)</td></tr>
+<tr class="separator:a9882faac9e8a500fa0938b0326d610fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -131,7 +135,7 @@ Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a63cbb433617afb2bed1a19f415dfc6e5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a63cbb433617afb2bed1a19f415dfc6e5">_report</a> (self, message, force_print=False, file=sys.stdout, end='\n', flush=False)</td></tr>
-<tr class="memdesc:a63cbb433617afb2bed1a19f415dfc6e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a message to a file stream / console accounting for globs::DEBUGGING flag.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a63cbb433617afb2bed1a19f415dfc6e5">More...</a><br /></td></tr>
+<tr class="memdesc:a63cbb433617afb2bed1a19f415dfc6e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a message to a file stream / console accounting for <a class="el" href="namespacerusstat_1_1globs.html#a012db7cbd5d461c4ab223dc19239971c" title="bool toggle to turn console debug messages on/off">globs::DEBUGGING</a> flag.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a63cbb433617afb2bed1a19f415dfc6e5">More...</a><br /></td></tr>
 <tr class="separator:a63cbb433617afb2bed1a19f415dfc6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a198c08ae148663a114c7db477e21b1bd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrusstat_1_1rsengine_1_1_russtat.html#a198c08ae148663a114c7db477e21b1bd">_get_text</a> (self, node, tags=None, default='', ns=<a class="el" href="namespacerusstat_1_1rsengine.html#a617d29b5c3f7bfa079b7d36341e698ef">XML_NS</a>, strip=True)</td></tr>
 <tr class="memdesc:a198c08ae148663a114c7db477e21b1bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the value (text) of a given XML node / children with an optional default value.  <a href="classrusstat_1_1rsengine_1_1_russtat.html#a198c08ae148663a114c7db477e21b1bd">More...</a><br /></td></tr>
@@ -651,17 +655,85 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Prints a message to a file stream / console accounting for globs::DEBUGGING flag. </p>
+<p>Prints a message to a file stream / console accounting for <a class="el" href="namespacerusstat_1_1globs.html#a012db7cbd5d461c4ab223dc19239971c" title="bool toggle to turn console debug messages on/off">globs::DEBUGGING</a> flag. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">message</td><td><code>str</code> message to output </td></tr>
-    <tr><td class="paramname">force_print</td><td><code>bool</code> set to <code>True</code> to output message disregarding globs::DEBUGGING </td></tr>
+    <tr><td class="paramname">force_print</td><td><code>bool</code> set to <code>True</code> to output message disregarding <a class="el" href="namespacerusstat_1_1globs.html#a012db7cbd5d461c4ab223dc19239971c" title="bool toggle to turn console debug messages on/off">globs::DEBUGGING</a> </td></tr>
     <tr><td class="paramname">file</td><td><code>file</code> file stream to output the message to (default = STDOUT) </td></tr>
     <tr><td class="paramname">end</td><td><code>str</code> message ending suffix (default = new line symbol) </td></tr>
     <tr><td class="paramname">flush</td><td><code>bool</code> <code>True</code> to flush the IO buffer immediately </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a9882faac9e8a500fa0938b0326d610fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9882faac9e8a500fa0938b0326d610fc">&#9670;&nbsp;</a></span>filter_datasets_only_existing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def russtat.rsengine.Russtat.filter_datasets_only_existing </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>db</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>datasets</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a03a24920456c20e11b2268c23c01b601"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03a24920456c20e11b2268c23c01b601">&#9670;&nbsp;</a></span>filter_datasets_only_new()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def russtat.rsengine.Russtat.filter_datasets_only_new </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>db</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>datasets</em> = <code>None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

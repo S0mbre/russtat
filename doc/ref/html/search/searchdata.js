@@ -1,10 +1,10 @@
 var indexSectionsWithContent =
 {
-  0: "_acdefgimnprux",
+  0: "_acdefgimnprtux",
   1: "pr",
   2: "r",
   3: "_gpr",
-  4: "_acdefgimnu",
+  4: "_acdefgimntu",
   5: "_cdrux"
 };
 

@@ -1596,15 +1596,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-threeasevenazeroazeroanine",
-        "title": "Выполненный тоннокилометраж",
-        "link": "https://fedstat.ru/opendata/7708234640-threeasevenazeroazeroanine/data-2019-12-25-structure-2019-12-25.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-threeasevenazeroaoneaeight",
         "title": "Выполненный тоннокилометраж",
         "link": "https://fedstat.ru/opendata/7708234640-threeasevenazeroaoneaeight/data-2019-10-10-structure-2019-10-10.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-threeasevenazeroazeroanine",
+        "title": "Выполненный тоннокилометраж",
+        "link": "https://fedstat.ru/opendata/7708234640-threeasevenazeroazeroanine/data-2019-12-25-structure-2019-12-25.xml",
         "format": "xml"
     },
     {
@@ -3300,15 +3300,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourathreeaeightatwoasix",
-        "title": "Доля лиц с ограниченными возможностями здоровья и инвалидов, систематически занимающихся физической культурой и спортом, в общей численности данной категории населения",
-        "link": "https://fedstat.ru/opendata/7708234640-fourathreeaeightatwoasix/data-2018-05-22-structure-2018-05-22.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fiveaeightanineathreeatwo",
         "title": "Доля лиц с ограниченными возможностями здоровья и инвалидов, систематически занимающихся физической культурой и спортом, в общей численности данной категории населения",
         "link": "https://fedstat.ru/opendata/7708234640-fiveaeightanineathreeatwo/data-2018-05-22-structure-2018-05-22.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fourathreeaeightatwoasix",
+        "title": "Доля лиц с ограниченными возможностями здоровья и инвалидов, систематически занимающихся физической культурой и спортом, в общей численности данной категории населения",
+        "link": "https://fedstat.ru/opendata/7708234640-fourathreeaeightatwoasix/data-2018-05-22-structure-2018-05-22.xml",
         "format": "xml"
     },
     {
@@ -5916,6 +5916,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-fourathreeafiveafourasix",
+        "title": "Затраты на капитальный ремонт основных фондов по охране окружающей среды (по направлениям природоохранной деятельности)",
+        "link": "https://fedstat.ru/opendata/7708234640-fourathreeafiveafourasix/data-2020-10-07-structure-2020-10-07.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-threeafouraoneatwoafive",
         "title": "Затраты на мероприятия по энергосбережению в организациях коммунального комплекса, осуществляющих снабжение населения и  бюджетофинансируемых организаций теплоэнергией",
         "link": "https://fedstat.ru/opendata/7708234640-threeafouraoneatwoafive/data-2020-08-20-structure-2020-08-20.xml",
@@ -5949,6 +5955,12 @@
         "identifier": "7708234640-fouratwoathreeasevenafour",
         "title": "Затраты на основное производство",
         "link": "https://fedstat.ru/opendata/7708234640-fouratwoathreeasevenafour/data-2017-06-28-structure-2017-06-28.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fiveasevenathreeathreeanine",
+        "title": "Затраты на охрану окружающей среды в процентах к ВВП",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveasevenathreeathreeanine/data-2020-10-07-structure-2020-10-07.xml",
         "format": "xml"
     },
     {
@@ -17256,15 +17268,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouratwoaeightazeroasix",
-        "title": "Общее количество действующих лицензий",
-        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightazeroasix/data-2014-11-28-structure-2014-11-28.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fiveasevenafourafiveathree",
         "title": "Общее количество действующих лицензий",
         "link": "https://fedstat.ru/opendata/7708234640-fiveasevenafourafiveathree/data-2017-06-29-structure-2017-06-29.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fouratwoaeightazeroasix",
+        "title": "Общее количество действующих лицензий",
+        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightazeroasix/data-2014-11-28-structure-2014-11-28.xml",
         "format": "xml"
     },
     {
@@ -17280,15 +17292,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fiveasixatwoaeightasix",
-        "title": "Общее количество действующих лицензий",
-        "link": "https://fedstat.ru/opendata/7708234640-fiveasixatwoaeightasix/data-2018-06-14-structure-2018-06-14.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fourathreeazeroasixafour",
         "title": "Общее количество действующих лицензий",
         "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroasixafour/data-2020-02-14-structure-2020-02-14.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fiveasixatwoaeightasix",
+        "title": "Общее количество действующих лицензий",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveasixatwoaeightasix/data-2018-06-14-structure-2018-06-14.xml",
         "format": "xml"
     },
     {
@@ -17520,15 +17532,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fiveasixatwoanineazero",
-        "title": "Общее количество наложенных административных штрафов",
-        "link": "https://fedstat.ru/opendata/7708234640-fiveasixatwoanineazero/data-2018-05-30-structure-2018-05-30.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fouratwoaeightanineaone",
         "title": "Общее количество наложенных административных штрафов",
         "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightanineaone/data-2017-06-05-structure-2017-06-05.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fiveasixatwoanineazero",
+        "title": "Общее количество наложенных административных штрафов",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveasixatwoanineazero/data-2018-05-30-structure-2018-05-30.xml",
         "format": "xml"
     },
     {
@@ -17892,15 +17904,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouratwoasevenaoneatwo",
-        "title": "Общее количество проверок, по итогам проведения которых выявлены правонарушения",
-        "link": "https://fedstat.ru/opendata/7708234640-fouratwoasevenaoneatwo/data-2018-02-05-structure-2018-02-05.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fouraoneanineathreeafour",
         "title": "Общее количество проверок, по итогам проведения которых выявлены правонарушения",
         "link": "https://fedstat.ru/opendata/7708234640-fouraoneanineathreeafour/data-2012-08-20-structure-2012-08-20.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fouratwoasevenaoneatwo",
+        "title": "Общее количество проверок, по итогам проведения которых выявлены правонарушения",
+        "link": "https://fedstat.ru/opendata/7708234640-fouratwoasevenaoneatwo/data-2018-02-05-structure-2018-02-05.xml",
         "format": "xml"
     },
     {
@@ -18012,15 +18024,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouraoneanineathreeafive",
-        "title": "Общее количество проверок, по итогам проведения которых по фактам выявленных нарушений возбуждены дела об административных правонарушениях",
-        "link": "https://fedstat.ru/opendata/7708234640-fouraoneanineathreeafive/data-2012-08-20-structure-2012-08-20.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fiveaeightasevenathreeaseven",
         "title": "Общее количество проверок, по итогам проведения которых по фактам выявленных нарушений возбуждены дела об административных правонарушениях",
         "link": "https://fedstat.ru/opendata/7708234640-fiveaeightasevenathreeaseven/data-2018-02-05-structure-2018-02-05.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fouraoneanineathreeafive",
+        "title": "Общее количество проверок, по итогам проведения которых по фактам выявленных нарушений возбуждены дела об административных правонарушениях",
+        "link": "https://fedstat.ru/opendata/7708234640-fouraoneanineathreeafive/data-2012-08-20-structure-2012-08-20.xml",
         "format": "xml"
     },
     {
@@ -18162,9 +18174,9 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouraoneanineathreeazero",
+        "identifier": "7708234640-fouraoneatwoaeightazero",
         "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
-        "link": "https://fedstat.ru/opendata/7708234640-fouraoneanineathreeazero/data-2012-08-20-structure-2012-08-20.xml",
+        "link": "https://fedstat.ru/opendata/7708234640-fouraoneatwoaeightazero/data-2012-01-23-structure-2012-01-23.xml",
         "format": "xml"
     },
     {
@@ -18174,9 +18186,9 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouraoneatwoaeightazero",
+        "identifier": "7708234640-fouraoneanineathreeazero",
         "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
-        "link": "https://fedstat.ru/opendata/7708234640-fouraoneatwoaeightazero/data-2012-01-23-structure-2012-01-23.xml",
+        "link": "https://fedstat.ru/opendata/7708234640-fouraoneanineathreeazero/data-2012-08-20-structure-2012-08-20.xml",
         "format": "xml"
     },
     {
@@ -18396,15 +18408,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouratwoasevenaoneaone",
-        "title": "Общее количество юридических лиц, индивидуальных предпринимателей, в ходе проведения проверок, в отношении которых выявлены правонарушения",
-        "link": "https://fedstat.ru/opendata/7708234640-fouratwoasevenaoneaone/data-2018-02-05-structure-2018-02-05.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fouraoneanineathreeathree",
         "title": "Общее количество юридических лиц, индивидуальных предпринимателей, в ходе проведения проверок, в отношении которых выявлены правонарушения",
         "link": "https://fedstat.ru/opendata/7708234640-fouraoneanineathreeathree/data-2012-08-20-structure-2012-08-20.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fouratwoasevenaoneaone",
+        "title": "Общее количество юридических лиц, индивидуальных предпринимателей, в ходе проведения проверок, в отношении которых выявлены правонарушения",
+        "link": "https://fedstat.ru/opendata/7708234640-fouratwoasevenaoneaone/data-2018-02-05-structure-2018-02-05.xml",
         "format": "xml"
     },
     {
@@ -19944,15 +19956,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fiveanineatwoathreeathree",
-        "title": "Ожидаемая продолжительность здоровой жизни",
-        "link": "https://fedstat.ru/opendata/7708234640-fiveanineatwoathreeathree/data-2019-05-14-structure-2019-05-14.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fiveanineafourafiveasix",
         "title": "Ожидаемая продолжительность здоровой жизни",
         "link": "https://fedstat.ru/opendata/7708234640-fiveanineafourafiveasix/data-2020-09-03-structure-2020-09-03.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fiveanineatwoathreeathree",
+        "title": "Ожидаемая продолжительность здоровой жизни",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveanineatwoathreeathree/data-2019-05-14-structure-2019-05-14.xml",
         "format": "xml"
     },
     {
@@ -20346,6 +20358,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-threeasixaoneaoneanine",
+        "title": "Остатки драгоценных металлов",
+        "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneaoneanine/data-2015-03-25-structure-2015-03-25.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-threeasixaoneatwoathree",
         "title": "Остатки драгоценных металлов",
         "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneatwoathree/data-2012-03-30-structure-2012-03-30.xml",
@@ -20355,12 +20373,6 @@
         "identifier": "7708234640-threeasixaoneatwoasix",
         "title": "Остатки драгоценных металлов",
         "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneatwoasix/data-2012-03-23-structure-2012-03-23.xml",
-        "format": "xml"
-    },
-    {
-        "identifier": "7708234640-threeasixaoneaoneanine",
-        "title": "Остатки драгоценных металлов",
-        "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneaoneanine/data-2015-03-25-structure-2015-03-25.xml",
         "format": "xml"
     },
     {
@@ -23640,15 +23652,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-threeasixaoneaoneaeight",
-        "title": "Поступило драгоценных металлов",
-        "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneaoneaeight/data-2012-03-23-structure-2012-03-23.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-threeasixaoneatwoatwo",
         "title": "Поступило драгоценных металлов",
         "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneatwoatwo/data-2012-03-30-structure-2012-03-30.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-threeasixaoneaoneaeight",
+        "title": "Поступило драгоценных металлов",
+        "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneaoneaeight/data-2012-03-23-structure-2012-03-23.xml",
         "format": "xml"
     },
     {
@@ -31260,9 +31272,21 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-fiveaeightasixazeroaseven",
+        "title": "Текущие (эксплуатационные) затраты на охрану окружающей среды с 2017 г.",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveaeightasixazeroaseven/data-2020-10-07-structure-2020-10-07.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-threeafourazeroaoneaseven",
         "title": "Текущие (эксплуатационные) затраты на охрану окружающей среды, включая оплату услуг природоохранного назначения по 2011 г.",
         "link": "https://fedstat.ru/opendata/7708234640-threeafourazeroaoneaseven/data-2020-08-28-structure-2020-08-28.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fourafouraoneatwoatwo",
+        "title": "Текущие (эксплуатационные) затраты на охрану окружающей среды, включая оплату услуг природоохранного назначения с 2012 г.",
+        "link": "https://fedstat.ru/opendata/7708234640-fourafouraoneatwoatwo/data-2020-10-07-structure-2020-10-07.xml",
         "format": "xml"
     },
     {

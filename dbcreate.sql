@@ -5,7 +5,7 @@
 -- Dumped from database version 13.0
 -- Dumped by pg_dump version 13.0
 
--- Started on 2020-10-07 16:53:53
+-- Started on 2020-10-08 12:31:09
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -20,7 +20,7 @@ SET row_security = off;
 
 DROP DATABASE russtat;
 --
--- TOC entry 3269 (class 1262 OID 16394)
+-- TOC entry 3286 (class 1262 OID 16394)
 -- Name: russtat; Type: DATABASE; Schema: -; Owner: -
 --
 
@@ -49,7 +49,7 @@ CREATE EXTENSION IF NOT EXISTS btree_gin WITH SCHEMA public;
 
 
 --
--- TOC entry 3270 (class 0 OID 0)
+-- TOC entry 3287 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION btree_gin; Type: COMMENT; Schema: -; Owner: -
 --
@@ -58,7 +58,7 @@ COMMENT ON EXTENSION btree_gin IS 'support for indexing common datatypes in GIN'
 
 
 --
--- TOC entry 327 (class 1255 OID 16561)
+-- TOC entry 328 (class 1255 OID 16561)
 -- Name: add_data(text, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -322,7 +322,7 @@ $$;
 
 
 --
--- TOC entry 321 (class 1255 OID 17282)
+-- TOC entry 322 (class 1255 OID 17282)
 -- Name: agencies_update_insert(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -337,7 +337,7 @@ $$;
 
 
 --
--- TOC entry 322 (class 1255 OID 17290)
+-- TOC entry 323 (class 1255 OID 17290)
 -- Name: classifier_update_insert(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -352,45 +352,220 @@ $$;
 
 
 --
--- TOC entry 328 (class 1255 OID 16614)
--- Name: clear_all(boolean, boolean); Type: PROCEDURE; Schema: public; Owner: -
+-- TOC entry 332 (class 1255 OID 26809)
+-- Name: clear_all(boolean); Type: PROCEDURE; Schema: public; Owner: -
 --
 
-CREATE PROCEDURE public.clear_all(fullclear boolean DEFAULT false, restart_seq boolean DEFAULT true)
+CREATE PROCEDURE public.clear_all(fullclear boolean DEFAULT true)
     LANGUAGE plpgsql
     AS $$
 begin
-	delete from datasets; -- also deletes all from obs via foreign key
-	delete from codevals;
-	delete from codes;
 
-	if restart_seq then
-		alter sequence obs_id_seq restart;
-		alter sequence datasets_id_seq restart;
-		alter sequence codevals_id_seq restart;
-		alter sequence codes_id_seq restart;
-	end if;
+	-- delete views
+	drop view public.all_data;
+	drop view public.all_datasets;
 
+	-- delete obs, codevals, codes, datasets
+	drop table public.obs;
+	drop table public.codevals;
+	drop table public.codes;
+	drop table public.datasets;
+		
+	-- recreate codes
+	CREATE TABLE public.codes (
+		id integer NOT NULL,
+		name text NOT NULL,
+		search tsvector);	
+	ALTER TABLE public.codes ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+		SEQUENCE NAME public.codes_id_seq
+		START WITH 1
+		INCREMENT BY 1
+		NO MINVALUE
+		NO MAXVALUE
+		CACHE 1);		
+	ALTER TABLE ONLY public.codes
+    	ADD CONSTRAINT codes_pkey PRIMARY KEY (id);		
+	ALTER TABLE ONLY public.codes
+    	ADD CONSTRAINT codes_unique1 UNIQUE (name) INCLUDE (name);		
+	CREATE INDEX codes_search_idx ON public.codes USING gin (search);	
+	CREATE TRIGGER codes_tr1 BEFORE INSERT OR UPDATE ON public.codes 
+		FOR EACH ROW EXECUTE FUNCTION public.codes_update_insert();
+	
+	-- recreate codevals
+	CREATE TABLE public.codevals (
+		id integer NOT NULL,
+		code_id integer,
+		val_id character varying(32) DEFAULT ''::character varying,
+		name text NOT NULL,
+		search tsvector);
+	ALTER TABLE public.codevals ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+		SEQUENCE NAME public.codevals_id_seq
+		START WITH 1
+		INCREMENT BY 1
+		NO MINVALUE
+		NO MAXVALUE
+		CACHE 1);
+	ALTER TABLE ONLY public.codevals
+    	ADD CONSTRAINT codevals_pkey PRIMARY KEY (id);
+	ALTER TABLE ONLY public.codevals
+    	ADD CONSTRAINT codevals_unique UNIQUE (code_id, val_id);
+	ALTER TABLE ONLY public.codevals
+    	ADD CONSTRAINT codevals_fk1 FOREIGN KEY (code_id) REFERENCES public.codes(id) 
+		ON UPDATE CASCADE ON DELETE SET NULL;
+	CREATE INDEX codevals_search_idx ON public.codevals USING gin (search);
+	CREATE TRIGGER codevals_tr1 BEFORE INSERT OR UPDATE ON public.codevals 
+		FOR EACH ROW EXECUTE FUNCTION public.codevals_update_insert();
+		
+	-- recreate datasets
+	CREATE TABLE public.datasets (
+		id integer NOT NULL,
+		prep_time timestamp with time zone,
+		updated_time timestamp with time zone,
+		next_update_time timestamp with time zone,
+		ds_id text,
+		agency_id integer,
+		dept_id integer,
+		name text NOT NULL,
+		unit_id integer,
+		range_start smallint,
+		range_end smallint,
+		class_id integer,
+		description text,
+		prep_by text,
+		prep_contact text,
+		code_id integer,
+		period_id integer,
+		search tsvector);
+	ALTER TABLE public.datasets ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+		SEQUENCE NAME public.datasets_id_seq
+		START WITH 1
+		INCREMENT BY 1
+		NO MINVALUE
+		NO MAXVALUE
+		CACHE 1);
+	ALTER TABLE ONLY public.datasets
+    	ADD CONSTRAINT datasets_pkey PRIMARY KEY (id);
+	ALTER TABLE ONLY public.datasets
+    	ADD CONSTRAINT datasets_unique1 UNIQUE (ds_id) INCLUDE (ds_id);
+	ALTER TABLE ONLY public.datasets
+    	ADD CONSTRAINT datasets_fk1 FOREIGN KEY (agency_id) REFERENCES public.agencies(id) 
+		ON UPDATE CASCADE ON DELETE SET NULL;
+	ALTER TABLE ONLY public.datasets
+    	ADD CONSTRAINT datasets_fk2 FOREIGN KEY (dept_id) REFERENCES public.departments(id) 
+		ON UPDATE CASCADE ON DELETE SET NULL;
+	ALTER TABLE ONLY public.datasets
+    	ADD CONSTRAINT datasets_fk3 FOREIGN KEY (unit_id) REFERENCES public.units(id) 
+		ON UPDATE CASCADE ON DELETE SET NULL;
+	ALTER TABLE ONLY public.datasets
+    	ADD CONSTRAINT datasets_fk4 FOREIGN KEY (class_id) REFERENCES public.classifier(id) 
+		ON UPDATE CASCADE ON DELETE SET NULL;
+	CREATE INDEX datasets_search_idx ON public.datasets USING gin (search);
+	CREATE TRIGGER datasets_tr1 BEFORE INSERT OR UPDATE ON public.datasets 
+		FOR EACH ROW EXECUTE FUNCTION public.datasets_update_insert();
+	
+	-- recreate obs	
+	CREATE TABLE public.obs (
+		id bigint NOT NULL,
+		dataset_id integer,
+		code_id integer,
+		unit_id integer,
+		period_id integer,
+		obs_year integer,
+		obs_val real);
+	ALTER TABLE public.obs ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+		SEQUENCE NAME public.obs_id_seq
+		START WITH 1
+		INCREMENT BY 1
+		NO MINVALUE
+		NO MAXVALUE
+		CACHE 1);
+	ALTER TABLE ONLY public.obs
+    	ADD CONSTRAINT obs_pkey PRIMARY KEY (id);
+	ALTER TABLE ONLY public.obs
+    	ADD CONSTRAINT obs_unique1 UNIQUE (dataset_id, code_id, unit_id, period_id, obs_year);
+	ALTER TABLE ONLY public.obs
+    	ADD CONSTRAINT obs_fk1 FOREIGN KEY (dataset_id) REFERENCES public.datasets(id) 
+		ON UPDATE CASCADE ON DELETE CASCADE;
+	ALTER TABLE ONLY public.obs
+    	ADD CONSTRAINT obs_fk2 FOREIGN KEY (code_id) REFERENCES public.codevals(id) 
+		ON UPDATE CASCADE ON DELETE SET NULL;
+	ALTER TABLE ONLY public.obs
+    	ADD CONSTRAINT obs_fk3 FOREIGN KEY (unit_id) REFERENCES public.units(id) 
+		ON UPDATE CASCADE ON DELETE SET NULL;
+	ALTER TABLE ONLY public.obs
+    	ADD CONSTRAINT obs_fk4 FOREIGN KEY (period_id) REFERENCES public.periods(id) 
+		ON UPDATE CASCADE ON DELETE SET NULL;
+		
+	-- clear other tables if "fullclear" == True
 	if fullclear then
-		delete from classifier;
-		delete from units;
-		delete from periods;
-		delete from departments;
-		delete from agencies;
-		if restart_seq then
-			alter sequence classifier_id_seq restart;
-			alter sequence units_id_seq restart;
-			alter sequence periods_id_seq restart;
-			alter sequence departments_id_seq restart;
-			alter sequence agencies_id_seq restart;
-		end if;
+		delete from public.classifier;
+		delete from public.units;
+		delete from public.periods;
+		delete from public.departments;
+		delete from public.agencies;
+		
+		alter sequence classifier_id_seq start with 1;
+		alter sequence units_id_seq start with 1;
+		alter sequence periods_id_seq start with 1;
+		alter sequence departments_id_seq start with 1;
+		alter sequence agencies_id_seq start with 1;
 	end if;
+	
+	-- recreate views
+	CREATE VIEW public.all_data AS
+	SELECT ds.name AS "Наименование",
+		cls.name AS "Классификатор",
+		ds.description AS "Описание",
+		ds.prep_time AS "Получено",
+		ds.updated_time AS "Обновлено",
+		ds.next_update_time AS "Следующее обн.",
+		ag.name AS "Служба",
+		dept.name AS "Отдел",
+		ds.range_start AS "Начало",
+		ds.range_end AS "Конец",
+		ds.prep_by AS "Подготовил",
+		ds.prep_contact AS "Контакт",
+		obs.obs_year AS "Год",
+		per.val AS "Период",
+		units.val AS "Единица",
+		codes.name AS "Рубрика",
+		codevals.name AS "Категория",
+		obs.obs_val::numeric AS "Значение"
+	FROM public.obs
+		JOIN public.datasets ds ON obs.dataset_id = ds.id
+		JOIN public.classifier cls ON ds.class_id = cls.id
+		JOIN public.agencies ag ON ds.agency_id = ag.id
+		JOIN public.departments dept ON ds.dept_id = dept.id
+		JOIN public.periods per ON obs.period_id = per.id
+		JOIN public.units ON obs.unit_id = units.id
+		JOIN public.codevals ON obs.code_id = codevals.id
+		JOIN public.codes ON codevals.code_id = codes.id
+	ORDER BY cls.name, ds.name, codes.name, codevals.name, obs.obs_year, per.val;
+	
+	SELECT cls.name AS "Классификатор",
+		ds.name AS "Наименование",
+		ds.updated_time AS "Обновлено",
+		ds.prep_time AS "Получено",
+		ds.next_update_time AS "Следующее обн.",
+		ds.description AS "Описание",
+		ag.name AS "Служба",
+		dept.name AS "Отдел",
+		ds.range_start AS "Нач. год",
+		ds.range_end AS "Кон. год",
+		ds.prep_by AS "Подготовил",
+		ds.prep_contact AS "Контакт"
+	FROM datasets ds
+		JOIN classifier cls ON ds.class_id = cls.id
+		JOIN agencies ag ON ds.agency_id = ag.id
+		JOIN departments dept ON ds.dept_id = dept.id
+	ORDER BY cls.name, ds.name;
+	
 end;
 $$;
 
 
 --
--- TOC entry 323 (class 1255 OID 17295)
+-- TOC entry 324 (class 1255 OID 17295)
 -- Name: codes_update_insert(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -405,7 +580,7 @@ $$;
 
 
 --
--- TOC entry 324 (class 1255 OID 17301)
+-- TOC entry 325 (class 1255 OID 17301)
 -- Name: codevals_update_insert(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -420,7 +595,7 @@ $$;
 
 
 --
--- TOC entry 320 (class 1255 OID 17655)
+-- TOC entry 331 (class 1255 OID 17655)
 -- Name: datasets_update_insert(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -428,6 +603,7 @@ CREATE FUNCTION public.datasets_update_insert() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 begin
+	new.description := public.entity2char(trim(replace(new.description, '&nbsp;', ' ')));
 	new.search := setweight(to_tsvector('russian', coalesce(new.name, '')), 'A') ||
 			      setweight(to_tsvector('russian', coalesce(new.description, '')), 'B');
 	return new;
@@ -436,7 +612,7 @@ $$;
 
 
 --
--- TOC entry 325 (class 1255 OID 17660)
+-- TOC entry 326 (class 1255 OID 17660)
 -- Name: departments_update_insert(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -451,7 +627,53 @@ $$;
 
 
 --
--- TOC entry 326 (class 1255 OID 17666)
+-- TOC entry 330 (class 1255 OID 26535)
+-- Name: entity2char(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.entity2char(t text) RETURNS text
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+declare
+    r record;
+begin
+    for r in
+        select distinct ce.ch, ce.name
+        from
+            character_entity ce
+            inner join (
+                select name[1] "name"
+                from regexp_matches(t, '&([A-Za-z]+?);', 'g') r(name)
+            ) s on ce.name = s.name
+    loop
+        t := replace(t, '&' || r.name || ';', r.ch);
+    end loop;
+
+    for r in
+        select distinct
+            hex[1] hex,
+            ('x' || repeat('0', 8 - length(hex[1])) || hex[1])::bit(32)::int codepoint
+        from regexp_matches(t, '&#x([0-9a-f]{1,8}?);', 'gi') s(hex)
+    loop
+        t := regexp_replace(t, '&#x' || r.hex || ';', chr(r.codepoint), 'gi');
+    end loop;
+
+    for r in
+        select distinct
+            chr(codepoint[1]::int) ch,
+            codepoint[1] codepoint
+        from regexp_matches(t, '&#([0-9]{1,10}?);', 'g') s(codepoint)
+    loop
+        t := replace(t, '&#' || r.codepoint || ';', r.ch);
+    end loop;
+
+    return t;
+end;
+$$;
+
+
+--
+-- TOC entry 327 (class 1255 OID 17666)
 -- Name: periods_update_insert(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -466,7 +688,7 @@ $$;
 
 
 --
--- TOC entry 231 (class 1255 OID 16530)
+-- TOC entry 233 (class 1255 OID 16530)
 -- Name: resort_classifier_fn(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -506,7 +728,66 @@ $$;
 
 
 --
--- TOC entry 232 (class 1255 OID 16559)
+-- TOC entry 334 (class 1255 OID 27038)
+-- Name: search_data(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.search_data(pattern text) RETURNS TABLE(classificator text, dsname text, description text, preptime timestamp with time zone, updated timestamp with time zone, nextupdate timestamp with time zone, agency text, department text, startyr smallint, endyr smallint, prepby text, contact text, obsyear integer, obsperiod character varying, obsunit character varying, obscode text, obscodeval text, value real, ranking real)
+    LANGUAGE plpgsql
+    AS $$
+begin
+	RETURN QUERY 
+		SELECT cls.name, ds.name, ds.description, ds.prep_time, ds.updated_time, ds.next_update_time,
+				ag.name, dept.name, ds.range_start, ds.range_end, ds.prep_by, ds.prep_contact,
+				obs.obs_year, per.val, units.val, codes.name, codevals.name, obs.obs_val,
+				ts_rank((ds.search || cls.search || ag.search || dept.search || per.search || units.search || codevals.search || codes.search), 
+						to_tsquery('russian', pattern)) as ranking
+		FROM public.obs
+			JOIN public.datasets ds ON obs.dataset_id = ds.id
+			JOIN public.classifier cls ON ds.class_id = cls.id
+			JOIN public.agencies ag ON ds.agency_id = ag.id
+			JOIN public.departments dept ON ds.dept_id = dept.id
+			JOIN public.periods per ON obs.period_id = per.id
+			JOIN public.units ON obs.unit_id = units.id
+			JOIN public.codevals ON obs.code_id = codevals.id
+			JOIN public.codes ON codevals.code_id = codes.id
+		WHERE 
+			(ds.search || cls.search || ag.search || dept.search || per.search || units.search || codevals.search || codes.search) @@ to_tsquery('russian', pattern)
+		ORDER BY ranking, cls.name, ds.name, codes.name, codevals.name, obs.obs_year, per.val;
+  	
+end;
+$$;
+
+
+--
+-- TOC entry 333 (class 1255 OID 27036)
+-- Name: search_datasets(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.search_datasets(pattern text) RETURNS TABLE(classificator text, dsname text, updated timestamp with time zone, preptime timestamp with time zone, nextupdate timestamp with time zone, description text, agency text, department text, startyr smallint, endyr smallint, prepby text, contact text, ranking real)
+    LANGUAGE plpgsql
+    AS $$
+begin
+	RETURN QUERY
+	SELECT cls.name, ds.name, ds.updated_time, ds.prep_time, ds.next_update_time,
+			ds.description, ag.name, dept.name, ds.range_start, ds.range_end,
+			ds.prep_by, ds.prep_contact,
+			ts_rank((ds.search || cls.search || ag.search || dept.search), 
+					to_tsquery('russian', pattern)) as Ranking
+	FROM public.datasets ds
+		JOIN public.classifier cls ON ds.class_id = cls.id
+		JOIN public.agencies ag ON ds.agency_id = ag.id
+		JOIN public.departments dept ON ds.dept_id = dept.id
+	WHERE 
+		(ds.search || cls.search || ag.search || dept.search) @@ to_tsquery('russian', pattern)
+	ORDER BY 
+		Ranking desc, cls.name, ds.name;
+end;
+$$;
+
+
+--
+-- TOC entry 234 (class 1255 OID 16559)
 -- Name: txt2jsonb(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -583,7 +864,7 @@ CREATE TABLE public.codes (
 CREATE TABLE public.codevals (
     id integer NOT NULL,
     code_id integer,
-    val_id character varying(32) DEFAULT ''::character varying,
+    val_id character varying(64) DEFAULT ''::character varying,
     name text NOT NULL,
     search tsvector
 );
@@ -703,6 +984,42 @@ CREATE VIEW public.all_data AS
      JOIN public.codevals ON ((obs.code_id = codevals.id)))
      JOIN public.codes ON ((codevals.code_id = codes.id)))
   ORDER BY cls.name, ds.name, codes.name, codevals.name, obs.obs_year, per.val;
+
+
+--
+-- TOC entry 221 (class 1259 OID 26613)
+-- Name: all_datasets; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.all_datasets AS
+ SELECT cls.name AS "Классификатор",
+    ds.name AS "Наименование",
+    ds.updated_time AS "Обновлено",
+    ds.prep_time AS "Подготовлено",
+    ds.next_update_time AS "Следующее обн.",
+    ds.description AS "Описание",
+    ag.name AS "Служба",
+    dept.name AS "Отдел",
+    ds.range_start AS "Нач. год",
+    ds.range_end AS "Кон. год",
+    ds.prep_by AS "Подготовил",
+    ds.prep_contact AS "Контакт"
+   FROM (((public.datasets ds
+     JOIN public.classifier cls ON ((ds.class_id = cls.id)))
+     JOIN public.agencies ag ON ((ds.agency_id = ag.id)))
+     JOIN public.departments dept ON ((ds.dept_id = dept.id)))
+  ORDER BY cls.name, ds.name;
+
+
+--
+-- TOC entry 220 (class 1259 OID 26525)
+-- Name: character_entity; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.character_entity (
+    name text NOT NULL,
+    ch character(1)
+);
 
 
 --
@@ -826,7 +1143,7 @@ ALTER TABLE public.units ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- TOC entry 3071 (class 2606 OID 16404)
+-- TOC entry 3083 (class 2606 OID 16404)
 -- Name: agencies agencies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -835,7 +1152,7 @@ ALTER TABLE ONLY public.agencies
 
 
 --
--- TOC entry 3074 (class 2606 OID 16626)
+-- TOC entry 3086 (class 2606 OID 16626)
 -- Name: agencies agencies_unique1; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -844,7 +1161,25 @@ ALTER TABLE ONLY public.agencies
 
 
 --
--- TOC entry 3081 (class 2606 OID 16426)
+-- TOC entry 3127 (class 2606 OID 26534)
+-- Name: character_entity character_entity_ch_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.character_entity
+    ADD CONSTRAINT character_entity_ch_key UNIQUE (ch);
+
+
+--
+-- TOC entry 3129 (class 2606 OID 26532)
+-- Name: character_entity character_entity_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.character_entity
+    ADD CONSTRAINT character_entity_pkey PRIMARY KEY (name);
+
+
+--
+-- TOC entry 3093 (class 2606 OID 16426)
 -- Name: classifier classifier_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -853,7 +1188,7 @@ ALTER TABLE ONLY public.classifier
 
 
 --
--- TOC entry 3084 (class 2606 OID 16628)
+-- TOC entry 3096 (class 2606 OID 16628)
 -- Name: classifier classifier_unique1; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -862,7 +1197,7 @@ ALTER TABLE ONLY public.classifier
 
 
 --
--- TOC entry 3096 (class 2606 OID 24930)
+-- TOC entry 3108 (class 2606 OID 24930)
 -- Name: codes codes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -871,7 +1206,7 @@ ALTER TABLE ONLY public.codes
 
 
 --
--- TOC entry 3099 (class 2606 OID 24932)
+-- TOC entry 3111 (class 2606 OID 24932)
 -- Name: codes codes_unique1; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -880,7 +1215,7 @@ ALTER TABLE ONLY public.codes
 
 
 --
--- TOC entry 3101 (class 2606 OID 24936)
+-- TOC entry 3113 (class 2606 OID 24936)
 -- Name: codevals codevals_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -889,7 +1224,7 @@ ALTER TABLE ONLY public.codevals
 
 
 --
--- TOC entry 3104 (class 2606 OID 24938)
+-- TOC entry 3116 (class 2606 OID 26813)
 -- Name: codevals codevals_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -898,7 +1233,7 @@ ALTER TABLE ONLY public.codevals
 
 
 --
--- TOC entry 3106 (class 2606 OID 24955)
+-- TOC entry 3118 (class 2606 OID 24955)
 -- Name: datasets datasets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -907,7 +1242,7 @@ ALTER TABLE ONLY public.datasets
 
 
 --
--- TOC entry 3109 (class 2606 OID 24957)
+-- TOC entry 3121 (class 2606 OID 24957)
 -- Name: datasets datasets_unique1; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -916,7 +1251,7 @@ ALTER TABLE ONLY public.datasets
 
 
 --
--- TOC entry 3076 (class 2606 OID 16411)
+-- TOC entry 3088 (class 2606 OID 16411)
 -- Name: departments departments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -925,7 +1260,7 @@ ALTER TABLE ONLY public.departments
 
 
 --
--- TOC entry 3079 (class 2606 OID 16635)
+-- TOC entry 3091 (class 2606 OID 16635)
 -- Name: departments depts_unique1; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -934,7 +1269,7 @@ ALTER TABLE ONLY public.departments
 
 
 --
--- TOC entry 3111 (class 2606 OID 24986)
+-- TOC entry 3123 (class 2606 OID 24986)
 -- Name: obs obs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -943,7 +1278,7 @@ ALTER TABLE ONLY public.obs
 
 
 --
--- TOC entry 3113 (class 2606 OID 24988)
+-- TOC entry 3125 (class 2606 OID 24988)
 -- Name: obs obs_unique1; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -952,7 +1287,7 @@ ALTER TABLE ONLY public.obs
 
 
 --
--- TOC entry 3091 (class 2606 OID 16459)
+-- TOC entry 3103 (class 2606 OID 16459)
 -- Name: periods periods_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -961,7 +1296,7 @@ ALTER TABLE ONLY public.periods
 
 
 --
--- TOC entry 3094 (class 2606 OID 16640)
+-- TOC entry 3106 (class 2606 OID 16640)
 -- Name: periods periods_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -970,7 +1305,7 @@ ALTER TABLE ONLY public.periods
 
 
 --
--- TOC entry 3086 (class 2606 OID 16452)
+-- TOC entry 3098 (class 2606 OID 16452)
 -- Name: units units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -979,7 +1314,7 @@ ALTER TABLE ONLY public.units
 
 
 --
--- TOC entry 3089 (class 2606 OID 16642)
+-- TOC entry 3101 (class 2606 OID 16642)
 -- Name: units units_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -988,7 +1323,7 @@ ALTER TABLE ONLY public.units
 
 
 --
--- TOC entry 3072 (class 1259 OID 17284)
+-- TOC entry 3084 (class 1259 OID 17284)
 -- Name: agencies_search_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -996,7 +1331,7 @@ CREATE INDEX agencies_search_idx ON public.agencies USING gin (search);
 
 
 --
--- TOC entry 3082 (class 1259 OID 17287)
+-- TOC entry 3094 (class 1259 OID 17287)
 -- Name: classifier_search_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1004,7 +1339,7 @@ CREATE INDEX classifier_search_idx ON public.classifier USING gin (search);
 
 
 --
--- TOC entry 3097 (class 1259 OID 24933)
+-- TOC entry 3109 (class 1259 OID 24933)
 -- Name: codes_search_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1012,7 +1347,7 @@ CREATE INDEX codes_search_idx ON public.codes USING gin (search);
 
 
 --
--- TOC entry 3102 (class 1259 OID 24944)
+-- TOC entry 3114 (class 1259 OID 24944)
 -- Name: codevals_search_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1020,7 +1355,7 @@ CREATE INDEX codevals_search_idx ON public.codevals USING gin (search);
 
 
 --
--- TOC entry 3107 (class 1259 OID 24978)
+-- TOC entry 3119 (class 1259 OID 24978)
 -- Name: datasets_search_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1028,7 +1363,7 @@ CREATE INDEX datasets_search_idx ON public.datasets USING gin (search);
 
 
 --
--- TOC entry 3077 (class 1259 OID 17657)
+-- TOC entry 3089 (class 1259 OID 17657)
 -- Name: departments_search_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1036,7 +1371,7 @@ CREATE INDEX departments_search_idx ON public.departments USING gin (search);
 
 
 --
--- TOC entry 3092 (class 1259 OID 17665)
+-- TOC entry 3104 (class 1259 OID 17665)
 -- Name: periods_search_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1044,7 +1379,7 @@ CREATE INDEX periods_search_idx ON public.periods USING gin (search);
 
 
 --
--- TOC entry 3087 (class 1259 OID 17671)
+-- TOC entry 3099 (class 1259 OID 17671)
 -- Name: units_search_idx; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1052,7 +1387,7 @@ CREATE INDEX units_search_idx ON public.units USING gin (search);
 
 
 --
--- TOC entry 3124 (class 2620 OID 17283)
+-- TOC entry 3140 (class 2620 OID 17283)
 -- Name: agencies agencies_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1060,7 +1395,7 @@ CREATE TRIGGER agencies_tr1 BEFORE INSERT OR UPDATE ON public.agencies FOR EACH 
 
 
 --
--- TOC entry 3126 (class 2620 OID 16531)
+-- TOC entry 3142 (class 2620 OID 16531)
 -- Name: classifier classifier_on_update; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1070,7 +1405,7 @@ ALTER TABLE public.classifier DISABLE TRIGGER classifier_on_update;
 
 
 --
--- TOC entry 3127 (class 2620 OID 17291)
+-- TOC entry 3143 (class 2620 OID 17291)
 -- Name: classifier classifier_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1078,7 +1413,7 @@ CREATE TRIGGER classifier_tr1 BEFORE INSERT OR UPDATE ON public.classifier FOR E
 
 
 --
--- TOC entry 3130 (class 2620 OID 24934)
+-- TOC entry 3146 (class 2620 OID 24934)
 -- Name: codes codes_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1086,7 +1421,7 @@ CREATE TRIGGER codes_tr1 BEFORE INSERT OR UPDATE ON public.codes FOR EACH ROW EX
 
 
 --
--- TOC entry 3131 (class 2620 OID 24945)
+-- TOC entry 3147 (class 2620 OID 24945)
 -- Name: codevals codevals_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1094,7 +1429,7 @@ CREATE TRIGGER codevals_tr1 BEFORE INSERT OR UPDATE ON public.codevals FOR EACH 
 
 
 --
--- TOC entry 3132 (class 2620 OID 24979)
+-- TOC entry 3148 (class 2620 OID 24979)
 -- Name: datasets datasets_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1102,7 +1437,7 @@ CREATE TRIGGER datasets_tr1 BEFORE INSERT OR UPDATE ON public.datasets FOR EACH 
 
 
 --
--- TOC entry 3125 (class 2620 OID 17661)
+-- TOC entry 3141 (class 2620 OID 17661)
 -- Name: departments departments_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1110,7 +1445,7 @@ CREATE TRIGGER departments_tr1 BEFORE INSERT OR UPDATE ON public.departments FOR
 
 
 --
--- TOC entry 3129 (class 2620 OID 17667)
+-- TOC entry 3145 (class 2620 OID 17667)
 -- Name: periods periods_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1118,7 +1453,7 @@ CREATE TRIGGER periods_tr1 BEFORE INSERT OR UPDATE ON public.periods FOR EACH RO
 
 
 --
--- TOC entry 3128 (class 2620 OID 17672)
+-- TOC entry 3144 (class 2620 OID 17672)
 -- Name: units units_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1126,7 +1461,7 @@ CREATE TRIGGER units_tr1 BEFORE INSERT OR UPDATE ON public.units FOR EACH ROW EX
 
 
 --
--- TOC entry 3115 (class 2606 OID 24939)
+-- TOC entry 3131 (class 2606 OID 24939)
 -- Name: codevals codevals_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1135,7 +1470,7 @@ ALTER TABLE ONLY public.codevals
 
 
 --
--- TOC entry 3116 (class 2606 OID 24958)
+-- TOC entry 3132 (class 2606 OID 24958)
 -- Name: datasets datasets_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1144,7 +1479,7 @@ ALTER TABLE ONLY public.datasets
 
 
 --
--- TOC entry 3117 (class 2606 OID 24963)
+-- TOC entry 3133 (class 2606 OID 24963)
 -- Name: datasets datasets_fk2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1153,7 +1488,7 @@ ALTER TABLE ONLY public.datasets
 
 
 --
--- TOC entry 3118 (class 2606 OID 24968)
+-- TOC entry 3134 (class 2606 OID 24968)
 -- Name: datasets datasets_fk3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1162,7 +1497,7 @@ ALTER TABLE ONLY public.datasets
 
 
 --
--- TOC entry 3119 (class 2606 OID 24973)
+-- TOC entry 3135 (class 2606 OID 24973)
 -- Name: datasets datasets_fk4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1171,7 +1506,7 @@ ALTER TABLE ONLY public.datasets
 
 
 --
--- TOC entry 3114 (class 2606 OID 16412)
+-- TOC entry 3130 (class 2606 OID 16412)
 -- Name: departments departments_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1180,7 +1515,7 @@ ALTER TABLE ONLY public.departments
 
 
 --
--- TOC entry 3120 (class 2606 OID 24989)
+-- TOC entry 3136 (class 2606 OID 24989)
 -- Name: obs obs_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1189,7 +1524,7 @@ ALTER TABLE ONLY public.obs
 
 
 --
--- TOC entry 3121 (class 2606 OID 24994)
+-- TOC entry 3137 (class 2606 OID 24994)
 -- Name: obs obs_fk2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1198,7 +1533,7 @@ ALTER TABLE ONLY public.obs
 
 
 --
--- TOC entry 3122 (class 2606 OID 24999)
+-- TOC entry 3138 (class 2606 OID 24999)
 -- Name: obs obs_fk3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1207,7 +1542,7 @@ ALTER TABLE ONLY public.obs
 
 
 --
--- TOC entry 3123 (class 2606 OID 25004)
+-- TOC entry 3139 (class 2606 OID 25004)
 -- Name: obs obs_fk4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1215,7 +1550,7 @@ ALTER TABLE ONLY public.obs
     ADD CONSTRAINT obs_fk4 FOREIGN KEY (period_id) REFERENCES public.periods(id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
--- Completed on 2020-10-07 16:53:54
+-- Completed on 2020-10-08 12:31:09
 
 --
 -- PostgreSQL database dump complete

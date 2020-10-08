@@ -6,8 +6,10 @@
 ## @package russtat.russtat
 # @brief Application entry point.
 import os, sys, json, traceback
-from rsengine import Russtat, DEBUGGING
+from datetime import datetime
+from rsengine import Russtat
 from psdb import Psdb, DatabaseError
+from globs import DEBUGGING, timeit
 
 # --------------------------------------------------------------- #
 
@@ -46,8 +48,8 @@ def add2db(ds, dbname='russtat', user='postgres', password=None,
             res = cur.fetchall()
             # notify on successful insert operation
             if res:                
-                print("{}\n\tAdded: {}, Data ID = {}, Dataset ID = {}".format(
-                      ds['full_name'], res[0][0], res[0][1], res[0][2]), 
+                print("{}\n\t{}\tAdded: {}, Data ID = {}, Dataset ID = {}".format(
+                      ds['full_name'], f"{datetime.now():'%b.%d %H:%M:%S'}", res[0][0], res[0][1], res[0][2]), 
                       end='\n\n', file=logfile, flush=True)
             else: 
                 # print server messages and raise error             
@@ -69,8 +71,15 @@ def add2db(ds, dbname='russtat', user='postgres', password=None,
         if logfile and logfile != sys.stdout:
             logfile.close()
 
-## Main function that creates the Russtat engine and retrieves / stores data.
-def main(update_list=False, start_ds=0, end_ds=-1, pwd=None, logfile=None): 
+## Updates the database.
+# @param update_list `bool` whether to refresh the dataset list from the server
+# @param start_ds `int` start dataset index to upload to DB
+# @param end_ds `int` last dataset index to upload to DB (`-1` = no limit)
+# @param skip_existing `bool` set to `True` to skip existing datasets (on title coincidence)
+# @param pwd `str` | `None` database password (leave `None` to ask user)
+# @param logfile `str` | `None` output file to print messages (`None` = STDOUT)
+@timeit
+def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=None, logfile=None): 
     # create data retrieving engine
     update_list = bool(update_list)
     rs = Russtat(update_list=update_list)
@@ -79,14 +88,31 @@ def main(update_list=False, start_ds=0, end_ds=-1, pwd=None, logfile=None):
 
     # ask DB password
     dbpassword = input('Enter DB password:') if pwd is None else pwd
+
+    # connect to DB
+    db = Psdb(password=dbpassword)
+
     # start operation using multiple processes
     start_ds = int(start_ds)
     end_ds = int(end_ds)
     if end_ds == -1: end_ds = len(rs)
-    res = rs.get_many(rs[start_ds:end_ds], 
+    datasets = rs[start_ds:end_ds]
+    if skip_existing:
+        datasets = rs.filter_datasets_only_new(db, datasets)
+
+    # disable triggers to speed up process
+    db.exec('call disable_triggers();', commit=True)
+    #print('\n'.join(db.con.notices))
+
+    res = rs.get_many(datasets, 
                       on_dataset=add2db, save2json=None, loadfromjson='auto', del_xml=True,
                       on_dataset_kwargs={'password': dbpassword, 'logfile': logfile}, 
                       on_error=print).get()
+
+    # re-enable triggers
+    db.exec('call enable_triggers();', commit=True)
+    #print('\n'.join(db.con.notices))
+
     # print summary
     if res:
         cnt = len(res)
@@ -95,13 +121,15 @@ def main(update_list=False, start_ds=0, end_ds=-1, pwd=None, logfile=None):
     else:
         print(':: No datasets processed!')
 
+## Main function that creates the Russtat engine and retrieves / stores data.
+def main():    
+    if len(sys.argv) == 1:
+        update_db()
+    else:
+        update_db(*sys.argv[1:])
+
 # --------------------------------------------------------------- #
 
 ## Program entry point.
 if __name__ == '__main__':
-    args = sys.argv
-    L = len(args)
-    if L == 1:
-        main()
-    else:
-        main(*args[1:])
+    main()
