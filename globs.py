@@ -12,8 +12,19 @@ from datetime import datetime, timedelta
 
 ## `bool` toggle to turn console debug messages on/off
 DEBUGGING = False
+NL = '\n'
 
 # --------------------------------------------------------------- #
+
+## Checks if an object is iterable (e.g. a collection or iterator).
+# @returns `bool` `True` if `obj` is iterable / `False` if not
+def is_iterable(obj):
+    if isinstance(obj, str): return False
+    try:
+        _ = iter(obj)
+        return True
+    except:
+        return False
 
 def timeit(f, printto=None, prefix='>>>> ELAPSED ', suffix=''):
     def wrapped(*args, **kwargs):

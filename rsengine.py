@@ -6,13 +6,10 @@
 ## @package russtat.rsengine
 # @brief EMISS data retrieving and processing engine.
 import xml.etree.ElementTree as ET
-import requests
-import os, sys
-import json
-import re
+import requests, os, sys, json, re
 from datetime import datetime as dt, timedelta
 from multiprocessing import Pool
-from globs import DEBUGGING
+from globs import *
 
 ## `str` permanent URL of the EMISS dataset list
 URL_EMISS_LIST = 'https://fedstat.ru/opendata/list.xml'
@@ -26,18 +23,6 @@ XML_NS = {'message': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message"
         'structure': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/structure",
         'utility': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/utility",
         'xsi': "http://www.w3.org/2001/XMLSchema-instance"}
-
-# --------------------------------------------------------------- #
-
-## Checks if an object is iterable (e.g. a collection or iterator).
-# @returns `bool` `True` if `obj` is iterable / `False` if not
-def is_iterable(obj):
-    if isinstance(obj, str): return False
-    try:
-        _ = iter(obj)
-        return True
-    except:
-        return False
 
 # --------------------------------------------------------------- # 
 

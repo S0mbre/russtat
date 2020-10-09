@@ -7,7 +7,7 @@
 # @brief PostgreSQL manipulation class.
 import psycopg2
 from psycopg2 import DatabaseError
-from globs import DEBUGGING
+from globs import *
 
 # --------------------------------------------------------------- # 
 
@@ -71,7 +71,7 @@ class Psdb:
     # @param exec_params `tuple`|`None` SQL / PSQL arguments or `None` if no arguments
     # @param commit `bool` whether to commit changes after executing
     # @returns `Cursor object` current DB cursor
-    def exec(self, sql, exec_params=None, commit=False):
+    def exec(self, sql, exec_params=None, commit=False, on_error=print):
         params = [False] + list(self._connparams) if self._connparams else [False, 'russtat', 'postgres', None, '127.0.0.1', '5432']
         if not self.connect(*params):
             return None
@@ -84,8 +84,9 @@ class Psdb:
             if commit:
                 self.con.commit()
             return cur
-        except Exception as err:
-            print(err)
+        except (Exception, DatabaseError) as err:
+            if on_error: 
+                on_error(f"{str(err)}{NL}ORIGINAL QUERY:{NL}{cur.query.decode('utf-8')}")
             return None
 
     ## Fetches the result(s) of an SQL / PSQL command.
@@ -95,16 +96,43 @@ class Psdb:
     #   - 'list': return results as a Python list (of tuples)
     #   - 'one': return single result (tuple)
     # @returns `Iterator`|`list`|`tuple` depending on the `fetch` parameter above
-    def fetch(self, sql, fetch='iter'):      
-        cur = self.exec(sql)
+    def fetch(self, sql, fetch='iter', get_header=False, on_error=print):
+        cur = self.exec(sql, on_error=on_error)
         if cur is None: return None
         if fetch == 'list':
-            return cur.fetchall()
+            return (self._get_column_names(cur), cur.fetchall()) if get_header else cur.fetchall()
         elif fetch == 'one':
-            return cur.fetchone()
+            return (self._get_column_names(cur), cur.fetchone()) if get_header else cur.fetchone()
         else:
-            return cur
+            return (self._get_column_names(cur), cur) if get_header else cur
 
+    def fetch_dict(self, sql, on_error=print):
+        cur = self.exec(sql, on_error=on_error)
+        if cur is None: return None
+        names = self._get_column_names(cur)
+        data = {n: [] for n in names}
+        for row in cur:
+            for i, n in enumerate(names):
+                data[n].append(row[i])
+        return data
+
+    def sqlquery(self, table, columns='*', joins=None, condition=None, limit=None, 
+                schema='public', as_dict=False, **kwargs):
+        if is_iterable(columns): columns = ', '.join(columns)
+        condition = f"where ({condition})" if condition else ''
+        limit = f'limit {limit}' if limit else ''
+        joins = '\n'.join(joins) if is_iterable(joins) else (joins or '')
+        if schema: table = f'{schema}.{table}'
+        if as_dict:
+            foo = self.fetch_dict
+            kwargs = {k: v for k, v in kwargs.items() if k in ['sql', 'on_error']}
+        else:
+            foo = self.fetch
+        return foo(f"select {columns} from {table}{NL}{joins}{NL}{condition}{NL}{limit};", **kwargs)
+
+    def _get_column_names(self, cur):
+        return tuple(c.name for c in cur.description) if cur else tuple()
+    
     ## Overloaded `bool()` operator returns True if the DB connection is active, False otherwise.
     def __bool__(self):
         return not self.con is None
@@ -112,3 +140,68 @@ class Psdb:
     ## Overloaded `()` operator returns current cursor object or `None` on failure.
     def __call__(self):
         return None if self.con is None else self.con.cursor()
+
+# --------------------------------------------------------------- # 
+
+class Russtatdb(Psdb):
+
+    def __init__(self, dbname='russtat', user='postgres', password=None, host='127.0.0.1', port='5432'):
+        super().__init__(dbname, user, password, host, port)
+
+    def dbmessages(self, default='Database Error'):
+        return '\n'.join(self.con.notices) if self.con.notices else default
+
+    def findin_datasets(self, query, **kwargs):
+        """
+        RETURNS:
+        id integer, classificator text, dsname text, updated timestamp with time zone, 
+        preptime timestamp with time zone, nextupdate timestamp with time zone, 
+        description text, agency text, department text, startyr smallint, 
+        endyr smallint, prepby text, contact text, ranking real
+        """
+        return self.sqlquery(f"search_datasets($${query}$$::text)", **kwargs)
+
+    def findin_data(self, query, **kwargs):
+        """
+        RETURNS:
+        id bigint, classificator text, dsname text, description text, 
+        preptime timestamp with time zone, updated timestamp with time zone, 
+        nextupdate timestamp with time zone, agency text, department text, 
+        startyr smallint, endyr smallint, prepby text, contact text, 
+        obsyear integer, obsperiod character varying, obsunit character varying, 
+        obscode text, obscodeval text, value real, ranking real
+        """
+        return self.sqlquery(f"search_data($${query}$$::text)", **kwargs)
+
+    def get_datasets(self, **kwargs):
+        return self.sqlquery('all_datasets', **kwargs)
+
+    def get_data(self, **kwargs):
+        return self.sqlquery('all_data', **kwargs)
+    
+    def add_data(self, data_json, disable_triggers=False, on_error=print):
+        triggers_disabled = False
+        if disable_triggers:
+            triggers_disabled = self.disable_triggers(on_error=on_error)
+        cur = self.exec(f"select * from public.add_data($${data_json}$$::text);", commit=True, on_error=on_error)        
+        if cur:
+            res = cur.fetchone()
+            if triggers_disabled:
+                self.enable_triggers(on_error=on_error)
+            return res
+        else:
+            raise Exception(self.dbmessages)
+
+    def disable_triggers(self, on_error=print):
+        cur = self.exec("call public.disable_triggers();", commit=True, on_error=on_error)
+        return True if cur else False
+
+    def enable_triggers(self, reindex=True, on_error=print):
+        cur = self.exec(f"call public.enable_triggers({int(reindex)}::boolean);", commit=True, on_error=on_error)
+        return True if cur else False
+
+    def clear_all_data(self, full_clear=False, confirm_action=None, on_error=print):
+        if confirm_action and not confirm_action():
+            return False
+        cur = self.exec(f"call public.clear_all({int(full_clear)}::boolean);", commit=True, on_error=on_error)
+        return True if cur else False

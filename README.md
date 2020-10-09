@@ -13,6 +13,11 @@
 * database routine handling
 * extensive API documentation with Doxygen
 
+## License and Copyrights
+All source data are taken from the EMISS website at https://fedstat.ru/. No data is modified by this application.
+
+The EMISS website publishes all materials under the [Creative Common Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/). The copyright owners are the Russian [Federal State Statistic Service](https://eng.gks.ru/) (ROSSTAT) and the Russian [Ministry of Digital Development, Communications and Mass Media](https://digital.gov.ru/en/) (MINKOMSV'AZ').
+
 ## Installation
 
 ### Requirements
