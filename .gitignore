@@ -3,6 +3,7 @@
 *.code-workspace
 build/
 dist/
+dask-worker-space/
 *.egg-info/
 __pycache__/
 */__pycache__/

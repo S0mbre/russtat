@@ -16,15 +16,12 @@ from globs import *
 
 ## Callback procedure for dataset processing: loads dataset into PSQL database.
 # @param ds `dict` The stats dataset as a dictionary object -- see rsengine::Russtat::get_one()
-# @param dbname `str` name / path of the Postgres DB on the server
-# @param user `str` Postgres DB user name (default = 'postgres')
-# @param password `str`|`None` Postgres DB password (default = `None`, means it will be asked)
-# @param host `str` Postgres DB server location (default = localhost)
-# @param port `str` Postgres DB server port (default is 5432)
+# @param db `psdb::Russtatdb` | `None` Postgres DB connection object; if `None` it will
+# be created with `dbparams`
+# @param dbparams `dict` Postgres DB connection parameters (see psdb::Russtatdb)
 # @param logfile `str`|`None` Output stream for notification messages; 
 # `None` means STDOUT, otherwise, a valid path is expected
-def add2db(ds, dbname='russtat', user='postgres', password=None, 
-           host='127.0.0.1', port='5432', logfile=None):   
+def add2db(ds, db=None, dbparams={}, logfile=None):   
 
     # by default messages are printed to the console
     if logfile is None:
@@ -37,8 +34,10 @@ def add2db(ds, dbname='russtat', user='postgres', password=None,
             logfile = sys.stdout
 
     try:
-        # create DB object and connect with provided parameters
-        db = Russtatdb(dbname, user, password, host, port)
+        if db is None:
+            # create DB object and connect with provided parameters
+            db = Russtatdb(**dbparams)
+
         # dump dataset to JSON string and pass into the server function 'add_data'
         res = db.add_data(json.dumps(ds, ensure_ascii=False, default=str))
         # result must be a valid Cursor object
@@ -88,6 +87,8 @@ def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=
     datasets = rs[start_ds:end_ds]
     if skip_existing:
         datasets = rs.filter_datasets_only_new(db, datasets)
+    if not logfile:
+        logfile = None
 
     # print number of available and new datasets
     print(f":: {len(rs)} datasets / {len(datasets)} ({int(len(datasets) * 100.0 / len(rs))}%) to add/update.")
@@ -97,21 +98,17 @@ def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=
     triggers_disabled = db.disable_triggers()
 
     try:
-        res = rs.get_many(datasets, 
-                        on_dataset=add2db, save2json=None, loadfromjson='auto', del_xml=True,
-                        on_dataset_kwargs={'password': dbpassword, 'logfile': logfile}, 
-                        on_error=print)
+        res = rs.get_many(datasets, del_xml=True, save2json=None, loadfromjson='auto', 
+                          on_dataset=print, on_dataset_kwargs={'db': db, 'logfile': logfile})
+
         # print summary
         if res:
-            res = res.get()
-            if res:
-                cnt = len(res)
-                nonval = sum(1 for x in res if x is None) 
-                print(f":: Processed {cnt} datasets: {cnt - nonval} valid, {nonval} non-valid")
-            else:
-                print(':: No datasets processed!')
+            cnt = len(res)
+            nonval = sum(1 for x in res if x is None) 
+            print(f":: Processed {cnt} datasets: {cnt - nonval} valid, {nonval} non-valid")
         else:
-            print(':: Error executing operation!')
+            print(':: No datasets processed!')
+        print(':: Error executing operation!')
 
     finally:
         # re-enable triggers

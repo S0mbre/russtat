@@ -8,7 +8,7 @@
 import xml.etree.ElementTree as ET
 import requests, os, sys, json, re
 from datetime import datetime as dt, timedelta
-from multiprocessing import Pool
+from dask.distributed import Client as DaskClient, Variable as DaskVariable, as_completed
 from globs import *
 
 ## `str` permanent URL of the EMISS dataset list
@@ -44,16 +44,26 @@ class Russtat:
     # for server connection / data reception. If it's a single value (`float`),
     # it will be used for both connection and data timeout; if it's a `tuple`,
     # the first value stands for connection, the second for data timeout.
-    def __init__(self, root_folder='', update_list=False, connection_timeout=10):    
+    def __init__(self, root_folder='', update_list=False, connection_timeout=10, processes=None):    
         ## `str` path to the root data directory for XML / JSON files
         self.root_folder = root_folder
         ## `list` list of available statistical datasets on the EMISS server
         self.datasets = []
         ## `iterator` iterator for Russtat::datasets
         self._iter = None
+        ## `Dask Client`
+        self.cluster = DaskClient(n_workers=processes, threads_per_worker=1)
+        ## `Dask Variable` stop flag for Dask cluster -- see [Dask docs](https://docs.dask.org/en/latest/futures.html#global-variables)
+        self._stopped = DaskVariable('stopcheck', client=self.cluster)
+        self._stopped.set(False)
         ## `float` | `2-tuple` timeout in seconds for server connection / data reception
         self.connection_timeout = connection_timeout
         self.update_dataset_list(overwrite=update_list, loadfromjson='list_json.json' if not update_list else '')
+
+    
+    def __del__(self):
+        if self.cluster:
+            self.cluster.close()
 
     ## Iterator method to iterate the available remote datasets, e.g.
     # ```
@@ -643,24 +653,14 @@ class Russtat:
     # see `loadfromjson` parameter in get_one() for details
     # @param processes `int` | `str` number of processes to parallelize the operation;
     # set to 'auto' to use a default value (auto-calculated by the number of CPU cores)
-    # @param wait `bool` set to `True` to wait for all the processes to finish before
-    # returning the result; `False` means return the async result immediately and handle it
-    # in the calling procedure (without waiting for the processes to finish)
     # @param on_dataset `callback` | `None` callback function to pass the parsed dataset object --
     # see `on_dataset` parameter in get_one() for details
     # @param on_dataset_kwargs `dict` | `None` optional keyword parameters passed to the
     # callback function (`on_dataset`) -- see `on_dataset_kwargs` parameter in get_one() for details
-    # @param on_results_ready `callback` | `None` callback function triggered when the results are
-    # ready, i.e. all the parallel processes have returned results (accepts the list of returned
-    # results as its single parameter)
-    # @param on_error `callback` | `None` callback function triggered when an exception occurs
-    # during the multiprocessing operation (its single argument is the exception object raised)
-    # @param on_stopcheck  `callback` | `None` <PLACEHOLDER, NOT USED>
-    # @returns `AsyncResult` awaitable result object -- see [Python docs](https://docs.python.org/3.8/library/multiprocessing.html#multiprocessing.pool.AsyncResult)
+    # @returns `list` list of datasets (`dict` objects)
     def get_many(self, datasets=0, xmlfilenames='auto', overwrite=True, del_xml=True, 
               save2json='auto', loadfromjson='auto',
-              processes='auto', wait=True, on_dataset=None, on_dataset_kwargs=None,
-              on_results_ready=None, on_error=None, on_stopcheck=None):
+              on_dataset=None, on_dataset_kwargs=None):
 
         args = []
 
@@ -714,23 +714,39 @@ class Russtat:
                     else:
                         loadfromjson_ = loadfromjson
                     
-                    args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_, on_dataset, on_dataset_kwargs))
+                    args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_, None, None))
                     
                 except Exception as err:
                     self._report(err, True)
-                    return None
+                    return None       
 
-        if processes == 'auto': processes = None
-        
-        with Pool(processes=processes) as pool:
-            try:
-                result = pool.starmap_async(self.get_one, args, callback=on_results_ready, error_callback=on_error)
-                pool.close()
-                if wait: pool.join()
-                return result
-            except Exception as err:
-                self._report(err, True)
-                return None
+        #self.cluster.restart()
+        self.set_stopped(False)
+
+        futures = self.cluster.map(self.get_one, *args, pure=False)
+        results = []
+
+        try:            
+            #results = client.gather(futures)
+            #client.close()
+            for _, result in as_completed(futures, with_results=True):
+                results.append(result)
+                if self._stopped.get():
+                    self.cluster.cancel(futures, force=False)
+                    return results
+            
+            return results
+
+        except Exception as err:
+            self.cluster.cancel(futures, force=False)            
+            self._report(err, True)
+            return None   
+
+    def is_stopped(self):
+        return self._stopped.get()
+
+    def set_stopped(self, st=True):
+        self._stopped.set(st)
 
     def filter_datasets_only_new(self, db, datasets=None):
         if datasets is None: datasets = self.datasets
