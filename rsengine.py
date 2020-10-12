@@ -514,9 +514,6 @@ class Russtat:
         if not 'link' in dataset:
             self._report('Dataset has no "link" object!')
             return None
-        if dataset.get('format', '') != 'xml':
-            self._report('Dataset must be in XML format!')
-            return None
 
         if xmlfilename == 'auto':
             xmlfilename = dataset.get('identifier', 'dataset') + '.xml'
@@ -542,9 +539,9 @@ class Russtat:
                 self._report(err)
                 return None
 
-        ds = {'prepared': None, 'id': '', 'agency_id': '', 'codes': {}, 
-              'full_name': '', 'unit': '', 'periodicity': {'value': '', 'releases': '', 'next': None}, 
-              'data_range': (-1, -1), 'updated': None, 'methodology': '', 'agency_name': '', 'agency_dept': '', 
+        ds = {'prepared': dt.now(), 'id': dataset['identifier'], 'agency_id': '', 'codes': {}, 
+              'full_name': dataset['title'], 'unit': '', 'periodicity': {'value': '', 'releases': '', 'next': dt.fromisoformat('1900-01-01')}, 
+              'data_range': (-1, -1), 'updated': dt.fromisoformat('1900-01-01'), 'methodology': '', 'agency_name': '', 'agency_dept': '', 
               'classifier': {'id': '', 'path': ''}, 'prepared_by': {'name': '', 'contacts': ''}, 'data': []}
 
         try:
@@ -562,14 +559,14 @@ class Russtat:
 
             # Description
             node_desc = ds_rootnode.find('message:Description', XML_NS).find('message:Indicator', XML_NS)
-            ds['full_name'] = self._get_attr(node_desc, 'name')
+            ds['full_name'] = ' '.join(self._get_attr(node_desc, 'name').split())
             ds['unit'] = self._get_attr(node_desc, 'value', ['message:Units', 'message:Unit'])
             ds['periodicity']['value'] = self._get_attr(node_desc, 'value', ['message:Periodicities', 'message:Periodicity'])
             ds['periodicity']['releases'] = self._get_attr(node_desc, 'releases', ['message:Periodicities', 'message:Periodicity'])
             ds['periodicity']['next'] = dt.strptime(self._get_attr(node_desc, 'next-release', ['message:Periodicities', 'message:Periodicity'], '01.01.1900'), '%d.%m.%Y') - timedelta(hours=3)
             ds['data_range'] = tuple(int(self._get_attr(node_desc, x, 'message:DataRange', '0')) for x in ('start', 'end'))
             ds['updated'] = dt.fromisoformat(self._get_attr(node_desc, 'value', 'message:LastUpdate', '1900-01-01')) - timedelta(hours=3)
-            ds['methodology'] = self._get_attr(node_desc, 'value', 'message:Methodology')
+            ds['methodology'] = ' '.join(self._get_attr(node_desc, 'value', 'message:Methodology').split())
             ds['agency_name'] = self._get_attr(node_desc, 'value', 'message:Organization')
             ds['agency_dept'] = self._get_attr(node_desc, 'value', 'message:Department')
             ds['classifier']['id'] = self._get_attr(node_desc, 'id', ['message:Allocations', 'message:Allocation'])
@@ -604,6 +601,17 @@ class Russtat:
 
         except Exception as err:
             self._report(err)
+            
+            # try to process empty dataset
+            if on_dataset: 
+                try:
+                    if on_dataset_kwargs:
+                        on_dataset(ds, **on_dataset_kwargs)
+                    else:
+                        on_dataset(ds)
+                except:
+                    pass
+
             if del_xml:
                 try:
                     os.remove(outputfile)

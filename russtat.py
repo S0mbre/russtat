@@ -74,9 +74,7 @@ def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=
     # create data retrieving engine
     update_list = bool(update_list)
     rs = Russtat(update_list=update_list)
-    # print number of available datasets
-    print(f":: {len(rs)} datasets")
-
+    
     # ask DB password
     dbpassword = input('Enter DB password:') if pwd is None else pwd
 
@@ -90,6 +88,10 @@ def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=
     datasets = rs[start_ds:end_ds]
     if skip_existing:
         datasets = rs.filter_datasets_only_new(db, datasets)
+
+    # print number of available and new datasets
+    print(f":: {len(rs)} datasets / {len(datasets)} ({int(len(datasets) * 100.0 / len(rs))}%) to add/update.")
+    #return
 
     # disable triggers to speed up process
     triggers_disabled = db.disable_triggers()
@@ -118,10 +120,6 @@ def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=
 def testing():
     dbpassword = input('Enter DB password:')
     db = Russtatdb(password=dbpassword)
-
-    res = db.sqlquery('datasets', columns='max(id)', fetch='one')
-    print(res)
-    return
 
     # example 1: simple data query
     res = db.get_data(condition="dataset like '%комит%' and year = 2018", limit=30, get_header=True)
