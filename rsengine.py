@@ -603,7 +603,7 @@ class Russtat:
             self._report(err)
             
             # try to process empty dataset
-            if on_dataset: 
+            if on_dataset and not ds is None: 
                 try:
                     if on_dataset_kwargs:
                         on_dataset(ds, **on_dataset_kwargs)
@@ -618,7 +618,8 @@ class Russtat:
                     self._report(f'Deleted XML ({outputfile})')
                 except Exception as err2:
                     self._report(err2)
-            return None
+                    
+            return ds
 
         return ds
 

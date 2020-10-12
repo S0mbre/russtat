@@ -16,29 +16,27 @@ from globs import *
 
 ## Callback procedure for dataset processing: loads dataset into PSQL database.
 # @param ds `dict` The stats dataset as a dictionary object -- see rsengine::Russtat::get_one()
-# @param dbname `str` name / path of the Postgres DB on the server
-# @param user `str` Postgres DB user name (default = 'postgres')
-# @param password `str`|`None` Postgres DB password (default = `None`, means it will be asked)
-# @param host `str` Postgres DB server location (default = localhost)
-# @param port `str` Postgres DB server port (default is 5432)
-# @param logfile `str`|`None` Output stream for notification messages; 
+# @param db `psdb::Russtatdb` | `None` DB connection object; may be `None` to connect locally
+# @param dbparams `dict` DB connection parameters passed to the `psdb::Russtatdb` constructor
 # `None` means STDOUT, otherwise, a valid path is expected
-def add2db(ds, dbname='russtat', user='postgres', password=None, 
-           host='127.0.0.1', port='5432', logfile=None):   
+def add2db(ds, db=None, dbparams={}, logfile=None):   
 
     # by default messages are printed to the console
+    closelog = False
     if logfile is None:
         logfile = sys.stdout
-    else:
+    elif isinstance(logfile, str):
         # ...but a different file may be indicated
         try:
             logfile = open(os.path.abspath(logfile), 'a', encoding='utf-8')
+            closelog = True
         except:
             logfile = sys.stdout
 
     try:
-        # create DB object and connect with provided parameters
-        db = Russtatdb(dbname, user, password, host, port)
+        if db is None:
+            # create DB object and connect with provided parameters
+            db = Russtatdb(**dbparams)
         # dump dataset to JSON string and pass into the server function 'add_data'
         res = db.add_data(json.dumps(ds, ensure_ascii=False, default=str))
         # result must be a valid Cursor object
@@ -57,12 +55,11 @@ def add2db(ds, dbname='russtat', user='postgres', password=None,
 
     finally:
         # close output file, if any
-        if logfile and logfile != sys.stdout:
-            logfile.close()
+        if closelog: logfile.close()
 
 # --------------------------------------------------------------- #            
 
-## Updates the database. 3000 - 5000 last ID 3125
+## Updates the database.
 # @param update_list `bool` whether to refresh the dataset list from the server
 # @param start_ds `int` start dataset index to upload to DB
 # @param end_ds `int` last dataset index to upload to DB (`-1` = no limit)
@@ -72,50 +69,67 @@ def add2db(ds, dbname='russtat', user='postgres', password=None,
 @timeit
 def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=None, logfile=None): 
     # create data retrieving engine
-    update_list = bool(update_list)
+    update_list = int(update_list)
     rs = Russtat(update_list=update_list)
     
     # ask DB password
     dbpassword = input('Enter DB password:') if pwd is None else pwd
 
     # connect to DB
-    db = Russtatdb(password=dbpassword)
-
-    # start operation using multiple processes
-    start_ds = int(start_ds)
-    end_ds = int(end_ds)
-    if end_ds == -1: end_ds = len(rs)
-    datasets = rs[start_ds:end_ds]
-    if skip_existing:
-        datasets = rs.filter_datasets_only_new(db, datasets)
-
-    # print number of available and new datasets
-    print(f":: {len(rs)} datasets / {len(datasets)} ({int(len(datasets) * 100.0 / len(rs))}%) to add/update.")
-    #return
-
-    # disable triggers to speed up process
-    triggers_disabled = db.disable_triggers()
+    db = Russtatdb(password=dbpassword)    
 
     try:
-        res = rs.get_many(datasets, 
-                        on_dataset=add2db, save2json=None, loadfromjson='auto', del_xml=True,
-                        on_dataset_kwargs={'password': dbpassword, 'logfile': logfile}, 
-                        on_error=print)
-        # print summary
-        if res:
-            res = res.get()
+        # start operation using multiple processes
+        start_ds = int(start_ds)
+        end_ds = int(end_ds)
+        if end_ds == -1: end_ds = len(rs)
+        datasets = rs[start_ds:end_ds]
+        if int(skip_existing):
+            datasets = rs.filter_datasets_only_new(db, datasets)
+        if not logfile:
+            logfile = None
+
+        # print number of available and new datasets
+        print(f":: {len(rs)} datasets / {len(datasets)} ({int(len(datasets) * 100.0 / len(rs))}%) to add/update.")
+        #return
+
+        # disable triggers to speed up process
+        triggers_disabled = db.disable_triggers()
+
+        try:
+            print(f":: Processing {len(datasets)} datasets...")
+            res = rs.get_many(datasets, del_xml=True, save2json=None, loadfromjson='auto', on_error=None)
+            # get results
             if res:
-                cnt = len(res)
-                nonval = sum(1 for x in res if x is None) 
-                print(f":: Processed {cnt} datasets: {cnt - nonval} valid, {nonval} non-valid")
+                
+                res = res.get()
+
+                if res:
+                    print(f":: Importing into DB...")
+                    
+                    for ds in res:
+                        try:
+                            if ds: add2db(ds, db, None, logfile)
+                        except:
+                            pass
+
+                    # print summary
+                    cnt = len(res)
+                    nonval = sum(1 for x in res if x is None) 
+                    print(f":: Processed {cnt} datasets: {cnt - nonval} valid, {nonval} non-valid")
+
+                else:
+                    print(':: No datasets processed!')
+
             else:
-                print(':: No datasets processed!')
-        else:
-            print(':: Error executing operation!')
+                print(':: Error executing operation!')
+
+        finally:
+            # re-enable triggers
+            if triggers_disabled: db.enable_triggers()
 
     finally:
-        # re-enable triggers
-        if triggers_disabled: db.enable_triggers()
+        db.disconnect()
 
 def testing():
     dbpassword = input('Enter DB password:')
