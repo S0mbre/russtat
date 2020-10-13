@@ -5,8 +5,7 @@
 
 ## @package russtat.psdb
 # @brief PostgreSQL manipulation class.
-import psycopg2
-from psycopg2 import DatabaseError
+from pony.orm import *
 from globs import *
 
 # --------------------------------------------------------------- # 
@@ -19,127 +18,31 @@ class Psdb:
     # @param password `str`|`None` Postgres DB password (default = `None`, means it will be asked)
     # @param host `str` Postgres DB server location (default = localhost)
     # @param port `str` Postgres DB server port (default is 5432)
-    def __init__(self, dbname='russtat', user='postgres', password=None, host='127.0.0.1', port='5432'):
-        ## `Connection object` DB connection object
-        self.con = None  
+    def __init__(self, dbname, user='postgres', password='postgres', host='127.0.0.1', port='5432'):
+        self.db = Database()
         ## `tuple` DB connection parameters (saved on successful connection)
         self._connparams = None
-        self.connect(dbname=dbname, user=user, password=password, host=host, port=port)
+        self.connect(dbname, user, password, host, port)
 
     ## Destructor: ensures safe DB disconnect.
     def __del__(self):
         self.disconnect()
 
     ## Connects to the DB using the given parameters.
-    # @param reconnect `bool` if forced reconnect is required
     # @param dbname `str` name / path of the Postgres DB on the server
     # @param user `str` Postgres DB user name (default = 'postgres')
     # @param password `str`|`None` Postgres DB password (default = None, means it will be asked)
     # @param host `str` Postgres DB server location (default = localhost)
     # @param port `str` Postgres DB server port (default is 5432)
-    def connect(self, reconnect=False, dbname='russtat', user='postgres', password=None, host='127.0.0.1', port='5432'):
-        if not self.con is None and not reconnect:
-            return True
-        if password is None:
-            password = input('>> Enter password:')
-        try:
-            self.disconnect()
-            self.con = psycopg2.connect(database=dbname, user=user, password=password, host=host, port=port)
-            self._connparams = (dbname, user, password, host, port)
-            if DEBUGGING: print(f'Connected to {self._connparams[0]} as {self._connparams[1]} at {self._connparams[3]}:{self._connparams[4]}')
-            return True
-        except Exception as err:
-            self.con = None
-            print(err)
-        return False
+    def connect(self, dbname, user='postgres', password='postgres', host='127.0.0.1', port='5432'):
+        self._connparams = dict(provider='postgres', database=dbname, user=user, password=password, host=host, port=port, create_db=False)
+        self.db.bind(**self._connparams)
+        return True
 
     ## Disconnects from the DB.
     def disconnect(self):
-        if self.con is None: return True
-        try:
-            self.con.commit()
-            self.con.close()
-            self.con = None
-            if DEBUGGING: print(f'Disconnected from {self._connparams[0] if self._connparams else "DB"}')
-            return True
-        except:
-            pass
-        return False
-
-    ## Executes an SQL / PSQL script / command.
-    # @param sql `str` SQL / PSQL script
-    # @param exec_params `tuple`|`None` SQL / PSQL arguments or `None` if no arguments
-    # @param commit `bool` whether to commit changes after executing
-    # @returns `Cursor object` current DB cursor
-    def exec(self, sql, exec_params=None, commit=False, on_error=print):
-        params = [False] + list(self._connparams) if self._connparams else [False, 'russtat', 'postgres', None, '127.0.0.1', '5432']
-        if not self.connect(*params):
-            return None
-        cur = self.con.cursor()
-        try:
-            if exec_params:
-                cur.execute(sql, exec_params)
-            else:
-                cur.execute(sql)
-            if commit:
-                self.con.commit()
-            return cur
-        except (Exception, DatabaseError) as err:
-            if on_error: 
-                on_error(f"{str(err)}{NL}ORIGINAL QUERY:{NL}{cur.query.decode('utf-8')}")
-            return None
-
-    ## Fetches the result(s) of an SQL / PSQL command.
-    # @param sql `str` SQL / PSQL script
-    # @param fetch `str` one of:
-    #   - 'iter': return iterator (cursor)
-    #   - 'list': return results as a Python list (of tuples)
-    #   - 'one': return single result (tuple)
-    # @returns `Iterator`|`list`|`tuple` depending on the `fetch` parameter above
-    def fetch(self, sql, fetch='iter', get_header=False, on_error=print):
-        cur = self.exec(sql, on_error=on_error)
-        if cur is None: return None
-        if fetch == 'list':
-            return (self._get_column_names(cur), cur.fetchall()) if get_header else cur.fetchall()
-        elif fetch == 'one':
-            return (self._get_column_names(cur), cur.fetchone()) if get_header else cur.fetchone()
-        else:
-            return (self._get_column_names(cur), cur) if get_header else cur
-
-    def fetch_dict(self, sql, on_error=print):
-        cur = self.exec(sql, on_error=on_error)
-        if cur is None: return None
-        names = self._get_column_names(cur)
-        data = {n: [] for n in names}
-        for row in cur:
-            for i, n in enumerate(names):
-                data[n].append(row[i])
-        return data
-
-    def sqlquery(self, table, columns='*', joins=None, condition=None, limit=None, 
-                schema='public', as_dict=False, **kwargs):
-        if is_iterable(columns): columns = ', '.join(columns)
-        condition = f"where ({condition})" if condition else ''
-        limit = f'limit {limit}' if limit else ''
-        joins = '\n'.join(joins) if is_iterable(joins) else (joins or '')
-        if schema: table = f'{schema}.{table}'
-        if as_dict:
-            foo = self.fetch_dict
-            kwargs = {k: v for k, v in kwargs.items() if k in ['sql', 'on_error']}
-        else:
-            foo = self.fetch
-        return foo(f"select {columns} from {table}{NL}{joins}{NL}{condition}{NL}{limit};", **kwargs)
-
-    def _get_column_names(self, cur):
-        return tuple(c.name for c in cur.description) if cur else tuple()
-    
-    ## Overloaded `bool()` operator returns True if the DB connection is active, False otherwise.
-    def __bool__(self):
-        return not self.con is None
-
-    ## Overloaded `()` operator returns current cursor object or `None` on failure.
-    def __call__(self):
-        return None if self.con is None else self.con.cursor()
+        self.db.disconnect()
+        return True    
 
 # --------------------------------------------------------------- # 
 
@@ -147,11 +50,119 @@ class Russtatdb(Psdb):
 
     def __init__(self, dbname='russtat', user='postgres', password=None, host='127.0.0.1', port='5432'):
         super().__init__(dbname, user, password, host, port)
+        self._define_tables()
 
-    def dbmessages(self, default='Database Error'):
-        return '\n'.join(self.con.notices) if self.con.notices else default
+    def _define_tables(self):
+        class Agencies(self.db.Entity):
+            #_table_ = ("public", "agencies")
+            id = PrimaryKey(int, auto=True)
+            ag_id = Optional(str, 32)
+            name = Required(str, unique=True)  
+            # foreigns          
+            departments = Set('Departments')
+            datasets = Set('Datasets')
+            # no support for search(tsvector)!
 
-    def findin_datasets(self, query, **kwargs):
+        class Departments(self.db.Entity):
+            #_table_ = ("public", "departments")
+            id = PrimaryKey(int, auto=True)           
+            name = Required(str)  
+            # foreigns          
+            agency = Required(Agencies, fk_name='departments_fk1')
+            datasets = Set('Datasets')
+            # unique
+            composite_key(name, agency)
+            # no support for search(tsvector)!
+
+        class Classifier(self.db.Entity):
+            #_table_ = ("public", "classifier")
+            id = PrimaryKey(int, auto=True)
+            class_id = Optional(str, 32) 
+            name = Required(str, unique=True)
+            parent_id = Optional(int) 
+            # foreigns
+            datasets = Set('Datasets')
+            # no support for search(tsvector)!
+            
+        class Codes(self.db.Entity):
+            #_table_ = ("public", "codes")
+            id = PrimaryKey(int, auto=True)           
+            name = Required(str, unique=True)
+            # foreigns            
+            codevals = Set('Codevals')
+            datasets = Set('Datasets')
+            # no support for search(tsvector)! 
+        
+        class Codevals(self.db.Entity):
+            #_table_ = ("public", "codevals")
+            id = PrimaryKey(int, auto=True)  
+            val_id = Required(str, 64)
+            name = Required(str) 
+            # foreigns      
+            code = Required(Codes, fk_name='codevals_fk1')
+            obs = Set('Obs')
+            # unique
+            composite_key(val_id, code)
+            # no support for search(tsvector)! 
+
+        class Periods(self.db.Entity):
+            #_table_ = ("public", "periods")
+            id = PrimaryKey(int, auto=True)           
+            val = Required(str, 256, unique=True)
+            # foreigns
+            datasets = Set('Datasets')
+            obs = Set('Obs')  
+            # no support for search(tsvector)! 
+
+        class Units(self.db.Entity):
+            #_table_ = ("public", "units")
+            id = PrimaryKey(int, auto=True)
+            val = Required(str, 256, unique=True)
+            # foreigns
+            datasets = Set('Datasets')
+            obs = Set('Obs')
+            # no support for search(tsvector)!
+
+        class Datasets(self.db.Entity):
+            #_table_ = ("public", "datasets")
+            id = PrimaryKey(int, auto=True)           
+            prep_time = Optional(datetime)
+            updated_time = Optional(datetime)
+            next_update_time = Optional(datetime)
+            ds_id = Required(str, unique=True)
+            name = Required(str)
+            range_start = Optional(int, size=16)
+            range_end = Optional(int, size=16)
+            description = Optional(str)
+            prep_by = Optional(str)
+            prep_contact = Optional(str)
+            # foreigns
+            agency = Required(Agencies, fk_name='datasets_fk1')
+            department = Required(Departments, fk_name='datasets_fk2')
+            unit = Required(Units, fk_name='datasets_fk3')
+            classifier = Required(Classifier, fk_name='datasets_fk4')
+            code = Optional(Codes)
+            period = Optional(Periods)
+            obs = Set('Obs')
+            # no support for search(tsvector)! 
+
+        class Obs(self.db.Entity):
+            #_table_ = ("public", "obs")
+            id = PrimaryKey(int, 64, auto=True)           
+            obs_year = Required(int)
+            obs_val = Required(float)
+            # foreigns
+            dataset = Required(Datasets, fk_name='obs_fk1')
+            codeval = Required(Codevals, fk_name='obs_fk2')
+            unit = Required(Units, fk_name='obs_fk3')
+            period = Required(Periods, fk_name='obs_fk4')
+            # unique
+            composite_key(obs_year, dataset, codeval, unit, period)
+
+        self.db.generate_mapping(create_tables=False)    
+
+    @db_session
+    def findin_datasets(self, query):
         """
         RETURNS:
         id integer, classificator text, dsname text, updated timestamp with time zone, 
@@ -159,9 +170,10 @@ class Russtatdb(Psdb):
         description text, agency text, department text, startyr smallint, 
         endyr smallint, prepby text, contact text, ranking real
         """
-        return self.sqlquery(f"search_datasets($${query}$$::text)", **kwargs)
+        return self.db.select(f"select * from search_datasets($${query}$$::text)")
 
-    def findin_data(self, query, **kwargs):
+    @db_session
+    def findin_data(self, query):
         """
         RETURNS:
         id bigint, classificator text, dsname text, description text, 
@@ -171,37 +183,36 @@ class Russtatdb(Psdb):
         obsyear integer, obsperiod character varying, obsunit character varying, 
         obscode text, obscodeval text, value real, ranking real
         """
-        return self.sqlquery(f"search_data($${query}$$::text)", **kwargs)
+        return self.db.select(f"select * from search_data($${query}$$::text)")
 
-    def get_datasets(self, **kwargs):
-        return self.sqlquery('all_datasets', **kwargs)
+    @db_session
+    def get_datasets(self):
+        return self.db.select(f"select * from all_datasets")
 
+    @db_session
     def get_data(self, **kwargs):
-        return self.sqlquery('all_data', **kwargs)
+        return self.db.select(f"select * from all_data")
     
-    def add_data(self, data_json, disable_triggers=False, on_error=print):
+    @db_session
+    def add_data(self, data_json, disable_triggers=False):
         triggers_disabled = False
         if disable_triggers:
-            triggers_disabled = self.disable_triggers(on_error=on_error)
-        cur = self.exec(f"select * from public.add_data($${data_json}$$::text);", commit=True, on_error=on_error)        
-        if cur:
-            res = cur.fetchone()
-            if triggers_disabled:
-                self.enable_triggers(on_error=on_error)
-            return res
-        else:
-            raise Exception(self.dbmessages)
+            triggers_disabled = self.disable_triggers()
+        res = self.db.get(f"select * from public.add_data($${data_json}$$::text);")
+        if triggers_disabled:
+            self.enable_triggers()
+        return res
 
-    def disable_triggers(self, on_error=print):
-        cur = self.exec("call public.disable_triggers();", commit=True, on_error=on_error)
-        return True if cur else False
+    @db_session
+    def disable_triggers(self):
+        return bool(self.db.execute("call public.disable_triggers();"))
 
-    def enable_triggers(self, reindex=True, on_error=print):
-        cur = self.exec(f"call public.enable_triggers({int(reindex)}::boolean);", commit=True, on_error=on_error)
-        return True if cur else False
+    @db_session
+    def enable_triggers(self, reindex=True):
+        return bool(self.db.execute(f"call public.enable_triggers({int(reindex)}::boolean);"))
 
+    @db_session
     def clear_all_data(self, full_clear=False, confirm_action=None, on_error=print):
         if confirm_action and not confirm_action():
             return False
-        cur = self.exec(f"call public.clear_all({int(full_clear)}::boolean);", commit=True, on_error=on_error)
-        return True if cur else False
+        return bool(self.db.execute(f"call public.clear_all({int(full_clear)}::boolean);"))
