@@ -10,7 +10,7 @@ import pandas as pd
 from datetime import datetime
 from rsengine import Russtat
 from psdb import Russtatdb
-from globs import *
+from globs import timeit
 
 # --------------------------------------------------------------- #
 
@@ -37,13 +37,17 @@ def add2db(ds, db=None, dbparams={}, logfile=None):
         if db is None:
             # create DB object and connect with provided parameters
             db = Russtatdb(**dbparams)
+
         # dump dataset to JSON string and pass into the server function 'add_data'
         res = db.add_data(json.dumps(ds, ensure_ascii=False, default=str))
-        # result must be a valid Cursor object
+
+        # result must be a 3-tuple
         if res:
-            print("{}\n\t{}\tAdded: {}, Data ID = {}, Dataset ID = {}".format(
+            print("'{}'\n\t{}\tAdded: {}, Data ID = {}, Dataset ID = {}".format(
                     ds['full_name'], f"{datetime.now():'%b.%d %H:%M:%S'}", 
                     res[0], res[1], res[2]), end='\n\n', file=logfile, flush=True)
+        else:
+            raise Exception('FAILED TO IMPORT')
 
     except Exception as err:
         # print error message
@@ -67,7 +71,7 @@ def add2db(ds, db=None, dbparams={}, logfile=None):
 # @param pwd `str` | `None` database password (leave `None` to ask user)
 # @param logfile `str` | `None` output file to print messages (`None` = STDOUT)
 @timeit
-def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=None, logfile=None): 
+def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=None, disable_triggers=True, logfile=None): 
     # create data retrieving engine
     update_list = int(update_list)
     rs = Russtat(update_list=update_list)
@@ -85,34 +89,38 @@ def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=
         if end_ds == -1: end_ds = len(rs)
         datasets = rs[start_ds:end_ds]
         if int(skip_existing):
-            datasets = rs.filter_datasets_only_new(db, datasets)
+            datasets = rs.filter_datasets(db, datasets, 'new')
         if not logfile:
             logfile = None
 
         # print number of available and new datasets
         print(f":: {len(rs)} datasets / {len(datasets)} ({int(len(datasets) * 100.0 / len(rs))}%) to add/update.")
+        #for ds in datasets: print(ds)
         #return
 
+        if not datasets:
+            print(f":: NO DATASETS TO UPDATE!")
+            db.disconnect()
+            return
+
         # disable triggers to speed up process
-        triggers_disabled = db.disable_triggers()
+        if int(disable_triggers):
+            print(f":: Disabling DB triggers...")
+            triggers_disabled = db.disable_triggers() 
+        else:
+            triggers_disabled = False
 
         try:
             print(f":: Processing {len(datasets)} datasets...")
-            res = rs.get_many(datasets, del_xml=True, save2json=None, loadfromjson='auto', on_error=None)
+
+            res = rs.get_many(datasets, del_xml=True, save2json=None, loadfromjson='auto', on_dataset=add2db, 
+                              on_dataset_kwargs={'dbparams': {'password': dbpassword}, 'logfile': logfile}, 
+                              on_error=print)
             # get results
-            if res:
-                
+            if res:                
                 res = res.get()
 
-                if res:
-                    print(f":: Importing into DB...")
-                    
-                    for ds in res:
-                        try:
-                            if ds: add2db(ds, db, None, logfile)
-                        except:
-                            pass
-
+                if res:                    
                     # print summary
                     cnt = len(res)
                     nonval = sum(1 for x in res if x is None) 
@@ -126,7 +134,9 @@ def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=
 
         finally:
             # re-enable triggers
-            if triggers_disabled: db.enable_triggers()
+            if triggers_disabled: 
+                print(f":: Re-enabling DB triggers and updating vector indices...")
+                db.enable_triggers()
 
     finally:
         db.disconnect()

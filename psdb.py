@@ -7,7 +7,7 @@
 # @brief PostgreSQL manipulation class.
 import psycopg2
 from psycopg2 import DatabaseError
-from globs import *
+from globs import NL, report, is_iterable
 
 # --------------------------------------------------------------- # 
 
@@ -46,7 +46,7 @@ class Psdb:
             self.disconnect()
             self.con = psycopg2.connect(database=dbname, user=user, password=password, host=host, port=port)
             self._connparams = (dbname, user, password, host, port)
-            if DEBUGGING: print(f'Connected to {self._connparams[0]} as {self._connparams[1]} at {self._connparams[3]}:{self._connparams[4]}')
+            report(f'Connected to {self._connparams[0]} as {self._connparams[1]} at {self._connparams[3]}:{self._connparams[4]}')
             return True
         except Exception as err:
             self.con = None
@@ -60,7 +60,7 @@ class Psdb:
             self.con.commit()
             self.con.close()
             self.con = None
-            if DEBUGGING: print(f'Disconnected from {self._connparams[0] if self._connparams else "DB"}')
+            report(f'Disconnected from {self._connparams[0] if self._connparams else "DB"}')
             return True
         except:
             pass
@@ -180,9 +180,12 @@ class Russtatdb(Psdb):
         return self.sqlquery('all_data', **kwargs)
     
     def add_data(self, data_json, disable_triggers=False, on_error=print):
+        if not data_json:
+            report('NONE data!', force=True)
+            return None
         triggers_disabled = False
         if disable_triggers:
-            triggers_disabled = self.disable_triggers(on_error=on_error)
+            triggers_disabled = self.disable_triggers(on_error=on_error)        
         cur = self.exec(f"select * from public.add_data($${data_json}$$::text);", commit=True, on_error=on_error)        
         if cur:
             res = cur.fetchone()

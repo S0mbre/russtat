@@ -5,7 +5,7 @@
 -- Dumped from database version 13.0
 -- Dumped by pg_dump version 13.0
 
--- Started on 2020-10-09 16:48:28
+-- Started on 2020-10-13 16:36:02
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -20,7 +20,7 @@ SET row_security = off;
 
 DROP DATABASE russtat;
 --
--- TOC entry 3288 (class 1262 OID 16394)
+-- TOC entry 3290 (class 1262 OID 16394)
 -- Name: russtat; Type: DATABASE; Schema: -; Owner: -
 --
 
@@ -49,7 +49,7 @@ CREATE EXTENSION IF NOT EXISTS btree_gin WITH SCHEMA public;
 
 
 --
--- TOC entry 3289 (class 0 OID 0)
+-- TOC entry 3291 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION btree_gin; Type: COMMENT; Schema: -; Owner: -
 --
@@ -352,7 +352,7 @@ $$;
 
 
 --
--- TOC entry 332 (class 1255 OID 26809)
+-- TOC entry 333 (class 1255 OID 26809)
 -- Name: clear_all(boolean); Type: PROCEDURE; Schema: public; Owner: -
 --
 
@@ -394,10 +394,11 @@ begin
 	-- recreate codevals
 	CREATE TABLE public.codevals (
 		id integer NOT NULL,
-		code_id integer,
-		val_id character varying(32) DEFAULT ''::character varying,
+		code_id integer NOT NULL,
+		val_id character varying(64) DEFAULT ''::character varying NOT NULL,
 		name text NOT NULL,
-		search tsvector);
+		search tsvector
+	);
 	ALTER TABLE public.codevals ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 		SEQUENCE NAME public.codevals_id_seq
 		START WITH 1
@@ -411,7 +412,7 @@ begin
     	ADD CONSTRAINT codevals_unique UNIQUE (code_id, val_id);
 	ALTER TABLE ONLY public.codevals
     	ADD CONSTRAINT codevals_fk1 FOREIGN KEY (code_id) REFERENCES public.codes(id) 
-		ON UPDATE CASCADE ON DELETE SET NULL;
+		ON UPDATE CASCADE ON DELETE CASCADE;
 	CREATE INDEX codevals_search_idx ON public.codevals USING gin (search);
 	CREATE TRIGGER codevals_tr1 BEFORE INSERT OR UPDATE ON public.codevals 
 		FOR EACH ROW EXECUTE FUNCTION public.codevals_update_insert();
@@ -423,8 +424,8 @@ begin
 		updated_time timestamp with time zone,
 		next_update_time timestamp with time zone,
 		ds_id text,
-		agency_id integer,
-		dept_id integer,
+		agency_id integer NOT NULL,
+		dept_id integer NOT NULL,
 		name text NOT NULL,
 		unit_id integer,
 		range_start smallint,
@@ -435,7 +436,8 @@ begin
 		prep_contact text,
 		code_id integer,
 		period_id integer,
-		search tsvector);
+		search tsvector
+	);
 	ALTER TABLE public.datasets ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 		SEQUENCE NAME public.datasets_id_seq
 		START WITH 1
@@ -446,18 +448,24 @@ begin
 	ALTER TABLE ONLY public.datasets
     	ADD CONSTRAINT datasets_pkey PRIMARY KEY (id);
 	ALTER TABLE ONLY public.datasets
-    	ADD CONSTRAINT datasets_unique1 UNIQUE (ds_id) INCLUDE (ds_id);
+    	ADD CONSTRAINT datasets_unique1 UNIQUE (agency_id, name, dept_id);
 	ALTER TABLE ONLY public.datasets
     	ADD CONSTRAINT datasets_fk1 FOREIGN KEY (agency_id) REFERENCES public.agencies(id) 
-		ON UPDATE CASCADE ON DELETE SET NULL;
+		ON UPDATE CASCADE ON DELETE CASCADE;
 	ALTER TABLE ONLY public.datasets
     	ADD CONSTRAINT datasets_fk2 FOREIGN KEY (dept_id) REFERENCES public.departments(id) 
-		ON UPDATE CASCADE ON DELETE SET NULL;
+		ON UPDATE CASCADE ON DELETE CASCADE;
 	ALTER TABLE ONLY public.datasets
     	ADD CONSTRAINT datasets_fk3 FOREIGN KEY (unit_id) REFERENCES public.units(id) 
 		ON UPDATE CASCADE ON DELETE SET NULL;
 	ALTER TABLE ONLY public.datasets
     	ADD CONSTRAINT datasets_fk4 FOREIGN KEY (class_id) REFERENCES public.classifier(id) 
+		ON UPDATE CASCADE ON DELETE SET NULL;
+	ALTER TABLE ONLY public.datasets
+    	ADD CONSTRAINT datasets_fk5 FOREIGN KEY (code_id) REFERENCES public.codes(id) 
+		ON UPDATE CASCADE ON DELETE SET NULL;
+	ALTER TABLE ONLY public.datasets
+    	ADD CONSTRAINT datasets_fk6 FOREIGN KEY (period_id) REFERENCES public.periods(id) 
 		ON UPDATE CASCADE ON DELETE SET NULL;
 	CREATE INDEX datasets_search_idx ON public.datasets USING gin (search);
 	CREATE TRIGGER datasets_tr1 BEFORE INSERT OR UPDATE ON public.datasets 
@@ -466,12 +474,13 @@ begin
 	-- recreate obs	
 	CREATE TABLE public.obs (
 		id bigint NOT NULL,
-		dataset_id integer,
-		code_id integer,
-		unit_id integer,
-		period_id integer,
-		obs_year integer,
-		obs_val real);
+		dataset_id integer NOT NULL,
+		code_id integer NOT NULL,
+		unit_id integer NOT NULL,
+		period_id integer NOT NULL,
+		obs_year integer NOT NULL,
+		obs_val real NOT NULL
+	);
 	ALTER TABLE public.obs ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 		SEQUENCE NAME public.obs_id_seq
 		START WITH 1
@@ -488,13 +497,13 @@ begin
 		ON UPDATE CASCADE ON DELETE CASCADE;
 	ALTER TABLE ONLY public.obs
     	ADD CONSTRAINT obs_fk2 FOREIGN KEY (code_id) REFERENCES public.codevals(id) 
-		ON UPDATE CASCADE ON DELETE SET NULL;
+		ON UPDATE CASCADE ON DELETE CASCADE;
 	ALTER TABLE ONLY public.obs
     	ADD CONSTRAINT obs_fk3 FOREIGN KEY (unit_id) REFERENCES public.units(id) 
-		ON UPDATE CASCADE ON DELETE SET NULL;
+		ON UPDATE CASCADE ON DELETE CASCADE;
 	ALTER TABLE ONLY public.obs
     	ADD CONSTRAINT obs_fk4 FOREIGN KEY (period_id) REFERENCES public.periods(id) 
-		ON UPDATE CASCADE ON DELETE SET NULL;
+		ON UPDATE CASCADE ON DELETE CASCADE;
 		
 	-- clear other tables if "fullclear" == True
 	if fullclear then
@@ -512,6 +521,7 @@ begin
 	end if;
 	
 	-- recreate views
+	CREATE OR REPLACE VIEW public.all_data AS
 	SELECT 
 		ds.name AS dataset,
 		cls.name AS classifier,
@@ -542,6 +552,7 @@ begin
 		JOIN codes ON codevals.code_id = codes.id
 	ORDER BY cls.name, ds.name, codes.name, codevals.name, obs.obs_year, per.val;
   
+	CREATE OR REPLACE VIEW public.all_datasets AS
 	SELECT 
 		ds.id,
 		cls.name AS classifier,
@@ -844,7 +855,7 @@ $$;
 
 
 --
--- TOC entry 333 (class 1255 OID 27829)
+-- TOC entry 332 (class 1255 OID 27829)
 -- Name: search_datasets(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -947,8 +958,8 @@ CREATE TABLE public.codes (
 
 CREATE TABLE public.codevals (
     id integer NOT NULL,
-    code_id integer,
-    val_id character varying(64) DEFAULT ''::character varying,
+    code_id integer NOT NULL,
+    val_id character varying(64) DEFAULT ''::character varying NOT NULL,
     name text NOT NULL,
     search tsvector
 );
@@ -965,8 +976,8 @@ CREATE TABLE public.datasets (
     updated_time timestamp with time zone,
     next_update_time timestamp with time zone,
     ds_id text,
-    agency_id integer,
-    dept_id integer,
+    agency_id integer NOT NULL,
+    dept_id integer NOT NULL,
     name text NOT NULL,
     unit_id integer,
     range_start smallint,
@@ -988,7 +999,7 @@ CREATE TABLE public.datasets (
 
 CREATE TABLE public.departments (
     id integer NOT NULL,
-    agency_id integer,
+    agency_id integer NOT NULL,
     name text NOT NULL,
     search tsvector
 );
@@ -1001,12 +1012,12 @@ CREATE TABLE public.departments (
 
 CREATE TABLE public.obs (
     id bigint NOT NULL,
-    dataset_id integer,
-    code_id integer,
-    unit_id integer,
-    period_id integer,
-    obs_year integer,
-    obs_val real
+    dataset_id integer NOT NULL,
+    code_id integer NOT NULL,
+    unit_id integer NOT NULL,
+    period_id integer NOT NULL,
+    obs_year integer NOT NULL,
+    obs_val real NOT NULL
 );
 
 
@@ -1327,12 +1338,12 @@ ALTER TABLE ONLY public.datasets
 
 
 --
--- TOC entry 3123 (class 2606 OID 24957)
+-- TOC entry 3123 (class 2606 OID 54694)
 -- Name: datasets datasets_unique1; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.datasets
-    ADD CONSTRAINT datasets_unique1 UNIQUE (ds_id) INCLUDE (ds_id);
+    ADD CONSTRAINT datasets_unique1 UNIQUE (agency_id, name, dept_id);
 
 
 --
@@ -1472,7 +1483,7 @@ CREATE INDEX units_search_idx ON public.units USING gin (search);
 
 
 --
--- TOC entry 3142 (class 2620 OID 17283)
+-- TOC entry 3144 (class 2620 OID 17283)
 -- Name: agencies agencies_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1480,7 +1491,7 @@ CREATE TRIGGER agencies_tr1 BEFORE INSERT OR UPDATE ON public.agencies FOR EACH 
 
 
 --
--- TOC entry 3144 (class 2620 OID 16531)
+-- TOC entry 3146 (class 2620 OID 16531)
 -- Name: classifier classifier_on_update; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1490,7 +1501,7 @@ ALTER TABLE public.classifier DISABLE TRIGGER classifier_on_update;
 
 
 --
--- TOC entry 3145 (class 2620 OID 17291)
+-- TOC entry 3147 (class 2620 OID 17291)
 -- Name: classifier classifier_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1498,7 +1509,7 @@ CREATE TRIGGER classifier_tr1 BEFORE INSERT OR UPDATE ON public.classifier FOR E
 
 
 --
--- TOC entry 3148 (class 2620 OID 24934)
+-- TOC entry 3150 (class 2620 OID 24934)
 -- Name: codes codes_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1506,7 +1517,7 @@ CREATE TRIGGER codes_tr1 BEFORE INSERT OR UPDATE ON public.codes FOR EACH ROW EX
 
 
 --
--- TOC entry 3149 (class 2620 OID 24945)
+-- TOC entry 3151 (class 2620 OID 24945)
 -- Name: codevals codevals_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1514,7 +1525,7 @@ CREATE TRIGGER codevals_tr1 BEFORE INSERT OR UPDATE ON public.codevals FOR EACH 
 
 
 --
--- TOC entry 3150 (class 2620 OID 24979)
+-- TOC entry 3152 (class 2620 OID 24979)
 -- Name: datasets datasets_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1522,7 +1533,7 @@ CREATE TRIGGER datasets_tr1 BEFORE INSERT OR UPDATE ON public.datasets FOR EACH 
 
 
 --
--- TOC entry 3143 (class 2620 OID 17661)
+-- TOC entry 3145 (class 2620 OID 17661)
 -- Name: departments departments_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1530,7 +1541,7 @@ CREATE TRIGGER departments_tr1 BEFORE INSERT OR UPDATE ON public.departments FOR
 
 
 --
--- TOC entry 3147 (class 2620 OID 17667)
+-- TOC entry 3149 (class 2620 OID 17667)
 -- Name: periods periods_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1538,7 +1549,7 @@ CREATE TRIGGER periods_tr1 BEFORE INSERT OR UPDATE ON public.periods FOR EACH RO
 
 
 --
--- TOC entry 3146 (class 2620 OID 17672)
+-- TOC entry 3148 (class 2620 OID 17672)
 -- Name: units units_tr1; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1546,34 +1557,34 @@ CREATE TRIGGER units_tr1 BEFORE INSERT OR UPDATE ON public.units FOR EACH ROW EX
 
 
 --
--- TOC entry 3133 (class 2606 OID 24939)
+-- TOC entry 3133 (class 2606 OID 58980)
 -- Name: codevals codevals_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.codevals
-    ADD CONSTRAINT codevals_fk1 FOREIGN KEY (code_id) REFERENCES public.codes(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT codevals_fk1 FOREIGN KEY (code_id) REFERENCES public.codes(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- TOC entry 3134 (class 2606 OID 24958)
+-- TOC entry 3136 (class 2606 OID 58955)
 -- Name: datasets datasets_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.datasets
-    ADD CONSTRAINT datasets_fk1 FOREIGN KEY (agency_id) REFERENCES public.agencies(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT datasets_fk1 FOREIGN KEY (agency_id) REFERENCES public.agencies(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- TOC entry 3135 (class 2606 OID 24963)
+-- TOC entry 3137 (class 2606 OID 58960)
 -- Name: datasets datasets_fk2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.datasets
-    ADD CONSTRAINT datasets_fk2 FOREIGN KEY (dept_id) REFERENCES public.departments(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT datasets_fk2 FOREIGN KEY (dept_id) REFERENCES public.departments(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- TOC entry 3136 (class 2606 OID 24968)
+-- TOC entry 3134 (class 2606 OID 24968)
 -- Name: datasets datasets_fk3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1582,7 +1593,7 @@ ALTER TABLE ONLY public.datasets
 
 
 --
--- TOC entry 3137 (class 2606 OID 24973)
+-- TOC entry 3135 (class 2606 OID 24973)
 -- Name: datasets datasets_fk4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1591,16 +1602,34 @@ ALTER TABLE ONLY public.datasets
 
 
 --
--- TOC entry 3132 (class 2606 OID 16412)
+-- TOC entry 3138 (class 2606 OID 58965)
+-- Name: datasets datasets_fk5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.datasets
+    ADD CONSTRAINT datasets_fk5 FOREIGN KEY (code_id) REFERENCES public.codes(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- TOC entry 3139 (class 2606 OID 58970)
+-- Name: datasets datasets_fk6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.datasets
+    ADD CONSTRAINT datasets_fk6 FOREIGN KEY (period_id) REFERENCES public.periods(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- TOC entry 3132 (class 2606 OID 58985)
 -- Name: departments departments_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.departments
-    ADD CONSTRAINT departments_fk1 FOREIGN KEY (agency_id) REFERENCES public.agencies(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT departments_fk1 FOREIGN KEY (agency_id) REFERENCES public.agencies(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- TOC entry 3138 (class 2606 OID 24989)
+-- TOC entry 3140 (class 2606 OID 24989)
 -- Name: obs obs_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1609,33 +1638,33 @@ ALTER TABLE ONLY public.obs
 
 
 --
--- TOC entry 3139 (class 2606 OID 24994)
+-- TOC entry 3141 (class 2606 OID 58990)
 -- Name: obs obs_fk2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.obs
-    ADD CONSTRAINT obs_fk2 FOREIGN KEY (code_id) REFERENCES public.codevals(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT obs_fk2 FOREIGN KEY (code_id) REFERENCES public.codevals(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- TOC entry 3140 (class 2606 OID 24999)
+-- TOC entry 3142 (class 2606 OID 58995)
 -- Name: obs obs_fk3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.obs
-    ADD CONSTRAINT obs_fk3 FOREIGN KEY (unit_id) REFERENCES public.units(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT obs_fk3 FOREIGN KEY (unit_id) REFERENCES public.units(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- TOC entry 3141 (class 2606 OID 25004)
+-- TOC entry 3143 (class 2606 OID 59000)
 -- Name: obs obs_fk4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.obs
-    ADD CONSTRAINT obs_fk4 FOREIGN KEY (period_id) REFERENCES public.periods(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT obs_fk4 FOREIGN KEY (period_id) REFERENCES public.periods(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2020-10-09 16:48:28
+-- Completed on 2020-10-13 16:36:03
 
 --
 -- PostgreSQL database dump complete

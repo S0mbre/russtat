@@ -6,6 +6,7 @@
 ## @package russtat.globs
 # @brief Global variables.
 from datetime import datetime, timedelta
+import sys
 
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 # --------------------------------------------------------------- #
@@ -15,6 +16,16 @@ DEBUGGING = False
 NL = '\n'
 
 # --------------------------------------------------------------- #
+
+## Prints a message to a file stream / console accounting for globs::DEBUGGING flag.
+# @param message `str` message to output
+# @param force_print `bool` set to `True` to output message disregarding globs::DEBUGGING
+# @param file `file` file stream to output the message to (default = STDOUT)
+# @param end `str` message ending suffix (default = new line symbol)
+# @param flush `bool` `True` to flush the IO buffer immediately
+def report(message, force=False, file=sys.stdout, end='\n', flush=False):
+    if force or DEBUGGING:
+        print(message, end=end, file=file, flush=flush)
 
 ## Checks if an object is iterable (e.g. a collection or iterator).
 # @returns `bool` `True` if `obj` is iterable / `False` if not
@@ -26,6 +37,7 @@ def is_iterable(obj):
     except:
         return False
 
+## Timing decorator function.
 def timeit(f, printto=None, prefix='>>>> ELAPSED ', suffix=''):
     def wrapped(*args, **kwargs):
         dt1 = datetime.now()

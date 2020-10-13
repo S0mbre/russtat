@@ -804,6 +804,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-fiveanineatwoasixatwo",
+        "title": "Ввод жилья в многоквартирных жилых домах",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveanineatwoasixatwo/data-2020-10-12-structure-2020-10-12.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-fourazeroafourafourafour",
         "title": "Ввод новых основных фондов по полному кругу организаций по 2016 г.",
         "link": "https://fedstat.ru/opendata/7708234640-fourazeroafourafourafour/data-2017-12-15-structure-2017-12-15.xml",
@@ -1584,27 +1590,27 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-threeasevenazeroaoneazero",
-        "title": "Выполненный пассажирооборот",
-        "link": "https://fedstat.ru/opendata/7708234640-threeasevenazeroaoneazero/data-2019-12-25-structure-2019-12-25.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-threeasevenazeroatwoazero",
         "title": "Выполненный пассажирооборот",
         "link": "https://fedstat.ru/opendata/7708234640-threeasevenazeroatwoazero/data-2019-10-10-structure-2019-10-10.xml",
         "format": "xml"
     },
     {
-        "identifier": "7708234640-threeasevenazeroaoneaeight",
-        "title": "Выполненный тоннокилометраж",
-        "link": "https://fedstat.ru/opendata/7708234640-threeasevenazeroaoneaeight/data-2019-10-10-structure-2019-10-10.xml",
+        "identifier": "7708234640-threeasevenazeroaoneazero",
+        "title": "Выполненный пассажирооборот",
+        "link": "https://fedstat.ru/opendata/7708234640-threeasevenazeroaoneazero/data-2019-12-25-structure-2019-12-25.xml",
         "format": "xml"
     },
     {
         "identifier": "7708234640-threeasevenazeroazeroanine",
         "title": "Выполненный тоннокилометраж",
         "link": "https://fedstat.ru/opendata/7708234640-threeasevenazeroazeroanine/data-2019-12-25-structure-2019-12-25.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-threeasevenazeroaoneaeight",
+        "title": "Выполненный тоннокилометраж",
+        "link": "https://fedstat.ru/opendata/7708234640-threeasevenazeroaoneaeight/data-2019-10-10-structure-2019-10-10.xml",
         "format": "xml"
     },
     {
@@ -12984,15 +12990,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouratwoaeightaoneafive",
-        "title": "Количество рассмотренных заявлений о предоставлении лицензии",
-        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightaoneafive/data-2020-08-30-structure-2020-08-30.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fouratwoaeightasevenanine",
         "title": "Количество рассмотренных заявлений о предоставлении лицензии",
         "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightasevenanine/data-2013-08-19-structure-2013-08-19.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fouratwoaeightaoneafive",
+        "title": "Количество рассмотренных заявлений о предоставлении лицензии",
+        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightaoneafive/data-2020-08-30-structure-2020-08-30.xml",
         "format": "xml"
     },
     {
@@ -13782,15 +13788,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-sixazeroaoneazeroanine",
-        "title": "Количество твердых коммунальных отходов, образованных у регионального оператора, и твердых коммунальных отходов, поступивших к региональному оператору от других хозяйствующих субъектов (сумма граф 2 и 3 формы N 2-ТП (отходы))",
-        "link": "https://fedstat.ru/opendata/7708234640-sixazeroaoneazeroanine/data-2020-06-03-structure-2020-06-03.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-sixazeroaoneaoneaone",
         "title": "Количество твердых коммунальных отходов, образованных у регионального оператора, и твердых коммунальных отходов, поступивших к региональному оператору от других хозяйствующих субъектов (сумма граф 2 и 3 формы N 2-ТП (отходы))",
         "link": "https://fedstat.ru/opendata/7708234640-sixazeroaoneaoneaone/data-2020-06-03-structure-2020-06-03.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-sixazeroaoneazeroanine",
+        "title": "Количество твердых коммунальных отходов, образованных у регионального оператора, и твердых коммунальных отходов, поступивших к региональному оператору от других хозяйствующих субъектов (сумма граф 2 и 3 формы N 2-ТП (отходы))",
+        "link": "https://fedstat.ru/opendata/7708234640-sixazeroaoneazeroanine/data-2020-06-03-structure-2020-06-03.xml",
         "format": "xml"
     },
     {
@@ -17532,6 +17538,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-fourathreeaoneathreeanine",
+        "title": "Общее количество наложенных административных штрафов",
+        "link": "https://fedstat.ru/opendata/7708234640-fourathreeaoneathreeanine/data-2020-02-14-structure-2020-02-14.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-fouratwoaeightanineaone",
         "title": "Общее количество наложенных административных штрафов",
         "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightanineaone/data-2017-06-05-structure-2017-06-05.xml",
@@ -17541,12 +17553,6 @@
         "identifier": "7708234640-fiveasixatwoanineazero",
         "title": "Общее количество наложенных административных штрафов",
         "link": "https://fedstat.ru/opendata/7708234640-fiveasixatwoanineazero/data-2018-05-30-structure-2018-05-30.xml",
-        "format": "xml"
-    },
-    {
-        "identifier": "7708234640-fourathreeaoneathreeanine",
-        "title": "Общее количество наложенных административных штрафов",
-        "link": "https://fedstat.ru/opendata/7708234640-fourathreeaoneathreeanine/data-2020-02-14-structure-2020-02-14.xml",
         "format": "xml"
     },
     {
@@ -18984,6 +18990,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-fiveanineatwoasixathree",
+        "title": "Объем жилищного строительства",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveanineatwoasixathree/data-2020-10-12-structure-2020-10-12.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-threeasevenaeightafouraeight",
         "title": "Объем заготовленной древесины",
         "link": "https://fedstat.ru/opendata/7708234640-threeasevenaeightafouraeight/data-2019-08-09-structure-2019-08-09.xml",
@@ -20358,6 +20370,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-threeasixaoneatwoasix",
+        "title": "Остатки драгоценных металлов",
+        "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneatwoasix/data-2012-03-23-structure-2012-03-23.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-threeasixaoneaoneanine",
         "title": "Остатки драгоценных металлов",
         "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneaoneanine/data-2015-03-25-structure-2015-03-25.xml",
@@ -20367,12 +20385,6 @@
         "identifier": "7708234640-threeasixaoneatwoathree",
         "title": "Остатки драгоценных металлов",
         "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneatwoathree/data-2012-03-30-structure-2012-03-30.xml",
-        "format": "xml"
-    },
-    {
-        "identifier": "7708234640-threeasixaoneatwoasix",
-        "title": "Остатки драгоценных металлов",
-        "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneatwoasix/data-2012-03-23-structure-2012-03-23.xml",
         "format": "xml"
     },
     {
@@ -22254,15 +22266,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-threeanineaoneaeightaone",
-        "title": "Перегрузочные комплексы для обслуживания транспортного флота",
-        "link": "https://fedstat.ru/opendata/7708234640-threeanineaoneaeightaone/data-2019-09-16-structure-2019-09-16.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-threeafiveazeroafiveatwo",
         "title": "Перегрузочные комплексы для обслуживания транспортного флота",
         "link": "https://fedstat.ru/opendata/7708234640-threeafiveazeroafiveatwo/data-2019-09-16-structure-2019-09-16.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-threeanineaoneaeightaone",
+        "title": "Перегрузочные комплексы для обслуживания транспортного флота",
+        "link": "https://fedstat.ru/opendata/7708234640-threeanineaoneaeightaone/data-2019-09-16-structure-2019-09-16.xml",
         "format": "xml"
     },
     {
@@ -31104,15 +31116,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-sixazeroatwoazeroafive",
-        "title": "Суммарный экспорт по кодам ТН ВЭД ЕАЭС",
-        "link": "https://fedstat.ru/opendata/7708234640-sixazeroatwoazeroafive/data-2020-05-27-structure-2020-05-27.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-sixazeroatwoazeroathree",
         "title": "Суммарный экспорт по кодам ТН ВЭД ЕАЭС",
         "link": "https://fedstat.ru/opendata/7708234640-sixazeroatwoazeroathree/data-2020-06-26-structure-2020-06-26.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-sixazeroatwoazeroafive",
+        "title": "Суммарный экспорт по кодам ТН ВЭД ЕАЭС",
+        "link": "https://fedstat.ru/opendata/7708234640-sixazeroatwoazeroafive/data-2020-05-27-structure-2020-05-27.xml",
         "format": "xml"
     },
     {

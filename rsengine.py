@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 import requests, os, sys, json, re
 from datetime import datetime as dt, timedelta
 from multiprocessing import Pool
-from globs import *
+from globs import report, is_iterable
 
 ## `str` permanent URL of the EMISS dataset list
 URL_EMISS_LIST = 'https://fedstat.ru/opendata/list.xml'
@@ -142,31 +142,31 @@ class Russtat:
                 json_file = os.path.abspath(os.path.join(self.root_folder, loadfromjson))
                 with open(json_file, 'r', encoding='utf-8') as infile:
                     self.datasets = json.load(infile)
-                self._report(f'Loaded from JSON ({json_file}): {len(self.datasets)} datasets')
+                report(f'Loaded from JSON ({json_file}): {len(self.datasets)} datasets')
                 return
             except Exception as err:
-                self._report(f"{err}   Importing from XML...")
+                report(f"{err}   Importing from XML...")
                 self.update_dataset_list(xmlfilename, xml_only, overwrite, save2json, None)
             
         outputfile = os.path.abspath(os.path.join(self.root_folder, xmlfilename))
         if not os.path.exists(outputfile) or overwrite:       
             try:
                 os.remove(outputfile)
-                self._report(f'Deleted existing XML ({outputfile})')
+                report(f'Deleted existing XML ({outputfile})')
             except Exception as err:
-                self._report(err)                
+                report(err)                
             try:
                 res = requests.get(URL_EMISS_LIST, timeout=self.connection_timeout)
                 if not res: 
-                    self._report(f'Could not retrieve dataset list from {URL_EMISS_LIST}')
+                    report(f'Could not retrieve dataset list from {URL_EMISS_LIST}')
                     return
 
                 with open(outputfile, 'wb') as outfile:
                     outfile.write(res.content)
-                self._report(f'Downloaded XML from {URL_EMISS_LIST} to {outputfile}')
+                report(f'Downloaded XML from {URL_EMISS_LIST} to {outputfile}')
 
             except Exception as err:
-                self._report(err)
+                report(err)
                 return
         
         tree = ET.parse(outputfile, ET.XMLParser(encoding='utf-8'))
@@ -176,23 +176,23 @@ class Russtat:
             if xml_only and item.find('format').text != 'xml':
                 continue
             self.datasets.append({child.tag: child.text.strip('"').strip() for child in item})
-        self._report(f'Loaded from XML ({outputfile}): {len(self.datasets)} datasets')
+        report(f'Loaded from XML ({outputfile}): {len(self.datasets)} datasets')
 
         if del_xml:
             try:
                 os.remove(outputfile)
-                self._report(f'Deleted XML ({outputfile})')
+                report(f'Deleted XML ({outputfile})')
             except Exception as err:
-                self._report(err)
+                report(err)
 
         if save2json:
             try:
                 json_file = os.path.abspath(os.path.join(self.root_folder, save2json))
                 with open(json_file, 'w', encoding='utf-8') as outfile:
                     json.dump(self.datasets, outfile, ensure_ascii=False, indent=4)
-                self._report(f'Saved to JSON ({json_file})')
+                report(f'Saved to JSON ({json_file})')
             except Exception as err:
-                self._report(err)
+                report(err)
 
     ## Searches for datasets in their 'title' field for a given pattern.
     # @param pattern `str` substring / pattern to search for
@@ -232,18 +232,8 @@ class Russtat:
                 (not fullmatch and \
                     ((case_sense and pattern in title) or (not case_sense and pattern.lower() in title.lower()))):
                     results.append(item)
-        self._report(f"Found {len(results)} matches for query '{pattern}'")
+        report(f"Found {len(results)} matches for query '{pattern}'")
         return results
-
-    ## Prints a message to a file stream / console accounting for globs::DEBUGGING flag.
-    # @param message `str` message to output
-    # @param force_print `bool` set to `True` to output message disregarding globs::DEBUGGING
-    # @param file `file` file stream to output the message to (default = STDOUT)
-    # @param end `str` message ending suffix (default = new line symbol)
-    # @param flush `bool` `True` to flush the IO buffer immediately
-    def _report(self, message, force_print=False, file=sys.stdout, end='\n', flush=False):
-        if force_print or DEBUGGING:
-            print(message, end=end, file=file, flush=flush)
 
     ## Gets the value (text) of a given XML node / children with an optional default value.
     # @param node `ElementTree node` the parent XML node
@@ -389,7 +379,7 @@ class Russtat:
                     if max_row > 0 and n > max_row: break
 
             except Exception as err:
-                self._report(err)
+                report(err)
                 break
 
         return data
@@ -477,17 +467,17 @@ class Russtat:
             if isinstance(dataset, str):
                 datasets = self.find_datasets(dataset)
                 if not datasets:
-                    self._report(f"No datasets match query '{dataset}'")
+                    report(f"No datasets match query '{dataset}'")
                     return None
                 dataset = datasets[0]
             elif isinstance(dataset, int):
                 try:
                     dataset = self[dataset]
                 except Exception as err:
-                    self._report(err)
+                    report(err)
                     return None
             elif not isinstance(dataset, dict):
-                self._report(f"Bad data type for 'dataset': {type(dataset)}")
+                report(f"Bad data type for 'dataset': {type(dataset)}")
                 return None
         
         if loadfromjson:
@@ -500,10 +490,10 @@ class Russtat:
                 with open(os.path.abspath(loadfromjson), 'r', encoding='utf-8') as infile:
                     ds = json.load(infile, object_hook=json_hook)             
             except Exception as err:
-                self._report(f"{err}   Importing from XML...")
+                report(f"{err}   Importing from XML...")
                 return self.get_one(dataset, xmlfilename, overwrite, del_xml, save2json, None, on_dataset, on_dataset_kwargs)
             else:
-                self._report(f'Loaded from JSON ({loadfromjson})')
+                report(f'Loaded from JSON ({loadfromjson})')
                 if on_dataset: 
                     if on_dataset_kwargs:
                         on_dataset(ds, **on_dataset_kwargs)
@@ -512,8 +502,8 @@ class Russtat:
                 return ds
 
         if not 'link' in dataset:
-            self._report('Dataset has no "link" object!')
-            return None
+            report('Dataset has no "link" object!')
+            #return None
 
         if xmlfilename == 'auto':
             xmlfilename = dataset.get('identifier', 'dataset') + '.xml'
@@ -522,22 +512,22 @@ class Russtat:
         if not os.path.exists(outputfile) or overwrite:       
             try:
                 os.remove(outputfile)
-                self._report(f'Deleted existing XML ({outputfile})')
+                report(f'Deleted existing XML ({outputfile})')
             except Exception as err:
-                self._report(err)                
+                report(err)                
             try:
                 res = requests.get(dataset['link'], timeout=self.connection_timeout)
                 if not res: 
-                    self._report(f"Could not retrieve dataset from {dataset['link']}")
-                    return None
+                    report(f"Could not retrieve dataset from {dataset['link']}")
+                    #return None
 
                 with open(outputfile, 'wb') as outfile:
                     outfile.write(res.content)
-                self._report(f"Downloaded XML from {dataset['link']} to {outputfile}")
+                report(f"Downloaded XML from {dataset['link']} to {outputfile}")
 
             except Exception as err:
-                self._report(err)
-                return None
+                report(err)
+                #return None
 
         ds = {'prepared': dt.now(), 'id': dataset['identifier'], 'agency_id': '', 'codes': {}, 
               'full_name': dataset['title'], 'unit': '', 'periodicity': {'value': '', 'releases': '', 'next': dt.fromisoformat('1900-01-01')}, 
@@ -582,16 +572,16 @@ class Russtat:
                     json_file = os.path.abspath(os.path.join(self.root_folder, save2json))
                     with open(json_file, 'w', encoding='utf-8') as outfile:
                         json.dump(ds, outfile, ensure_ascii=False, indent=4, default=str)
-                    self._report(f'Saved to JSON ({json_file})')
+                    report(f'Saved to JSON ({json_file})')
                 except Exception as err:
-                    self._report(err)
+                    report(err)
 
             if del_xml:
                 try:
                     os.remove(outputfile)
-                    self._report(f'Deleted XML ({outputfile})')
+                    report(f'Deleted XML ({outputfile})')
                 except Exception as err:
-                    self._report(err)
+                    report(err)
 
             if on_dataset: 
                 if on_dataset_kwargs:
@@ -600,10 +590,10 @@ class Russtat:
                     on_dataset(ds)
 
         except Exception as err:
-            self._report(err)
+            report(err)
             
             # try to process empty dataset
-            if on_dataset and not ds is None: 
+            if on_dataset: 
                 try:
                     if on_dataset_kwargs:
                         on_dataset(ds, **on_dataset_kwargs)
@@ -615,9 +605,9 @@ class Russtat:
             if del_xml:
                 try:
                     os.remove(outputfile)
-                    self._report(f'Deleted XML ({outputfile})')
+                    report(f'Deleted XML ({outputfile})')
                 except Exception as err2:
-                    self._report(err2)
+                    report(err2)
                     
             return ds
 
@@ -685,16 +675,16 @@ class Russtat:
                 datasets = [self.datasets[datasets]]
             elif is_iterable(datasets):
                 if len(datasets) == 0:
-                    self._report('Empty datasets parameter!', True)
+                    report('Empty datasets parameter!', True)
                     return None          
                 if isinstance(datasets[0], int) or isinstance(datasets[0], str):
                     datasets = [self[k] for k in datasets]            
             else:
-                self._report('Bad type: datasets', True)
+                report('Bad type: datasets', True)
                 return None
 
             if not datasets:
-                self._report('No datasets matching your request.', True)
+                report('No datasets matching your request.', True)
                 return None
 
             # prepare args for worker function        
@@ -718,7 +708,7 @@ class Russtat:
                     args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_, on_dataset, on_dataset_kwargs))
                     
                 except Exception as err:
-                    self._report(err, True)
+                    report(err, True)
                     return None
 
         if processes == 'auto': processes = None
@@ -730,19 +720,20 @@ class Russtat:
                 if wait: pool.join()
                 return result
             except Exception as err:
-                self._report(err, True)
+                report(err, True)
                 return None
 
-    def filter_datasets_only_new(self, db, datasets=None):
+    def filter_datasets(self, db, datasets=None, filterds='new'):
         if datasets is None: datasets = self.datasets
-        datasets = set(ds['title'] for ds in datasets)
-        res = db.fetch('select distinct name from datasets')
-        existing_ds = set(t[0] for t in res) if res else set()
-        return list(datasets - existing_ds)
+        res = []
+        
+        existing_ds = db.fetch('select distinct lower(name) from datasets')
+        existing_ds = [t[0].strip() for t in existing_ds] if existing_ds else []
 
-    def filter_datasets_only_existing(self, db, datasets=None):
-        if datasets is None: datasets = self.datasets
-        datasets = set(ds['title'] for ds in datasets)
-        res = db.fetch('select distinct name from datasets')
-        existing_ds = set(t[0] for t in res) if res else set()
-        return list(datasets & existing_ds)
+        for ds in datasets:
+            title = ' '.join(ds['title'].split()).lower()
+            match = title in existing_ds
+            if (filterds == 'new' and not match) or (filterds == 'existing' and match):
+                res.append(ds)
+
+        return res
