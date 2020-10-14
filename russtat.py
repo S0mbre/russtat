@@ -145,6 +145,9 @@ def testing():
     dbpassword = input('Enter DB password:')
     db = Russtatdb(password=dbpassword)
 
+    db.print_classificator(max_categories=50, print_ids=False, max_ds=5) 
+    return
+
     # example 1: simple data query
     res = db.get_data(condition="dataset like '%комит%' and year = 2018", limit=30, get_header=True)
     if res:
@@ -173,12 +176,12 @@ def testing():
 ## Main function that creates the Russtat engine and retrieves / stores data.
 def main():
 
-    if len(sys.argv) == 1:
-        update_db()
-    else:
-        update_db(*sys.argv[1:])
+    # if len(sys.argv) == 1:
+    #     update_db()
+    # else:
+    #     update_db(*sys.argv[1:])
 
-    #testing()
+    testing()
 
 # --------------------------------------------------------------- #
 
