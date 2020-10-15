@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<!--
+	Hielo by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>RUSSTAT: Данные Росстата</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='templated-hielo/assets/css/main.css') }}" />
+	</head>
+	<body class="subpage">
+
+		<!-- Header -->
+			<header id="header">				
+				<a href="#menu">Меню</a>
+			</header>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="">Домой</a></li>
+				</ul>
+			</nav>
+			
+			<section id="One" class="wrapper style3">
+				<div class="inner">
+					<header class="align-center">
+						<div class="logo"><img src="{{ url_for('static', filename='templated-hielo/images/emblema_fsgs.png') }}" align="center" width="100" height="100" alt="" /></div>
+						<header>
+							<h2>RUSSTAT: Данные Росстата</h2>
+						</header>
+					</header>
+				</div>
+			</section>
+
+		<!-- Content -->
+		{% block content %} {% endblock %}
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="container">
+					<ul class="icons">
+						<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+						<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+						<li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+					</ul>
+				</div>
+				<div class="copyright">
+					&copy; Копирайт...
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="{{ url_for('static', filename='templated-hielo/assets/js/jquery.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='templated-hielo/assets/js/jquery.scrollex.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='templated-hielo/assets/js/skel.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='templated-hielo/assets/js/util.js') }}"></script>
+			<script src="{{ url_for('static', filename='templated-hielo/assets/js/main.js') }}"></script>
+
+	</body>
+</html>

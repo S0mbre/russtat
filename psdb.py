@@ -273,7 +273,32 @@ class Russtatdb(Psdb):
             tout.append(x)
         return tout
 
-    def print_classificator(self, ignore_root=True, max_categories=None, print_names=True, print_ids=True, max_ds=10, file=None):
+    def collect_classificator(self, ignore_root=True, max_categories=None):
+        lst = self.get_classificator(ignore_root)
+        l = {}
+        max_categories = max_categories if isinstance(max_categories, int) else len(lst)
+        results = []
+        for el in lst[:max_categories]:
+            le = len(el[1])
+
+            for i in range(len(el[0])):
+                if l.get(i, '') == el[0][i]:
+                    continue            
+                results.append({'level': i, 'name': el[0][i], 'count': le, 'id': -1})
+                l[i] = el[0][i]          
+
+            if le:                
+                dsets = el[1]
+                dsnames = (x[0] for x in self.get_datasets_by_ids(dsets, columns='dataset'))
+                dsets = zip(dsets, dsnames)
+
+                for ds in dsets:
+                    results.append({'level': i + 1, 'name': ds[1], 'count': 1, 'id': ds[0]})
+        
+        return results              
+
+    def print_classificator(self, ignore_root=True, max_categories=None, print_names=True, print_ids=True, 
+                            max_ds=10, indent='>>', file=None):
         def pr(w):
             if file is None:
                 print(w)
@@ -287,7 +312,7 @@ class Russtatdb(Psdb):
             for i in range(len(el[0])):
                 if l.get(i, '') == el[0][i]:
                     continue            
-                pr(f"{'  ' * i}{el[0][i]}")
+                pr(f"{indent * i}{el[0][i]}")
                 l[i] = el[0][i]
             le = len(el[1])
             if le:
@@ -298,14 +323,14 @@ class Russtatdb(Psdb):
                     dsets = zip(dsets, dsnames)
                 for ds in dsets:
                     if print_ids:
-                        pr("==> {}: {}".format(*ds) if print_names else f"==> {ds}")
+                        pr(f"{indent * (i + 1)}{ds[0]}: {ds[1]}" if print_names else f"{indent * i}{ds}")
                     elif print_names:
-                        pr(f"==> {ds[1]}")
+                        pr(f"{indent * (i + 1)}{ds[1]}")
                 if trunc:
-                    pr('==> ...')
-                pr(f"[TOTAL {le} DATASETS]")
+                    pr(f'{indent * (i + 1)} ...')
+                pr(f"{indent * (i + 1)}[TOTAL {le} DATASETS]")
             else:
-                pr('[NO DATASETS]')
+                pr(f'{indent * (i + 1)}[NO DATASETS]')
 
     def get_datasets_by_ids(self, ids, **kwargs):
         if ids:
