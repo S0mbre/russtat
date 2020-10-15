@@ -6,7 +6,6 @@
 ## @package russtat.russtat
 # @brief Application entry point.
 import os, sys, json, traceback
-import pandas as pd
 from datetime import datetime
 from rsengine import Russtat
 from psdb import Russtatdb
@@ -145,8 +144,8 @@ def testing():
     dbpassword = input('Enter DB password:')
     db = Russtatdb(password=dbpassword)
 
-    db.print_classificator(max_categories=50, print_ids=False, max_ds=5) 
-    return
+    #db.print_classificator(max_categories=50, print_ids=False, max_ds=5) 
+    #return
 
     # example 1: simple data query
     res = db.get_data(condition="dataset like '%комит%' and year = 2018", limit=30, get_header=True)
@@ -157,10 +156,9 @@ def testing():
         print('-' * 30)
 
     # example 2: full-text search and convertion to pandas DataFrame
-    res = db.findin_data('детей & россия', limit=30, as_dict=True)
-    if res: 
-        df = pd.DataFrame(res)
-        print(df)
+    res = db.get_data(condition="dataset like '%комит%' and year = 2018", limit=30, fetch='dataframe')
+    if not res is None:        
+        print(res.loc[:, 'prepared':'agency'])
         print('-' * 30)
 
     # example 3: raw SQL query

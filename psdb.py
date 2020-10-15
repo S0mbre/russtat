@@ -7,6 +7,7 @@
 # @brief PostgreSQL manipulation class.
 import psycopg2
 from psycopg2 import DatabaseError
+import pandas as pd
 from globs import NL, report, is_iterable
 
 # --------------------------------------------------------------- # 
@@ -102,10 +103,9 @@ class Psdb:
             return self.con.cursor().mogrify(sql)
         cur = self.exec(sql, on_error=on_error)
         if cur is None: return None
-        if fetch == 'list':
-            return (self._get_column_names(cur), cur.fetchall()) if get_header else cur.fetchall()
-        elif fetch == 'one':
-            return (self._get_column_names(cur), cur.fetchone()) if get_header else cur.fetchone()
+        foo = {'list': cur.fetchall, 'one': cur.fetchone}
+        if fetch in foo:
+            return (self._get_column_names(cur), foo[fetch]()) if get_header else foo[fetch]()
         else:
             return (self._get_column_names(cur), cur) if get_header else cur
 
@@ -119,10 +119,14 @@ class Psdb:
                 data[n].append(row[i])
         return data
 
+    def fetch_dataframe(self, sql, on_error=print):
+        res = self.fetch_dict(sql, on_error)
+        return pd.DataFrame(res) if res else None
+
     def sqlquery(self, table, columns='*', distinct=True, joins=None, condition=None, conj='and',
                 groupby=None, having=None, window=None, union=None, orderby=None,
                 limit=None, offset=None,
-                schema='public', as_dict=False, **kwargs):
+                schema='public', fetch='iter', **kwargs):
         if is_iterable(columns): columns = ', '.join(columns)
         if is_iterable(condition): 
             condition = f' {conj} '.join(f"({c})" for c in condition)
@@ -160,8 +164,8 @@ class Psdb:
             f"{limit} {offset}".strip() + ';'
         while '  ' in q: q = q.replace('  ', ' ')
 
-        if as_dict:
-            foo = self.fetch_dict
+        if fetch in ('dict', 'dataframe'):
+            foo = self.fetch_dict if fetch == 'dict' else self.fetch_dataframe
             kwargs = {k: v for k, v in kwargs.items() if k in ['sql', 'on_error']}
         else:
             foo = self.fetch
@@ -317,7 +321,7 @@ class Russtatdb(Psdb):
             return self.get_datasets(condition=f"{ds} like $$%{pat}%$$", **kwargs)
 
     def get_dataset_info(self, id):
-        d = self.sqlquery('all_datasets', condition=f"id = {id}", limit=1, as_dict=True)
+        d = self.sqlquery('all_datasets', condition=f"id = {id}", limit=1, fetch='dict')
         if d:
             dd = {k: v[0] for k, v in d.items()}
             return dd
