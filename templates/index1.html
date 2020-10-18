@@ -1,0 +1,48 @@
+{% extends 'generic.html' %}
+
+{% block content %}
+<div id="main" class="container">
+	<div class="row 200%">
+		<div class="6u 12u$(medium)">
+			<h3>Классификатор</h3>
+			<form method="post" action="#">
+				<div class="row uniform">
+					<div class="9u 12u$(small)">
+						<input type="text" name="query_classifier" id="query_classifier" value="" placeholder="Фильтр" />
+					</div>
+				</div>
+			</form>
+			<div class="css-treeview">
+				<ul>
+				{% set l = 0 %}
+				{% for item in classifier %}
+							
+					{% if item['level'] > l %} 
+						{% for n in range(item['level'] - l) %}<ul>{% endfor %}
+						<!-- Break -->
+					{% elif item['level'] < l %}
+						{% for n in range(l - item['level']) %}</ul>{% endfor %}
+						<!-- Break -->
+					{% endif %}
+					
+					{% if item['id'] == -1 %}
+						<li><label>{{ item['name'] }} [{{ item['count'] }}]</label></li>
+					{% else %}
+						<li><a href="./">{{ item['name'] }}</a></li>
+					{% endif %}
+					
+					{% set l = item['level'] %}
+					
+				{% endfor %}
+				</ul>
+			</div>
+		</div>
+		
+		<div class="6u 12u$(medium)">
+			<h3>Датасеты</h3>
+			<!-- Break -->
+			<!-- Break -->
+		</div>
+	</div>
+</div>
+{% endblock %}

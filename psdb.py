@@ -281,11 +281,13 @@ class Russtatdb(Psdb):
         for el in lst[:max_categories]:
             le = len(el[1])
 
+            j = 0
             for i in range(len(el[0])):
                 if l.get(i, '') == el[0][i]:
                     continue            
                 results.append({'level': i, 'name': el[0][i], 'count': le, 'id': -1})
-                l[i] = el[0][i]          
+                l[i] = el[0][i]
+                j = i + 1    
 
             if le:                
                 dsets = el[1]
@@ -293,7 +295,7 @@ class Russtatdb(Psdb):
                 dsets = zip(dsets, dsnames)
 
                 for ds in dsets:
-                    results.append({'level': i + 1, 'name': ds[1], 'count': 1, 'id': ds[0]})
+                    results.append({'level': j, 'name': ds[1], 'count': 1, 'id': ds[0]})
         
         return results              
 

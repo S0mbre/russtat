@@ -16,8 +16,8 @@ db = Russtatdb(password='Fknzoo2052')
 
 @app.route('/') 
 def index():
-    classificator = db.collect_classificator()
-    return render_template('index.html', classifier=classificator)
+    classificator = db.collect_classificator(max_categories=50)
+    return render_template('index1.html', classifier=classificator)
 
 # --------------------------------------------------------------- #
 
