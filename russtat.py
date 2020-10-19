@@ -22,6 +22,11 @@ from globs import timeit
 # `None` means STDOUT, otherwise, a valid path is expected
 def add2db(ds, db=None, dbparams={}, logfile=None):   
 
+    if ds is None: return
+
+    print(ds)
+    return
+
     # by default messages are printed to the console
     closelog = False
     if logfile is None:
@@ -169,12 +174,12 @@ def testing():
 ## Main function that creates the Russtat engine and retrieves / stores data.
 def main():
 
-    # if len(sys.argv) == 1:
-    #     update_db()
-    # else:
-    #     update_db(*sys.argv[1:])
+    if len(sys.argv) == 1:
+        update_db()
+    else:
+        update_db(*sys.argv[1:])
 
-    testing()
+    # testing()
 
 # --------------------------------------------------------------- #
 

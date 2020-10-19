@@ -5,7 +5,7 @@
 
 ## @package russtat.globs
 # @brief Global variables.
-from datetime import datetime, timedelta
+from datetime import datetime as dt, timedelta
 import sys
 
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -40,9 +40,9 @@ def is_iterable(obj):
 ## Timing decorator function.
 def timeit(f, printto=None, prefix='>>>> ELAPSED ', suffix=''):
     def wrapped(*args, **kwargs):
-        dt1 = datetime.now()
+        dt1 = dt.now()
         res = f(*args, **kwargs)
-        dif = datetime.now() - dt1
+        dif = dt.now() - dt1
         if printto:
             print(f"{prefix}{str(dif).split('.')[0]}{suffix}", file=printto)
         else:

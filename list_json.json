@@ -3048,6 +3048,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-fiveaeightatwoafiveafive",
+        "title": "Доля занятого населения в возрасте от 25 до 65 лет, прошедшего повышение квалификации и (или) профессиональную подготовку, от общей численности занятого в области экономики населения этой возрастной группы",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveaeightatwoafiveafive/data-2020-10-13-structure-2020-10-13.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-fiveaoneafiveasevenaseven",
         "title": "Доля занятого населения в возрасте от 25 до 65 лет, прошедшего повышение квалификации и (или) профессиональную подготовку, от общей численности занятого в области экономики населения этой возрастной группы за 2015 г.",
         "link": "https://fedstat.ru/opendata/7708234640-fiveaoneafiveasevenaseven/data-2020-09-08-structure-2020-09-08.xml",
@@ -3306,15 +3312,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fiveaeightanineathreeatwo",
-        "title": "Доля лиц с ограниченными возможностями здоровья и инвалидов, систематически занимающихся физической культурой и спортом, в общей численности данной категории населения",
-        "link": "https://fedstat.ru/opendata/7708234640-fiveaeightanineathreeatwo/data-2018-05-22-structure-2018-05-22.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fourathreeaeightatwoasix",
         "title": "Доля лиц с ограниченными возможностями здоровья и инвалидов, систематически занимающихся физической культурой и спортом, в общей численности данной категории населения",
         "link": "https://fedstat.ru/opendata/7708234640-fourathreeaeightatwoasix/data-2018-05-22-structure-2018-05-22.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fiveaeightanineathreeatwo",
+        "title": "Доля лиц с ограниченными возможностями здоровья и инвалидов, систематически занимающихся физической культурой и спортом, в общей численности данной категории населения",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveaeightanineathreeatwo/data-2018-05-22-structure-2018-05-22.xml",
         "format": "xml"
     },
     {
@@ -7962,6 +7968,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-threeaoneaoneathreeaeight",
+        "title": "Искусственное лесовосстановление",
+        "link": "https://fedstat.ru/opendata/7708234640-threeaoneaoneathreeaeight/data-2020-10-15-structure-2020-10-15.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-fouratwoafiveafourazero",
         "title": "Использование  результатов интеллектуальной деятельности по федеральным округам Российской Федерации",
         "link": "https://fedstat.ru/opendata/7708234640-fouratwoafiveafourazero/data-2018-04-23-structure-2018-04-23.xml",
@@ -9126,15 +9138,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fiveanineaeightaeightaseven",
-        "title": "Количество городов с высоким и очень высоким уровнем загрязнения атмосферного воздуха",
-        "link": "https://fedstat.ru/opendata/7708234640-fiveanineaeightaeightaseven/data-2020-04-24-structure-2020-04-24.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-threeaeightatwoaeightazero",
         "title": "Количество городов с высоким и очень высоким уровнем загрязнения атмосферного воздуха",
         "link": "https://fedstat.ru/opendata/7708234640-threeaeightatwoaeightazero/data-2012-10-24-structure-2012-10-24.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fiveanineaeightaeightaseven",
+        "title": "Количество городов с высоким и очень высоким уровнем загрязнения атмосферного воздуха",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveanineaeightaeightaseven/data-2020-04-24-structure-2020-04-24.xml",
         "format": "xml"
     },
     {
@@ -9612,15 +9624,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourafiveafiveasixanine",
-        "title": "Количество заключенных контрактов и договоров для определения поставщиков (подрядчиков, исполнителей) с отечественными участниками",
-        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveasixanine/data-2019-02-22-structure-2019-02-22.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fourafiveafourasevenazero",
         "title": "Количество заключенных контрактов и договоров для определения поставщиков (подрядчиков, исполнителей) с отечественными участниками",
         "link": "https://fedstat.ru/opendata/7708234640-fourafiveafourasevenazero/data-2019-02-19-structure-2019-02-19.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fourafiveafiveasixanine",
+        "title": "Количество заключенных контрактов и договоров для определения поставщиков (подрядчиков, исполнителей) с отечественными участниками",
+        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveasixanine/data-2019-02-22-structure-2019-02-22.xml",
         "format": "xml"
     },
     {
@@ -9870,15 +9882,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourafiveafourasevenanine",
-        "title": "Количество заявок победителей конкурсов, аукционов, проводимых на поставку товаров, необходимых для нормального жизнеобеспечения",
-        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafourasevenanine/data-2019-02-19-structure-2019-02-19.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fourafiveafiveaeightathree",
         "title": "Количество заявок победителей конкурсов, аукционов, проводимых на поставку товаров, необходимых для нормального жизнеобеспечения",
         "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveaeightathree/data-2019-03-01-structure-2019-03-01.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fourafiveafourasevenanine",
+        "title": "Количество заявок победителей конкурсов, аукционов, проводимых на поставку товаров, необходимых для нормального жизнеобеспечения",
+        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafourasevenanine/data-2019-02-19-structure-2019-02-19.xml",
         "format": "xml"
     },
     {
@@ -9888,15 +9900,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouratwoazeroanineasix",
-        "title": "Количество заявок участников аукционов, не явившихся на процедуру проведения аукциона",
-        "link": "https://fedstat.ru/opendata/7708234640-fouratwoazeroanineasix/data-2019-02-20-structure-2019-02-20.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fourazeroasixanineaone",
         "title": "Количество заявок участников аукционов, не явившихся на процедуру проведения аукциона",
         "link": "https://fedstat.ru/opendata/7708234640-fourazeroasixanineaone/data-2019-02-25-structure-2019-02-25.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fouratwoazeroanineasix",
+        "title": "Количество заявок участников аукционов, не явившихся на процедуру проведения аукциона",
+        "link": "https://fedstat.ru/opendata/7708234640-fouratwoazeroanineasix/data-2019-02-20-structure-2019-02-20.xml",
         "format": "xml"
     },
     {
@@ -9906,15 +9918,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourafiveafiveasevenaeight",
-        "title": "Количество заявок участников конкурсов, аукционов, предложивших  цену контракта на двадцать пять и более процентов ниже начальной цены контракта",
-        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveasevenaeight/data-2019-03-01-structure-2019-03-01.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fourafiveafourasevenafour",
         "title": "Количество заявок участников конкурсов, аукционов, предложивших  цену контракта на двадцать пять и более процентов ниже начальной цены контракта",
         "link": "https://fedstat.ru/opendata/7708234640-fourafiveafourasevenafour/data-2019-02-19-structure-2019-02-19.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fourafiveafiveasevenaeight",
+        "title": "Количество заявок участников конкурсов, аукционов, предложивших  цену контракта на двадцать пять и более процентов ниже начальной цены контракта",
+        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveasevenaeight/data-2019-03-01-structure-2019-03-01.xml",
         "format": "xml"
     },
     {
@@ -9948,27 +9960,27 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourafiveafourasevenaseven",
-        "title": "Количество заявок участников, признанных победителями конкурентных способов определения поставщиков (подрядчиков, исполнителей)",
-        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafourasevenaseven/data-2019-02-19-structure-2019-02-19.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fourafiveafiveaeightaone",
         "title": "Количество заявок участников, признанных победителями конкурентных способов определения поставщиков (подрядчиков, исполнителей)",
         "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveaeightaone/data-2019-03-01-structure-2019-03-01.xml",
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourafiveafiveaeightatwo",
-        "title": "Количество заявок участников, признанных победителями конкурсов, аукционов, предложивших цену контракта на двадцать пять и более процентов ниже начальной цены контракта",
-        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveaeightatwo/data-2019-03-01-structure-2019-03-01.xml",
+        "identifier": "7708234640-fourafiveafourasevenaseven",
+        "title": "Количество заявок участников, признанных победителями конкурентных способов определения поставщиков (подрядчиков, исполнителей)",
+        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafourasevenaseven/data-2019-02-19-structure-2019-02-19.xml",
         "format": "xml"
     },
     {
         "identifier": "7708234640-fourafiveafourasevenaeight",
         "title": "Количество заявок участников, признанных победителями конкурсов, аукционов, предложивших цену контракта на двадцать пять и более процентов ниже начальной цены контракта",
         "link": "https://fedstat.ru/opendata/7708234640-fourafiveafourasevenaeight/data-2019-02-19-structure-2019-02-19.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fourafiveafiveaeightatwo",
+        "title": "Количество заявок участников, признанных победителями конкурсов, аукционов, предложивших цену контракта на двадцать пять и более процентов ниже начальной цены контракта",
+        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveaeightatwo/data-2019-03-01-structure-2019-03-01.xml",
         "format": "xml"
     },
     {
@@ -9990,27 +10002,27 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourafiveafiveasevenaseven",
-        "title": "Количество заявок, поданных для участия  в закупках инновационной и высокотехнологичной продукции",
-        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveasevenaseven/data-2019-03-01-structure-2019-03-01.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fourafiveafourasevenathree",
         "title": "Количество заявок, поданных для участия  в закупках инновационной и высокотехнологичной продукции",
         "link": "https://fedstat.ru/opendata/7708234640-fourafiveafourasevenathree/data-2019-02-19-structure-2019-02-19.xml",
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourafiveafourasevenatwo",
-        "title": "Количество заявок, поданных для участия в закрытых конкурсах, закрытых аукционах, извещения о проведении которых размещаются в единой информационной системе",
-        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafourasevenatwo/data-2019-02-19-structure-2019-02-19.xml",
+        "identifier": "7708234640-fourafiveafiveasevenaseven",
+        "title": "Количество заявок, поданных для участия  в закупках инновационной и высокотехнологичной продукции",
+        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveasevenaseven/data-2019-03-01-structure-2019-03-01.xml",
         "format": "xml"
     },
     {
         "identifier": "7708234640-fourafiveafiveasevenazero",
         "title": "Количество заявок, поданных для участия в закрытых конкурсах, закрытых аукционах, извещения о проведении которых размещаются в единой информационной системе",
         "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveasevenazero/data-2019-03-01-structure-2019-03-01.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fourafiveafourasevenatwo",
+        "title": "Количество заявок, поданных для участия в закрытых конкурсах, закрытых аукционах, извещения о проведении которых размещаются в единой информационной системе",
+        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafourasevenatwo/data-2019-02-19-structure-2019-02-19.xml",
         "format": "xml"
     },
     {
@@ -10044,15 +10056,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourafiveafiveaeightazero",
-        "title": "Количество заявок, поданных отечественными участниками для определения поставщиков (подрядчиков, исполнителей)",
-        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveaeightazero/data-2019-03-01-structure-2019-03-01.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fourafiveafourasevenasix",
         "title": "Количество заявок, поданных отечественными участниками для определения поставщиков (подрядчиков, исполнителей)",
         "link": "https://fedstat.ru/opendata/7708234640-fourafiveafourasevenasix/data-2019-02-19-structure-2019-02-19.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fourafiveafiveaeightazero",
+        "title": "Количество заявок, поданных отечественными участниками для определения поставщиков (подрядчиков, исполнителей)",
+        "link": "https://fedstat.ru/opendata/7708234640-fourafiveafiveaeightazero/data-2019-03-01-structure-2019-03-01.xml",
         "format": "xml"
     },
     {
@@ -10232,7 +10244,7 @@
     {
         "identifier": "7702235133-fiveanineathreeaoneaeight",
         "title": "Количество ипотечных жилищных кредитов (траншей) в рублях  и иностранной валюте, предоставленных физическим лицам-резидентам за год",
-        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeaoneaeight/data-2020-04-24-structure-2020-04-24.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeaoneaeight/data-2020-10-16-structure-2020-10-16.xml",
         "format": "xml"
     },
     {
@@ -12918,15 +12930,9 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fiveasixatwoaeightaeight",
+        "identifier": "7708234640-fourathreeazeroaeightafive",
         "title": "Количество рассмотренных заявлений о переоформлении лицензий",
-        "link": "https://fedstat.ru/opendata/7708234640-fiveasixatwoaeightaeight/data-2018-06-14-structure-2018-06-14.xml",
-        "format": "xml"
-    },
-    {
-        "identifier": "7708234640-fourathreeazeroasixasix",
-        "title": "Количество рассмотренных заявлений о переоформлении лицензий",
-        "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroasixasix/data-2020-02-14-structure-2020-02-14.xml",
+        "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroaeightafive/data-2018-08-27-structure-2018-08-27.xml",
         "format": "xml"
     },
     {
@@ -12936,9 +12942,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourathreeazeroaeightafive",
+        "identifier": "7708234640-fiveasixatwoaeightaeight",
         "title": "Количество рассмотренных заявлений о переоформлении лицензий",
-        "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroaeightafive/data-2018-08-27-structure-2018-08-27.xml",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveasixatwoaeightaeight/data-2018-06-14-structure-2018-06-14.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fourathreeazeroasixasix",
+        "title": "Количество рассмотренных заявлений о переоформлении лицензий",
+        "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroasixasix/data-2020-02-14-structure-2020-02-14.xml",
         "format": "xml"
     },
     {
@@ -12966,15 +12978,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouratwoaeightazeroaeight",
-        "title": "Количество рассмотренных заявлений о переоформлении лицензий",
-        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightazeroaeight/data-2014-11-28-structure-2014-11-28.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fiveazeroanineathreeathree",
         "title": "Количество рассмотренных заявлений о переоформлении лицензий",
         "link": "https://fedstat.ru/opendata/7708234640-fiveazeroanineathreeathree/data-2015-07-24-structure-2015-07-24.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fouratwoaeightazeroaeight",
+        "title": "Количество рассмотренных заявлений о переоформлении лицензий",
+        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightazeroaeight/data-2014-11-28-structure-2014-11-28.xml",
         "format": "xml"
     },
     {
@@ -13014,15 +13026,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fiveazeroanineathreeaone",
-        "title": "Количество рассмотренных заявлений о предоставлении лицензии",
-        "link": "https://fedstat.ru/opendata/7708234640-fiveazeroanineathreeaone/data-2015-07-24-structure-2015-07-24.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fouratwoaeightaoneazero",
         "title": "Количество рассмотренных заявлений о предоставлении лицензии",
         "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightaoneazero/data-2014-11-28-structure-2014-11-28.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fiveazeroanineathreeaone",
+        "title": "Количество рассмотренных заявлений о предоставлении лицензии",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveazeroanineathreeaone/data-2015-07-24-structure-2015-07-24.xml",
         "format": "xml"
     },
     {
@@ -13074,9 +13086,9 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourathreeazeroaeightaseven",
+        "identifier": "7708234640-fourathreeazeroasixaseven",
         "title": "Количество рассмотренных заявлений о предоставлении лицензии",
-        "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroaeightaseven/data-2018-08-27-structure-2018-08-27.xml",
+        "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroasixaseven/data-2020-02-14-structure-2020-02-14.xml",
         "format": "xml"
     },
     {
@@ -13086,9 +13098,9 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourathreeazeroasixaseven",
+        "identifier": "7708234640-fourathreeazeroaeightaseven",
         "title": "Количество рассмотренных заявлений о предоставлении лицензии",
-        "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroasixaseven/data-2020-02-14-structure-2020-02-14.xml",
+        "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroaeightaseven/data-2018-08-27-structure-2018-08-27.xml",
         "format": "xml"
     },
     {
@@ -13140,15 +13152,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouratwoaeightazeroanine",
-        "title": "Количество рассмотренных заявлений о продлении срока действия лицензий в случае, если федеральными законами установлен ограниченный срок действия лицензии",
-        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightazeroanine/data-2014-11-28-structure-2014-11-28.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fiveazeroanineathreeazero",
         "title": "Количество рассмотренных заявлений о продлении срока действия лицензий в случае, если федеральными законами установлен ограниченный срок действия лицензии",
         "link": "https://fedstat.ru/opendata/7708234640-fiveazeroanineathreeazero/data-2015-07-24-structure-2015-07-24.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fouratwoaeightazeroanine",
+        "title": "Количество рассмотренных заявлений о продлении срока действия лицензий в случае, если федеральными законами установлен ограниченный срок действия лицензии",
+        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightazeroanine/data-2014-11-28-structure-2014-11-28.xml",
         "format": "xml"
     },
     {
@@ -13322,13 +13334,13 @@
     {
         "identifier": "7708234640-sixazeroafouratwoathree",
         "title": "Количество решений о выдаче вида на жительство (первично) гражданам Афганистана",
-        "link": "https://fedstat.ru/opendata/7708234640-sixazeroafouratwoathree/data-2020-08-12-structure-2020-08-12.xml",
+        "link": "https://fedstat.ru/opendata/7708234640-sixazeroafouratwoathree/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
         "identifier": "7708234640-sixazeroafouratwoafour",
         "title": "Количество решений о выдаче вида на жительство (первично) гражданам Ирака, Йемена, Ливии и Сирии (суммарно)",
-        "link": "https://fedstat.ru/opendata/7708234640-sixazeroafouratwoafour/data-2020-08-12-structure-2020-08-12.xml",
+        "link": "https://fedstat.ru/opendata/7708234640-sixazeroafouratwoafour/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
@@ -13362,12 +13374,6 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouratwoaeightazeroaseven",
-        "title": "Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом",
-        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightazeroaseven/data-2014-11-28-structure-2014-11-28.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fiveazeroanineathreeatwo",
         "title": "Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом",
         "link": "https://fedstat.ru/opendata/7708234640-fiveazeroanineathreeatwo/data-2015-07-24-structure-2015-07-24.xml",
@@ -13377,6 +13383,12 @@
         "identifier": "7708234640-fiveaeightatwoaeightaone",
         "title": "Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом",
         "link": "https://fedstat.ru/opendata/7708234640-fiveaeightatwoaeightaone/data-2019-01-17-structure-2019-01-17.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fouratwoaeightazeroaseven",
+        "title": "Количество решений об отказе в предоставлении, продлении срока действия, переоформлении, о прекращении действия лицензии, отмененных судом",
+        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightazeroaseven/data-2014-11-28-structure-2014-11-28.xml",
         "format": "xml"
     },
     {
@@ -13680,15 +13692,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-threeathreeasevenatwoafive",
-        "title": "Количество стационарных источников загрязнения атмосферы на конец года, имеющихся у юридических лиц",
-        "link": "https://fedstat.ru/opendata/7708234640-threeathreeasevenatwoafive/data-2020-09-04-structure-2020-09-04.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fiveanineatwoanineazero",
         "title": "Количество стационарных источников загрязнения атмосферы на конец года, имеющихся у юридических лиц",
         "link": "https://fedstat.ru/opendata/7708234640-fiveanineatwoanineazero/data-2019-05-14-structure-2019-05-14.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-threeathreeasevenatwoafive",
+        "title": "Количество стационарных источников загрязнения атмосферы на конец года, имеющихся у юридических лиц",
+        "link": "https://fedstat.ru/opendata/7708234640-threeathreeasevenatwoafive/data-2020-09-04-structure-2020-09-04.xml",
         "format": "xml"
     },
     {
@@ -13788,15 +13800,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-sixazeroaoneaoneaone",
-        "title": "Количество твердых коммунальных отходов, образованных у регионального оператора, и твердых коммунальных отходов, поступивших к региональному оператору от других хозяйствующих субъектов (сумма граф 2 и 3 формы N 2-ТП (отходы))",
-        "link": "https://fedstat.ru/opendata/7708234640-sixazeroaoneaoneaone/data-2020-06-03-structure-2020-06-03.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-sixazeroaoneazeroanine",
         "title": "Количество твердых коммунальных отходов, образованных у регионального оператора, и твердых коммунальных отходов, поступивших к региональному оператору от других хозяйствующих субъектов (сумма граф 2 и 3 формы N 2-ТП (отходы))",
         "link": "https://fedstat.ru/opendata/7708234640-sixazeroaoneazeroanine/data-2020-06-03-structure-2020-06-03.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-sixazeroaoneaoneaone",
+        "title": "Количество твердых коммунальных отходов, образованных у регионального оператора, и твердых коммунальных отходов, поступивших к региональному оператору от других хозяйствующих субъектов (сумма граф 2 и 3 формы N 2-ТП (отходы))",
+        "link": "https://fedstat.ru/opendata/7708234640-sixazeroaoneaoneaone/data-2020-06-03-structure-2020-06-03.xml",
         "format": "xml"
     },
     {
@@ -14799,6 +14811,12 @@
         "identifier": "7708234640-threeaeightaoneathreeafive",
         "title": "Лесные площади",
         "link": "https://fedstat.ru/opendata/7708234640-threeaeightaoneathreeafive/data-2019-12-05-structure-2019-12-05.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-threeaoneaoneasevenafour",
+        "title": "Лесовосстановление",
+        "link": "https://fedstat.ru/opendata/7708234640-threeaoneaoneasevenafour/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
@@ -16614,6 +16632,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-threeathreeaeightazeroafour",
+        "title": "Общая площадь очагов вредных организмов на конец отчетного года",
+        "link": "https://fedstat.ru/opendata/7708234640-threeathreeaeightazeroafour/data-2020-10-15-structure-2020-10-15.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-fiveasevenaeightaeightaeight",
         "title": "Общая площадь помещений общего пользования в многоквартирных жилых домах, в которые поставляется электрическая энергия",
         "link": "https://fedstat.ru/opendata/7708234640-fiveasevenaeightaeightaeight/data-2019-04-02-structure-2019-04-02.xml",
@@ -17250,15 +17274,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouratwoaeightasevenaseven",
-        "title": "Общее количество действующих лицензий",
-        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightasevenaseven/data-2016-07-20-structure-2016-07-20.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fouratwoaeightaoneaone",
         "title": "Общее количество действующих лицензий",
         "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightaoneaone/data-2020-08-31-structure-2020-08-31.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fouratwoaeightasevenaseven",
+        "title": "Общее количество действующих лицензий",
+        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightasevenaseven/data-2016-07-20-structure-2016-07-20.xml",
         "format": "xml"
     },
     {
@@ -17274,15 +17298,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fiveasevenafourafiveathree",
-        "title": "Общее количество действующих лицензий",
-        "link": "https://fedstat.ru/opendata/7708234640-fiveasevenafourafiveathree/data-2017-06-29-structure-2017-06-29.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fouratwoaeightazeroasix",
         "title": "Общее количество действующих лицензий",
         "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightazeroasix/data-2014-11-28-structure-2014-11-28.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fiveasevenafourafiveathree",
+        "title": "Общее количество действующих лицензий",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveasevenafourafiveathree/data-2017-06-29-structure-2017-06-29.xml",
         "format": "xml"
     },
     {
@@ -17958,6 +17982,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-fourathreeazeroaeightazero",
+        "title": "Общее количество проверок, по итогам проведения которых выявлены правонарушения",
+        "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroaeightazero/data-2018-08-23-structure-2018-08-23.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-fouratwoaeightanineafour",
         "title": "Общее количество проверок, по итогам проведения которых выявлены правонарушения",
         "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightanineafour/data-2017-06-05-structure-2017-06-05.xml",
@@ -17973,12 +18003,6 @@
         "identifier": "7708234640-fourathreeaoneathreeazero",
         "title": "Общее количество проверок, по итогам проведения которых выявлены правонарушения",
         "link": "https://fedstat.ru/opendata/7708234640-fourathreeaoneathreeazero/data-2020-02-14-structure-2020-02-14.xml",
-        "format": "xml"
-    },
-    {
-        "identifier": "7708234640-fourathreeazeroaeightazero",
-        "title": "Общее количество проверок, по итогам проведения которых выявлены правонарушения",
-        "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroaeightazero/data-2018-08-23-structure-2018-08-23.xml",
         "format": "xml"
     },
     {
@@ -18084,12 +18108,6 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fourathreeaoneatwoanine",
-        "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
-        "link": "https://fedstat.ru/opendata/7708234640-fourathreeaoneatwoanine/data-2020-02-14-structure-2020-02-14.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fourathreeazeroaeightaone",
         "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
         "link": "https://fedstat.ru/opendata/7708234640-fourathreeazeroaeightaone/data-2018-08-23-structure-2018-08-23.xml",
@@ -18105,6 +18123,12 @@
         "identifier": "7708234640-fouratwoaeightanineafive",
         "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
         "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightanineafive/data-2017-06-05-structure-2017-06-05.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fourathreeaoneatwoanine",
+        "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
+        "link": "https://fedstat.ru/opendata/7708234640-fourathreeaoneatwoanine/data-2020-02-14-structure-2020-02-14.xml",
         "format": "xml"
     },
     {
@@ -18126,15 +18150,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fouratwoaeightaeightanine",
-        "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
-        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightaeightanine/data-2016-08-11-structure-2016-08-11.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fouraoneathreeasevenathree",
         "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
         "link": "https://fedstat.ru/opendata/7708234640-fouraoneathreeasevenathree/data-2017-12-28-structure-2017-12-28.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fouratwoaeightaeightanine",
+        "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
+        "link": "https://fedstat.ru/opendata/7708234640-fouratwoaeightaeightanine/data-2016-08-11-structure-2016-08-11.xml",
         "format": "xml"
     },
     {
@@ -18180,6 +18204,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-fouraoneanineathreeazero",
+        "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
+        "link": "https://fedstat.ru/opendata/7708234640-fouraoneanineathreeazero/data-2012-08-20-structure-2012-08-20.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-fouraoneatwoaeightazero",
         "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
         "link": "https://fedstat.ru/opendata/7708234640-fouraoneatwoaeightazero/data-2012-01-23-structure-2012-01-23.xml",
@@ -18189,12 +18219,6 @@
         "identifier": "7708234640-fouratwoasevenaoneathree",
         "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
         "link": "https://fedstat.ru/opendata/7708234640-fouratwoasevenaoneathree/data-2018-02-05-structure-2018-02-05.xml",
-        "format": "xml"
-    },
-    {
-        "identifier": "7708234640-fouraoneanineathreeazero",
-        "title": "Общее количество проверок, проведенных в отношении юридических лиц, индивидуальных предпринимателей",
-        "link": "https://fedstat.ru/opendata/7708234640-fouraoneanineathreeazero/data-2012-08-20-structure-2012-08-20.xml",
         "format": "xml"
     },
     {
@@ -20318,7 +20342,7 @@
     {
         "identifier": "7702235133-fouraoneazeroafouraseven",
         "title": "Основные показатели среднедневного оборота рынка межбанковских кредитов (депозитов) и операций РЕПО",
-        "link": "https://fedstat.ru/opendata/7702235133-fouraoneazeroafouraseven/data-2015-04-03-structure-2015-04-03.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-fouraoneazeroafouraseven/data-2020-10-16-structure-2020-10-16.xml",
         "format": "xml"
     },
     {
@@ -20376,15 +20400,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-threeasixaoneaoneanine",
-        "title": "Остатки драгоценных металлов",
-        "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneaoneanine/data-2015-03-25-structure-2015-03-25.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-threeasixaoneatwoathree",
         "title": "Остатки драгоценных металлов",
         "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneatwoathree/data-2012-03-30-structure-2012-03-30.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-threeasixaoneaoneanine",
+        "title": "Остатки драгоценных металлов",
+        "link": "https://fedstat.ru/opendata/7708234640-threeasixaoneaoneanine/data-2015-03-25-structure-2015-03-25.xml",
         "format": "xml"
     },
     {
@@ -20828,7 +20852,7 @@
     {
         "identifier": "7702235133-fiveanineathreeathreeaone",
         "title": "Отдельные показатели по кредитам в иностранной валюте,  предоставленным  кредитными организациями физическим лицам-резидентам",
-        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeathreeaone/data-2019-05-21-structure-2019-05-21.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeathreeaone/data-2020-10-16-structure-2020-10-16.xml",
         "format": "xml"
     },
     {
@@ -20840,7 +20864,7 @@
     {
         "identifier": "7702235133-fiveanineathreeafourafive",
         "title": "Отдельные показатели по кредитам в рублях,  предоставленным  кредитными организациями физическим лицам-резидентам",
-        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeafourafive/data-2019-05-23-structure-2019-05-23.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeafourafive/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
@@ -22926,6 +22950,12 @@
         "format": "xml"
     },
     {
+        "identifier": "7708234640-fiveaeightasixasixafour",
+        "title": "Площадь лесных участков, на которой выполнены мероприятия по уничтожению или подавлению численности вредных организмов",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveaeightasixasixafour/data-2020-10-15-structure-2020-10-15.xml",
+        "format": "xml"
+    },
+    {
         "identifier": "7708234640-threeasevenaeightafiveatwo",
         "title": "Площадь лесовосстановления",
         "link": "https://fedstat.ru/opendata/7708234640-threeasevenaeightafiveatwo/data-2015-08-13-structure-2015-08-13.xml",
@@ -23025,6 +23055,24 @@
         "identifier": "7708234640-fourathreeathreeasixatwo",
         "title": "Площадь осушенных земель с неудовлетворительным мелиоративным состоянием",
         "link": "https://fedstat.ru/opendata/7708234640-fourathreeathreeasixatwo/data-2013-06-26-structure-2013-06-26.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-threeathreeanineazeroanine",
+        "title": "Площадь очагов вредных организмов, затухших под воздействием естественных факторов",
+        "link": "https://fedstat.ru/opendata/7708234640-threeathreeanineazeroanine/data-2020-10-15-structure-2020-10-15.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-threeathreeanineaoneazero",
+        "title": "Площадь очагов вредных организмов, ликвидированных мерами борьбы",
+        "link": "https://fedstat.ru/opendata/7708234640-threeathreeanineaoneazero/data-2020-10-15-structure-2020-10-15.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-threeathreeanineaoneaone",
+        "title": "Площадь очагов вредных организмов, требующих мер борьбы, на конец отчетного года",
+        "link": "https://fedstat.ru/opendata/7708234640-threeathreeanineaoneaone/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
@@ -23378,13 +23426,13 @@
     {
         "identifier": "7702235133-fouraoneazeroathreeasix",
         "title": "Показатели рынка межбанковских кредитов – среднемесячные объявленные московскими банками ставки по привлечению кредитов (MIBID) и размещению кредитов (MIBOR), среднемесячные фактические ставки по предоставленным кредитам (MIACR, MIACR-IG, MIACR-B)",
-        "link": "https://fedstat.ru/opendata/7702235133-fouraoneazeroathreeasix/data-2016-01-20-structure-2016-01-20.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-fouraoneazeroathreeasix/data-2020-10-16-structure-2020-10-16.xml",
         "format": "xml"
     },
     {
         "identifier": "7702235133-fouraoneazeroathreeaeight",
-        "title": "Показатели рынка межбанковских кредитов:  Среднемесячные фактические ставки по кредитам, предоставленным московскими банками в рублях (MIACR, MIACR-IG);  Средние объявленные московскими банками ставки по привлечению кредитов (MIBID) и размещению кредитов (MIBOR) в рублях;  Cредневзвешенные фактические ставки по предоставленным московскими банками кредитам в рублях (MIACR, MIACR-IG).  Среднемесячные фактические ставки по кредитам, предоставленным московскими банками в рублях (MIACR-B);  Среднемесячные фактические ставки по кредитам, предоставленным московскими банками в долларах США (MIACRUSD, MIACR-IGUSD, MIACR-BUSD);  Средние объявленные московскими банками ставки по привлечению кредитов (MIBIDUSD) и размещению кредитов (MIBORUSD) в долларах США;  Средневзвешенные фактические ставки по предоставленным московскими банками кредитам в долларах США (MIACRUSD, MIACR-IGUSD, MIACR-BUSD).",
-        "link": "https://fedstat.ru/opendata/7702235133-fouraoneazeroathreeaeight/data-2016-01-20-structure-2016-01-20.xml",
+        "title": "Показатели рынка межбанковских кредитов:Среднемесячные фактические ставки по кредитам, предоставленным московскими банками в рублях (MIACR, MIACR-IG);Средние объявленные московскими банками ставки по привлечению кредитов (MIBID) и размещению кредитов (MIBOR) в рублях;Cредневзвешенные фактические ставки по предоставленным московскими банками кредитам в рублях (MIACR, MIACR-IG).Среднемесячные фактические ставки по кредитам, предоставленным московскими банками в рублях (MIACR-B);Среднемесячные фактические ставки по кредитам, предоставленным московскими банками в долларах США (MIACRUSD, MIACR-IGUSD, MIACR-BUSD);Средние объявленные московскими банками ставки по привлечению кредитов (MIBIDUSD) и размещению кредитов (MIBORUSD) в долларах США;Средневзвешенные фактические ставки по предоставленным московскими банками кредитам в долларах США (MIACRUSD, MIACR-IGUSD, MIACR-BUSD).",
+        "link": "https://fedstat.ru/opendata/7702235133-fouraoneazeroathreeaeight/data-2020-10-16-structure-2020-10-16.xml",
         "format": "xml"
     },
     {
@@ -24630,15 +24678,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fiveaeightatwoaeightaeight",
-        "title": "Прирост объема средств федерального бюджета, направленных на поддержку градообразующей организации, по сравнению с предыдущим периодом",
-        "link": "https://fedstat.ru/opendata/7708234640-fiveaeightatwoaeightaeight/data-2018-10-03-structure-2018-10-03.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fiveasevenanineazeroazero",
         "title": "Прирост объема средств федерального бюджета, направленных на поддержку градообразующей организации, по сравнению с предыдущим периодом",
         "link": "https://fedstat.ru/opendata/7708234640-fiveasevenanineazeroazero/data-2017-03-10-structure-2017-03-10.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fiveaeightatwoaeightaeight",
+        "title": "Прирост объема средств федерального бюджета, направленных на поддержку градообразующей организации, по сравнению с предыдущим периодом",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveaeightatwoaeightaeight/data-2018-10-03-structure-2018-10-03.xml",
         "format": "xml"
     },
     {
@@ -27614,7 +27662,7 @@
     {
         "identifier": "7702235133-fiveanineathreeafouraone",
         "title": "Сведения о жилищных кредитах, предоставленных кредитными организациями физическим лицам-резидентам  в рублях",
-        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeafouraone/data-2019-05-21-structure-2019-05-21.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeafouraone/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
@@ -27626,7 +27674,7 @@
     {
         "identifier": "7702235133-fiveanineathreeafouratwo",
         "title": "Сведения о жилищных кредитах, представленных кредитными организациями физическим лицам-резидентам в иностранной валюте",
-        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeafouratwo/data-2019-05-21-structure-2019-05-21.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeafouratwo/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
@@ -27638,19 +27686,19 @@
     {
         "identifier": "7702235133-threeaeightathreeasixathree",
         "title": "Сведения о задолженности по кредитам юридических лиц-резидентов и индивидуальных предпринимателей в иностранной валюте и драгоценных металлах  по видам экономической деятельности и отдельным направлениям использования средств",
-        "link": "https://fedstat.ru/opendata/7702235133-threeaeightathreeasixathree/data-2020-08-19-structure-2020-08-19.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-threeaeightathreeasixathree/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
         "identifier": "7702235133-threeaeightathreeasixafour",
         "title": "Сведения о задолженности по кредитам юридических лиц-резидентов и индивидуальных предпринимателей в рублях по видам экономической деятельности и отдельным направлениям использования средств",
-        "link": "https://fedstat.ru/opendata/7702235133-threeaeightathreeasixafour/data-2020-08-19-structure-2020-08-19.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-threeaeightathreeasixafour/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
         "identifier": "7702235133-fouratwoaeightasixaone",
         "title": "Сведения о задолженности по кредитам,  предоставленным  кредитными организациями физическим лицам-резидентам",
-        "link": "https://fedstat.ru/opendata/7702235133-fouratwoaeightasixaone/data-2019-05-23-structure-2019-05-23.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-fouratwoaeightasixaone/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
@@ -27674,7 +27722,7 @@
     {
         "identifier": "7702235133-threeanineasixaoneanine",
         "title": "Сведения о кредитах, предоставленных  субъектам малого и среднего предпринимательства",
-        "link": "https://fedstat.ru/opendata/7702235133-threeanineasixaoneanine/data-2019-05-23-structure-2019-05-23.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-threeanineasixaoneanine/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
@@ -27722,7 +27770,7 @@
     {
         "identifier": "7702235133-threeanineasixasixaeight",
         "title": "Сведения о средствах организаций, банковских депозитах (вкладах) и других привлеченных средствах юридических и физических лиц в рублях, иностранной валюте и драгоценных металлах",
-        "link": "https://fedstat.ru/opendata/7702235133-threeanineasixasixaeight/data-2019-05-17-structure-2019-05-17.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-threeanineasixasixaeight/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
@@ -27758,7 +27806,7 @@
     {
         "identifier": "7702235133-fiveanineathreeafourathree",
         "title": "Сведения об ипотечных жилищных кредитах, предоставленных кредитными организациями физическим лицам-резидентам, и приобретенных правах требования по ипотечным жилищным кредитам в рублях",
-        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeafourathree/data-2019-05-21-structure-2019-05-21.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-fiveanineathreeafourathree/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
@@ -27776,19 +27824,19 @@
     {
         "identifier": "7702235133-threeaeightathreeasixafive",
         "title": "Сведения об объемах кредитования юридических лиц-резидентов и индивидуальных предпринимателей в иностранной валюте и драгоценных металлах  по видам экономической деятельности и отдельным направлениям использования средств",
-        "link": "https://fedstat.ru/opendata/7702235133-threeaeightathreeasixafive/data-2020-08-19-structure-2020-08-19.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-threeaeightathreeasixafive/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
         "identifier": "7702235133-threeaeightathreeasixasix",
         "title": "Сведения об объемах кредитования юридических лиц-резидентов и индивидуальных предпринимателей в рублях по видам экономической деятельности и отдельным направлениям использования средств",
-        "link": "https://fedstat.ru/opendata/7702235133-threeaeightathreeasixasix/data-2020-08-19-structure-2020-08-19.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-threeaeightathreeasixasix/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
         "identifier": "7702235133-fouratwoafourasevenasix",
         "title": "Сведения об остатках бюджетных средств на счетах, открытых в кредитных организациях",
-        "link": "https://fedstat.ru/opendata/7702235133-fouratwoafourasevenasix/data-2019-05-23-structure-2019-05-23.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-fouratwoafourasevenasix/data-2020-10-15-structure-2020-10-15.xml",
         "format": "xml"
     },
     {
@@ -28381,14 +28429,14 @@
     },
     {
         "identifier": "7702235133-fouraoneazeroathreeafive",
-        "title": "Средневзвешенные процентные ставки по кредитам, предоставленным кредитными организациями нефинансовым организациям в рублях и иностранной валюте",
-        "link": "https://fedstat.ru/opendata/7702235133-fouraoneazeroathreeafive/data-2019-05-21-structure-2019-05-21.xml",
+        "title": "Средневзвешенные процентные ставки по кредитам, предоставленным кредитными организациями нефинансовым организациям в рублях, долларах США и евро",
+        "link": "https://fedstat.ru/opendata/7702235133-fouraoneazeroathreeafive/data-2020-10-16-structure-2020-10-16.xml",
         "format": "xml"
     },
     {
         "identifier": "7702235133-fouraoneazeroathreeafour",
-        "title": "Средневзвешенные процентные ставки по кредитам, предоставленным кредитными организациями физическим лицам в рублях и иностранной валюте",
-        "link": "https://fedstat.ru/opendata/7702235133-fouraoneazeroathreeafour/data-2019-05-21-structure-2019-05-21.xml",
+        "title": "Средневзвешенные процентные ставки по кредитам, предоставленным кредитными организациями физическим лицам в рублях, долларах США и евро",
+        "link": "https://fedstat.ru/opendata/7702235133-fouraoneazeroathreeafour/data-2020-10-16-structure-2020-10-16.xml",
         "format": "xml"
     },
     {
@@ -28399,8 +28447,8 @@
     },
     {
         "identifier": "7702235133-fiveaoneafiveazeroafive",
-        "title": "Средневзвешенные процентные ставки по привлеченным кредитными организациями вкладам (депозитам) в рублях и иностранной валюте",
-        "link": "https://fedstat.ru/opendata/7702235133-fiveaoneafiveazeroafive/data-2019-05-21-structure-2019-05-21.xml",
+        "title": "Средневзвешенные процентные ставки по привлеченным кредитными организациями вкладам (депозитам) в рублях, долларах США и евро",
+        "link": "https://fedstat.ru/opendata/7702235133-fiveaoneafiveazeroafive/data-2020-10-16-structure-2020-10-16.xml",
         "format": "xml"
     },
     {
@@ -29174,7 +29222,7 @@
     {
         "identifier": "7702235133-fourafouraeightafiveafive",
         "title": "Средний дневной оборот рынка межбанковских кредитов (депозитов) и операций РЕПО в разбивке по срокам",
-        "link": "https://fedstat.ru/opendata/7702235133-fourafouraeightafiveafive/data-2017-10-09-structure-2017-10-09.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-fourafouraeightafiveafive/data-2020-10-16-structure-2020-10-16.xml",
         "format": "xml"
     },
     {
@@ -29550,15 +29598,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fiveanineatwoafiveaeight",
-        "title": "Средняя численность добровольцев (волонтеров)",
-        "link": "https://fedstat.ru/opendata/7708234640-fiveanineatwoafiveaeight/data-2019-04-02-structure-2019-04-02.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fiveanineaoneasixazero",
         "title": "Средняя численность добровольцев (волонтеров)",
         "link": "https://fedstat.ru/opendata/7708234640-fiveanineaoneasixazero/data-2019-09-25-structure-2019-09-25.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fiveanineatwoafiveaeight",
+        "title": "Средняя численность добровольцев (волонтеров)",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveanineatwoafiveaeight/data-2019-04-02-structure-2019-04-02.xml",
         "format": "xml"
     },
     {
@@ -29726,7 +29774,7 @@
     {
         "identifier": "7702235133-sixazeroazeroaeightaeight",
         "title": "Средства индивидуальных предпринимателей",
-        "link": "https://fedstat.ru/opendata/7702235133-sixazeroazeroaeightaeight/data-2020-05-20-structure-2020-05-20.xml",
+        "link": "https://fedstat.ru/opendata/7702235133-sixazeroazeroaeightaeight/data-2020-10-16-structure-2020-10-16.xml",
         "format": "xml"
     },
     {
@@ -31116,15 +31164,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-sixazeroatwoazeroathree",
-        "title": "Суммарный экспорт по кодам ТН ВЭД ЕАЭС",
-        "link": "https://fedstat.ru/opendata/7708234640-sixazeroatwoazeroathree/data-2020-06-26-structure-2020-06-26.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-sixazeroatwoazeroafive",
         "title": "Суммарный экспорт по кодам ТН ВЭД ЕАЭС",
         "link": "https://fedstat.ru/opendata/7708234640-sixazeroatwoazeroafive/data-2020-05-27-structure-2020-05-27.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-sixazeroatwoazeroathree",
+        "title": "Суммарный экспорт по кодам ТН ВЭД ЕАЭС",
+        "link": "https://fedstat.ru/opendata/7708234640-sixazeroatwoazeroathree/data-2020-06-26-structure-2020-06-26.xml",
         "format": "xml"
     },
     {
@@ -34788,15 +34836,15 @@
         "format": "xml"
     },
     {
-        "identifier": "7708234640-fiveanineafourathreeaone",
-        "title": "Численность занятых в сфере малого и среднего предпринимательства, включая индивидуальных предпринимателей",
-        "link": "https://fedstat.ru/opendata/7708234640-fiveanineafourathreeaone/data-2020-04-24-structure-2020-04-24.xml",
-        "format": "xml"
-    },
-    {
         "identifier": "7708234640-fiveanineafiveafourafive",
         "title": "Численность занятых в сфере малого и среднего предпринимательства, включая индивидуальных предпринимателей",
         "link": "https://fedstat.ru/opendata/7708234640-fiveanineafiveafourafive/data-2019-10-01-structure-2019-10-01.xml",
+        "format": "xml"
+    },
+    {
+        "identifier": "7708234640-fiveanineafourathreeaone",
+        "title": "Численность занятых в сфере малого и среднего предпринимательства, включая индивидуальных предпринимателей",
+        "link": "https://fedstat.ru/opendata/7708234640-fiveanineafourathreeaone/data-2020-04-24-structure-2020-04-24.xml",
         "format": "xml"
     },
     {

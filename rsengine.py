@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 import requests, os, sys, json, re
 from datetime import datetime as dt, timedelta
 from dask.distributed import Client as DaskClient, Variable as DaskVariable, as_completed
+from functools import partial
 from globs import report, is_iterable
 
 ## `str` permanent URL of the EMISS dataset list
@@ -33,6 +34,13 @@ XML_NS = {'message': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message"
 # enhanced by multiprocessing, to handle datasets in parallel taking advantage
 # of your CPU's multiple cores.
 class Russtat:
+
+    @staticmethod
+    def json_hook(d):
+        for k in d:
+            if k in ('prepared', 'next', 'updated'):     
+                d.update({k: dt.strptime(d[k], '%Y-%m-%d %H:%M:%S')})
+        return d
 
     ## @param root_folder `str` path to the data directory where the source XML
     # files and JSON files will be saved / searched (relative to project dir or absolute).
@@ -467,11 +475,11 @@ class Russtat:
     def get_one(self, dataset, xmlfilename='auto', overwrite=True, del_xml=True, 
                 save2json='auto', loadfromjson='auto', on_dataset=None, on_dataset_kwargs=None):
 
-        def json_hook(d):
-            for k in d:
-                if k in ('prepared', 'next', 'updated'):     
-                    d.update({k: dt.strptime(d[k], '%Y-%m-%d %H:%M:%S')})
-            return d
+        # def json_hook(d):
+        #     for k in d:
+        #         if k in ('prepared', 'next', 'updated'):     
+        #             d.update({k: dt.strptime(d[k], '%Y-%m-%d %H:%M:%S')})
+        #     return d
 
         if loadfromjson is None or loadfromjson == 'auto':
             if isinstance(dataset, str):
@@ -498,7 +506,7 @@ class Russtat:
             ds = None
             try:
                 with open(os.path.abspath(loadfromjson), 'r', encoding='utf-8') as infile:
-                    ds = json.load(infile, object_hook=json_hook)             
+                    ds = json.load(infile, object_hook=Russtat.json_hook)             
             except Exception as err:
                 report(f"{err}   Importing from XML...")
                 return self.get_one(dataset, xmlfilename, overwrite, del_xml, save2json, None, on_dataset, on_dataset_kwargs)
@@ -651,7 +659,7 @@ class Russtat:
     # @returns `list` list of datasets (`dict` objects)
     def get_many(self, datasets=0, xmlfilenames='auto', overwrite=True, del_xml=True, 
               save2json='auto', loadfromjson='auto',
-              on_dataset=None, on_dataset_kwargs=None, on_error=lambda err: report(err, True)):
+              on_dataset=None, on_dataset_kwargs=None):
 
         args = []
 
@@ -659,9 +667,9 @@ class Russtat:
 
             if is_iterable(loadfromjson):
                 for json_file in loadfromjson:
-                    args.append((None, None, False, False, None, json_file, on_dataset, on_dataset_kwargs))
+                    args.append((None, None, False, False, None, json_file))
             else:
-                args.append((None, None, False, False, None, loadfromjson, on_dataset, on_dataset_kwargs))
+                args.append((None, None, False, False, None, loadfromjson))
 
         else:
 
@@ -680,11 +688,11 @@ class Russtat:
                 if isinstance(datasets[0], int) or isinstance(datasets[0], str):
                     datasets = [self[k] for k in datasets]            
             else:
-                if on_error: on_error('Bad type: datasets')
+                report('Bad type: datasets', True)
                 return None
 
             if not datasets:
-                if on_error: on_error('No datasets matching your request.')
+                report('No datasets matching your request.', True)
                 return None
 
             # prepare args for worker function        
@@ -705,23 +713,30 @@ class Russtat:
                     else:
                         loadfromjson_ = loadfromjson
                     
-                    args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_, on_dataset, on_dataset_kwargs))
+                    args.append((ds, xmlfilename, overwrite, del_xml, save2json_, loadfromjson_))
                     
                 except Exception as err:
-                    if on_error: on_error(err)
+                    report(err, True)
                     return None       
 
         #self.cluster.restart()
         self.set_stopped(False)
 
-        futures = self.cluster.map(self.get_one, *args, pure=False)
+        futures = self.cluster.map(self.get_one, *(a for a in zip(*args)), pure=False)
         results = []
 
         try:            
             #results = client.gather(futures)
             #client.close()
-            for _, result in as_completed(futures, with_results=True):
-                results.append(result)
+            for _, ds in as_completed(futures, with_results=True):              
+                if on_dataset:
+                    if on_dataset_kwargs:
+                        on_dataset(ds, **on_dataset_kwargs)
+                    else:
+                        on_dataset(ds)
+
+                results.append(ds)
+
                 if self._stopped.get():
                     self.cluster.cancel(futures, force=False)
                     return results
@@ -730,7 +745,7 @@ class Russtat:
 
         except Exception as err:
             self.cluster.cancel(futures, force=False)            
-            if on_error: on_error(err)
+            report(err, True)
             return None   
 
     def is_stopped(self):
