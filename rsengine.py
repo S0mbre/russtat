@@ -34,6 +34,13 @@ XML_NS = {'message': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message"
 # of your CPU's multiple cores.
 class Russtat:
 
+    @staticmethod
+    def json_hook(d):
+        for k in d:
+            if k in ('prepared', 'next', 'updated'):     
+                d.update({k: dt.strptime(d[k], '%Y-%m-%d %H:%M:%S')})
+        return d
+
     ## @param root_folder `str` path to the data directory where the source XML
     # files and JSON files will be saved / searched (relative to project dir or absolute).
     # Default is empty string, which stands for the project root directory.
@@ -455,13 +462,7 @@ class Russtat:
     # parsing will be needed once you've got them downloaded initially.
     # @see get_many()
     def get_one(self, dataset, xmlfilename='auto', overwrite=True, del_xml=True, 
-                save2json='auto', loadfromjson='auto', on_dataset=None, on_dataset_kwargs=None):
-
-        def json_hook(d):
-            for k in d:
-                if k in ('prepared', 'next', 'updated'):     
-                    d.update({k: dt.strptime(d[k], '%Y-%m-%d %H:%M:%S')})
-            return d
+                save2json='auto', loadfromjson='auto', on_dataset=None, on_dataset_kwargs=None):        
 
         if loadfromjson is None or loadfromjson == 'auto':
             if isinstance(dataset, str):
@@ -488,7 +489,7 @@ class Russtat:
             ds = None
             try:
                 with open(os.path.abspath(loadfromjson), 'r', encoding='utf-8') as infile:
-                    ds = json.load(infile, object_hook=json_hook)             
+                    ds = json.load(infile, object_hook=Russtat.json_hook)             
             except Exception as err:
                 report(f"{err}   Importing from XML...")
                 return self.get_one(dataset, xmlfilename, overwrite, del_xml, save2json, None, on_dataset, on_dataset_kwargs)

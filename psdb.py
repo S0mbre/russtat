@@ -254,9 +254,9 @@ class Russtatdb(Psdb):
         cur = self.exec(f"call public.clear_all({int(full_clear)}::boolean);", commit=True, on_error=on_error)
         return True if cur else False
 
-    def get_classificator(self, ignore_root=True):
+    def get_classificator(self, ignore_root=True, max_levels=None):
         dsets = self.sqlquery('all_datasets', columns=['classifier', 'id'], condition="classifier <> ''", orderby='classifier')
-        spl = [(tuple(s.strip() for s in x[0].split('/')[int(ignore_root):]), x[1]) for x in dsets]
+        spl = [(tuple(s.strip() for s in x[0].split('/')[int(ignore_root):max_levels]), x[1]) for x in dsets]
         st = set()
         for el in spl:
             for i in range(1, len(el[0]) + 1):
@@ -273,10 +273,9 @@ class Russtatdb(Psdb):
             tout.append(x)
         return tout
 
-    def collect_classificator(self, ignore_root=True, max_categories=None):
-        lst = self.get_classificator(ignore_root)
+    def collect_classificator(self, ignore_root=True, max_levels=None, max_categories=None):
+        lst = self.get_classificator(ignore_root, max_levels)
         l = {}
-        max_categories = max_categories if isinstance(max_categories, int) else len(lst)
         results = []
         for el in lst[:max_categories]:
             le = len(el[1])
@@ -299,17 +298,16 @@ class Russtatdb(Psdb):
         
         return results              
 
-    def print_classificator(self, ignore_root=True, max_categories=None, print_names=True, print_ids=True, 
-                            max_ds=10, indent='>>', file=None):
+    def print_classificator(self, ignore_root=True, max_levels=None, max_categories=None, 
+        print_names=True, print_ids=True, max_ds=10, indent='  ', file=None):
         def pr(w):
             if file is None:
                 print(w)
             else:
                 print(w, file=file)
 
-        lst = self.get_classificator(ignore_root)
+        lst = self.get_classificator(ignore_root, max_levels)
         l = {}
-        max_categories = max_categories if isinstance(max_categories, int) else len(lst)
         for el in lst[:max_categories]:
             for i in range(len(el[0])):
                 if l.get(i, '') == el[0][i]:

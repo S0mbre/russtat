@@ -144,8 +144,8 @@ def testing():
     dbpassword = input('Enter DB password:')
     db = Russtatdb(password=dbpassword)
 
-    #db.print_classificator(max_categories=50, print_ids=False, max_ds=5) 
-    #return
+    db.print_classificator(max_categories=50, print_ids=False, max_ds=5) 
+    return
 
     # example 1: simple data query
     res = db.get_data(condition="dataset like '%комит%' and year = 2018", limit=30, get_header=True)
