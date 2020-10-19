@@ -5,6 +5,18 @@
 
 ## @package russtat.russtat
 # @brief Application entry point.
+from prompt_toolkit import PromptSession
+from prompt_toolkit import print_formatted_text
+from prompt_toolkit.lexers import PygmentsLexer
+from prompt_toolkit.formatted_text import to_formatted_text, HTML
+from prompt_toolkit.history import InMemoryHistory
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from prompt_toolkit.shortcuts import message_dialog, input_dialog, yes_no_dialog
+from prompt_toolkit.styles import Style
+from prompt_toolkit.shortcuts import ProgressBar
+from prompt_toolkit.key_binding import KeyBindings
+from pygments.lexers.sql import PostgresLexer
+
 import os, sys, json, traceback
 from datetime import datetime
 from rsengine import Russtat
@@ -171,6 +183,116 @@ def testing():
 
 # --------------------------------------------------------------- #
 
+def print_long_iterator(session, it, max_rows=50, cancel_key='q'):
+    r = False
+    
+    bindings = KeyBindings()   
+    
+    @bindings.add('<any>')
+    def q():
+        nonlocal r
+        r = False
+
+    @bindings.add(cancel_key)
+    def g():
+        nonlocal r
+        r = True
+
+    n = 0
+    for line in it:
+        n += 1
+        print_formatted_text(line)
+        if max_rows > 0 and n % max_rows == 0:
+            session.prompt('', bottom_toolbar=HTML('----- Any key to <violet>continue</violet>, <violet>q</violet> to abort -----'), key_bindings=bindings)
+            if r: break
+
+def cli():
+
+    menu = {
+        '!':
+        {
+            'MENU': '1 - [d]atasets 2 - [o]bservations 3 - [s]ql query (raw) 4 - [i]nfo\n[Q]uit',
+            'd':
+            {
+                'MENU': '1 - [d]isplay all 2 - [f]ind in text fields display 3 - [c]olumn names 4 - [s]earch 5 - [p]rint categories\n* - RETURN\n[Q]uit',
+                'd': 'SET OUTPUT PARAMETERS\n* - RETURN\n[Q]uit',
+                'f': 'ENTER SEARCH PHRASE\n* - RETURN\n[Q]uit',
+                'c': '* - RETURN\n[Q]uit',
+                's':
+                {
+                    'MENU': '1 - by [i]d 2 - by [n]ame 3 - by [c]ategory 4 - [e]xtended search\n* - RETURN\n[Q]uit',
+                    'i': 'ENTER IDS SEPARATING WITH COMMA\n* - RETURN\n[Q]uit',
+                    'n': 'ENTER NAME OR PART OF IT\n* - RETURN\n[Q]uit',
+                    'c': 'ENTER CATEGORY OR PART OF IT\n* - RETURN\n[Q]uit',
+                    'e': 
+                    {
+                        'MENU': '1 - [p]arameters 2 - [r]aw\n* - RETURN\n[Q]uit',
+                        'p': 'ENTER SEARCH PARAMETERS\n* - RETURN\n[Q]uit',
+                        'r': 'ENTER SQL QUERY\n* - RETURN\n[Q]uit'
+                    }
+                },
+                'p': 'SET OUTPUT PARAMETERS\n* - RETURN\n[Q]uit'
+            }
+        }
+    }
+
+    stack = ['!']
+
+    def msg(title, text, ok_text='OK'):
+        message_dialog(title=title, text=text, ok_text=ok_text).run()
+
+    def input_msg(title, text, ok_text='OK', cancel_text='Cancel', password=False):
+        return input_dialog(title=title, text=text, ok_text=ok_text, cancel_text=cancel_text, password=password).run()
+
+    def yesno_msg(title, text, yes_text='YES', no_text='NO'):
+        return yes_no_dialog(title=title, text=text, yes_text=yes_text, no_text=no_text).run()
+
+    def get_menu():
+        nd = menu
+        try:
+            for m in stack:
+                nd = nd[m]
+            return (to_formatted_text(HTML(nd['MENU'] if isinstance(nd, dict) else nd)), nd)
+        except:
+            return (to_formatted_text(HTML(menu['!']['MENU'])), menu['!'])
+
+    dbpassword = input('Enter DB password:')
+    db = Russtatdb(password=dbpassword)
+
+    session = PromptSession()
+
+    text = ''
+    while text != 'Q':
+        try:
+            tb, nd = get_menu()
+            text = session.prompt(to_formatted_text(HTML(f"({' > '.join(stack)}) >> ")), 
+                                    auto_suggest=AutoSuggestFromHistory(), 
+                                    bottom_toolbar=tb)
+            txt = text[0]
+            if txt == 'Q':
+                break
+            elif txt == '*':
+                if len(stack) > 1:
+                    stack.pop()
+                else:
+                    break
+            elif isinstance(nd, dict) and txt in nd:
+                stack.append(txt)
+
+                # EXEC COMMAND  
+                path = '/'.join(stack)
+                if path == '!/d/d':
+                    print_long_iterator(session, db.get_datasets())
+                    stack.pop()
+
+        except EOFError:
+            break
+
+        except:
+            continue
+
+# --------------------------------------------------------------- #
+
 ## Main function that creates the Russtat engine and retrieves / stores data.
 def main():
 
@@ -179,7 +301,7 @@ def main():
     # else:
     #     update_db(*sys.argv[1:])
 
-    testing()
+    cli()
 
 # --------------------------------------------------------------- #
 
