@@ -8,7 +8,7 @@
 import psycopg2
 from psycopg2 import DatabaseError
 import pandas as pd
-from globs import NL, report, is_iterable
+from globs import NL, report, is_iterable, sys
 
 # --------------------------------------------------------------- # 
 
@@ -100,7 +100,7 @@ class Psdb:
     # @returns `Iterator`|`list`|`tuple` depending on the `fetch` parameter above
     def fetch(self, sql, fetch='iter', get_header=False, on_error=print):
         if fetch == 'dry':
-            return self.con.cursor().mogrify(sql)
+            return [self.con.cursor().mogrify(sql).decode('utf-8')]
         cur = self.exec(sql, on_error=on_error)
         if cur is None: return None
         foo = {'list': cur.fetchall, 'one': cur.fetchone}
@@ -123,10 +123,21 @@ class Psdb:
         res = self.fetch_dict(sql, on_error)
         return pd.DataFrame(res) if res else None
 
+    def iterate_data(self, colnames, data):
+        for row in data:
+            yield zip(colnames, row)
+
+    def iterate_data_formatted(self, colnames, data, keysep=': ', filler='\n\n========================================\n\n'):
+        for row in data:
+            for tup in zip(colnames, row):
+                yield f"{tup[0]}{keysep}{tup[1]}"
+            if filler: yield filler
+
     def sqlquery(self, table, columns='*', distinct=True, joins=None, condition=None, conj='and',
                 groupby=None, having=None, window=None, union=None, orderby=None,
                 limit=None, offset=None,
-                schema='public', fetch='iter', **kwargs):
+                schema='public', **kwargs):
+        fetch = kwargs.get('fetch', 'iter')
         if is_iterable(columns): columns = ', '.join(columns)
         if is_iterable(condition): 
             condition = f' {conj} '.join(f"({c})" for c in condition)
@@ -170,6 +181,7 @@ class Psdb:
         else:
             foo = self.fetch
 
+        #print(q)
         return foo(q, **kwargs)
 
     def _get_column_names(self, cur):
@@ -296,24 +308,18 @@ class Russtatdb(Psdb):
                 for ds in dsets:
                     results.append({'level': j, 'name': ds[1], 'count': 1, 'id': ds[0]})
         
-        return results              
+        return results
 
-    def print_classificator(self, ignore_root=True, max_levels=None, max_categories=None, 
-        print_names=True, print_ids=True, max_ds=10, indent='  ', file=None):
-        def pr(w):
-            if file is None:
-                print(w)
-            else:
-                print(w, file=file)
-
+    def output_classificator(self, ignore_root=True, max_levels=None, max_categories=None, 
+                             print_names=True, print_ids=True, max_ds=10, indent='  '):
         lst = self.get_classificator(ignore_root, max_levels)
         l = {}
         for el in lst[:max_categories]:
             for i in range(len(el[0])):
-                if l.get(i, '') == el[0][i]:
-                    continue            
-                pr(f"{indent * i}{el[0][i]}")
+                if l.get(i, '') == el[0][i]: continue            
+                yield f"{indent * i}{el[0][i]}"
                 l[i] = el[0][i]
+
             le = len(el[1])
             if le:
                 trunc = isinstance(max_ds, int) and le > max_ds
@@ -323,14 +329,16 @@ class Russtatdb(Psdb):
                     dsets = zip(dsets, dsnames)
                 for ds in dsets:
                     if print_ids:
-                        pr(f"{indent * (i + 1)}{ds[0]}: {ds[1]}" if print_names else f"{indent * i}{ds}")
+                        yield f"{indent * (i + 1)}{ds[0]}: {ds[1]}" if print_names else f"{indent * i}{ds}"
                     elif print_names:
-                        pr(f"{indent * (i + 1)}{ds[1]}")
+                        yield f"{indent * (i + 1)}{ds[1]}"
                 if trunc:
-                    pr(f'{indent * (i + 1)} ...')
-                pr(f"{indent * (i + 1)}[TOTAL {le} DATASETS]")
-            else:
-                pr(f'{indent * (i + 1)}[NO DATASETS]')
+                    yield f'{indent * (i + 1)} ...'
+
+    def print_classificator(self, file=None, **kwargs):
+        if not file: file = sys.stdout
+        for row in self.output_classificator(**kwargs):
+            print(row, file=file)
 
     def get_datasets_by_ids(self, ids, **kwargs):
         if ids:
@@ -338,8 +346,8 @@ class Russtatdb(Psdb):
         else:
             return self.get_datasets(**kwargs)
     
-    def get_datasets_by_name(self, pattern, fullmatch=False, case_sensitive=False, **kwargs):
-        ds, pat = ('dataset', pattern) if case_sensitive else ('lower(dataset)', pattern.lower())
+    def get_datasets_by_name(self, pattern, field='dataset', fullmatch=False, case_sensitive=False, **kwargs):
+        ds, pat = (field, pattern) if case_sensitive else (f'lower({field})', pattern.lower())
         if fullmatch:
             return self.get_datasets(condition=f"{ds} = $${pat}$$", **kwargs)
         else:

@@ -5,23 +5,16 @@
 
 ## @package russtat.russtat
 # @brief Application entry point.
-from prompt_toolkit import PromptSession
-from prompt_toolkit import print_formatted_text
-from prompt_toolkit.lexers import PygmentsLexer
-from prompt_toolkit.formatted_text import to_formatted_text, HTML
-from prompt_toolkit.history import InMemoryHistory
-from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
-from prompt_toolkit.shortcuts import message_dialog, input_dialog, yes_no_dialog
-from prompt_toolkit.styles import Style
-from prompt_toolkit.shortcuts import ProgressBar
-from prompt_toolkit.key_binding import KeyBindings
+from prompt_toolkit import (output, PromptSession, print_formatted_text, formatted_text,
+                            history, auto_suggest, shortcuts, styles, key_binding, lexers)
+import pygments                    
 from pygments.lexers.sql import PostgresLexer
 
 import os, sys, json, traceback
 from datetime import datetime
 from rsengine import Russtat
-from psdb import Russtatdb
-from globs import timeit
+from psdb import Russtatdb, pd
+from globs import timeit, REPLMENU
 
 # --------------------------------------------------------------- #
 
@@ -183,108 +176,171 @@ def testing():
 
 # --------------------------------------------------------------- #
 
-def print_long_iterator(session, it, max_rows=50, cancel_key='q'):
-    r = False
-    
-    bindings = KeyBindings()   
-    
-    @bindings.add('<any>')
-    def q():
-        nonlocal r
-        r = False
+def msg(title, text, ok_text='OK'):
+    return shortcuts.message_dialog(title=title, text=text, ok_text=ok_text).run()
 
-    @bindings.add(cancel_key)
-    def g():
-        nonlocal r
-        r = True
+def input_msg(title, text, ok_text='OK', cancel_text='Cancel', password=False):
+    return shortcuts.input_dialog(title=title, text=text, ok_text=ok_text, cancel_text=cancel_text, password=password).run()
 
+def yesno_msg(title, text, yes_text='YES', no_text='NO'):
+    return shortcuts.yes_no_dialog(title=title, text=text, yes_text=yes_text, no_text=no_text).run()
+
+def print_long_iterator(session, it, max_rows=50):
     n = 0
     for line in it:
-        n += 1
-        print_formatted_text(line)
-        if max_rows > 0 and n % max_rows == 0:
-            session.prompt('', bottom_toolbar=HTML('----- Any key to <violet>continue</violet>, <violet>q</violet> to abort -----'), key_bindings=bindings)
-            if r: break
-
-def cli():
-
-    menu = {
-        '!':
-        {
-            'MENU': '1 - [d]atasets 2 - [o]bservations 3 - [s]ql query (raw) 4 - [i]nfo\n[Q]uit',
-            'd':
-            {
-                'MENU': '1 - [d]isplay all 2 - [f]ind in text fields display 3 - [c]olumn names 4 - [s]earch 5 - [p]rint categories\n* - RETURN\n[Q]uit',
-                'd': 'SET OUTPUT PARAMETERS\n* - RETURN\n[Q]uit',
-                'f': 'ENTER SEARCH PHRASE\n* - RETURN\n[Q]uit',
-                'c': '* - RETURN\n[Q]uit',
-                's':
-                {
-                    'MENU': '1 - by [i]d 2 - by [n]ame 3 - by [c]ategory 4 - [e]xtended search\n* - RETURN\n[Q]uit',
-                    'i': 'ENTER IDS SEPARATING WITH COMMA\n* - RETURN\n[Q]uit',
-                    'n': 'ENTER NAME OR PART OF IT\n* - RETURN\n[Q]uit',
-                    'c': 'ENTER CATEGORY OR PART OF IT\n* - RETURN\n[Q]uit',
-                    'e': 
-                    {
-                        'MENU': '1 - [p]arameters 2 - [r]aw\n* - RETURN\n[Q]uit',
-                        'p': 'ENTER SEARCH PARAMETERS\n* - RETURN\n[Q]uit',
-                        'r': 'ENTER SQL QUERY\n* - RETURN\n[Q]uit'
-                    }
-                },
-                'p': 'SET OUTPUT PARAMETERS\n* - RETURN\n[Q]uit'
-            }
-        }
-    }
-
-    stack = ['!']
-
-    def msg(title, text, ok_text='OK'):
-        message_dialog(title=title, text=text, ok_text=ok_text).run()
-
-    def input_msg(title, text, ok_text='OK', cancel_text='Cancel', password=False):
-        return input_dialog(title=title, text=text, ok_text=ok_text, cancel_text=cancel_text, password=password).run()
-
-    def yesno_msg(title, text, yes_text='YES', no_text='NO'):
-        return yes_no_dialog(title=title, text=text, yes_text=yes_text, no_text=no_text).run()
-
-    def get_menu():
-        nd = menu
-        try:
-            for m in stack:
-                nd = nd[m]
-            return (to_formatted_text(HTML(nd['MENU'] if isinstance(nd, dict) else nd)), nd)
+        try:        
+            n += 1
+            print_formatted_text(line)
+            if max_rows > 0 and n % max_rows == 0:
+                session.prompt('', bottom_toolbar=formatted_text.HTML('----- Hit <violet>Return</violet> to continue, <violet>Ctrl + C</violet> to abort -----'))
         except:
-            return (to_formatted_text(HTML(menu['!']['MENU'])), menu['!'])
+            break
 
-    dbpassword = input('Enter DB password:')
+def print_dataframe(session, df, max_rows=50): 
+    l = len(df)
+    if max_rows <= 0 or l <= max_rows:
+        print_formatted_text(df.to_markdown(tablefmt='psql'))
+    else:
+        parts = divmod(l, max_rows)
+        parts = parts[0] + 1 if parts[1] > 0 else parts[0]
+        for i in range(parts):
+            try:
+                print_formatted_text(df.iloc[i * max_rows:(i + 1) * max_rows].to_markdown(tablefmt='psql'))
+                session.prompt('', bottom_toolbar=formatted_text.HTML('----- Hit <OrangeRed>Return</OrangeRed> to continue, <OrangeRed>Ctrl + C</OrangeRed> to abort -----'))
+            except Exception as err:
+                msg('Error', repr(err))
+                break
+
+def get_menu(stack):
+    nd = REPLMENU
+    try:
+        for m in stack:
+            nd = nd[m]
+        return (formatted_text.HTML(nd['MENU'] if isinstance(nd, dict) else nd), nd)
+    except:
+        return (formatted_text.HTML(REPLMENU['!']['MENU']), REPLMENU['!'])          
+
+def cli():    
+
+    stack = ['!']  
+            
+    dbpassword = input_msg('DB password', '', password=True)
+
     db = Russtatdb(password=dbpassword)
+    if not db:
+        msg('Error', 'DB connection failed!')
+        return
 
+    # renderer = output.win32.Win32Output(stdout=sys.stdout, use_complete_width=True)
+    # renderer.disable_autowrap()
+    # session = PromptSession(output=renderer)
     session = PromptSession()
 
     text = ''
     while text != 'Q':
         try:
-            tb, nd = get_menu()
-            text = session.prompt(to_formatted_text(HTML(f"({' > '.join(stack)}) >> ")), 
-                                    auto_suggest=AutoSuggestFromHistory(), 
+            tb, nd = get_menu(stack)
+            text = session.prompt(formatted_text.HTML(f"[{' -> '.join(stack)}] >> "), 
+                                    auto_suggest=auto_suggest.AutoSuggestFromHistory(), 
                                     bottom_toolbar=tb)
             txt = text[0]
+
             if txt == 'Q':
                 break
+
             elif txt == '*':
                 if len(stack) > 1:
                     stack.pop()
                 else:
                     break
+
             elif isinstance(nd, dict) and txt in nd:
+               
                 stack.append(txt)
-
                 # EXEC COMMAND  
-                path = '/'.join(stack)
-                if path == '!/d/d':
-                    print_long_iterator(session, db.get_datasets())
-                    stack.pop()
+                try:
+                    path = '/'.join(stack)
+                    if path == '!/d/d':
+                        data = db.get_datasets(get_header=True)
+                        print_long_iterator(session, db.iterate_data_formatted(*data))
+                        stack.pop()
+                                           
+                    elif path == '!/d/f':
+                        text1 = session.prompt(formatted_text.HTML(f"[{' -> '.join(stack)}]: SEARCH >> "), 
+                                        auto_suggest=auto_suggest.AutoSuggestFromHistory(), 
+                                        bottom_toolbar=tb)
+                        if text1:
+                            data = db.findin_datasets(text1, get_header=True)
+                            print_long_iterator(session, db.iterate_data_formatted(*data))
+                        stack.pop()
+                       
+                    elif path == '!/d/c':
+                        print_long_iterator(session, (f"{i}. {r[0]}" for (i, r) in enumerate(db.get_colnames_datasets())))
+                        stack.pop()
+                       
+                    elif path == '!/d/p':
+                        print_long_iterator(session, db.output_classificator(max_ds=None, indent='....'))
+                        stack.pop()
 
+                    elif path == '!/d/s/i':
+                        text1 = session.prompt(formatted_text.HTML(f"[{' -> '.join(stack)}]: IDS (COMMA-SEP) >> "), 
+                                        auto_suggest=auto_suggest.AutoSuggestFromHistory(), 
+                                        bottom_toolbar=tb)
+                        if text1:
+                            ids = [s.strip() for s in text1.split(',')]
+                            data = db.get_datasets_by_ids(ids, get_header=True)
+                            print_long_iterator(session, db.iterate_data_formatted(*data))
+                        stack.pop()
+
+                    elif path == '!/d/s/n':
+                        text1 = session.prompt(formatted_text.HTML(f"[{' -> '.join(stack)}]: (PART OF) NAME (IN ANY CASE) >> "), 
+                                        auto_suggest=auto_suggest.AutoSuggestFromHistory(), 
+                                        bottom_toolbar=tb)
+                        if text1:
+                            data = db.get_datasets_by_name(text1, get_header=True)
+                            print_long_iterator(session, db.iterate_data_formatted(*data))
+                        stack.pop()
+
+                    elif path == '!/d/s/c':
+                        text1 = session.prompt(formatted_text.HTML(f"[{' -> '.join(stack)}]: (PART OF) CATEGORY (IN ANY CASE) >> "), 
+                                        auto_suggest=auto_suggest.AutoSuggestFromHistory(), 
+                                        bottom_toolbar=tb)
+                        if text1:
+                            data = db.get_datasets_by_name(text1, 'classifier', get_header=True)
+                            print_long_iterator(session, db.iterate_data_formatted(*data))
+                        stack.pop()
+
+                    elif path == '!/d/s/e/p':
+                        params = {
+                            'columns': {'prompt': 'COLUMN NAMES (COMMA-SEP) - <u><red>Return</red> to display ALL columns, <red>Q</red> to abort</u>', 'val': '*'}, 
+                            'condition': {'prompt': 'CONDITIONS (; SEP) - <u><red>Return</red> to apply NO conditions, <red>Q</red> to abort</u>', 'val': None}, 
+                            'orderby': {'prompt': 'ORDER BY (COMMA-SEP) - <u><red>Return</red> to use DEFAULT ordering, <red>Q</red> to abort</u>', 'val': None}, 
+                            'limit': {'prompt': 'MAX RESULTS (E.G. 1) - <u><red>Return</red> to apply NO limit, <red>Q</red> to abort</u>', 'val': None}, 
+                            'offset': {'prompt': 'FIRST RESULT OFFSET - <u><red>Return</red> = start from first row, <red>Q</red> to abort</u>', 'val': None} 
+                        }
+                        for p in params:
+                            ptxt = session.prompt(formatted_text.HTML(f"[{' -> '.join(stack)}]: {params[p]['prompt']} >> "), 
+                                                    auto_suggest=auto_suggest.AutoSuggestFromHistory(), 
+                                                    bottom_toolbar=tb)
+                            if ptxt == 'Q':
+                                break
+                            else:
+                                if ptxt:
+                                    if p == 'condition' and ';' in ptxt:
+                                        ptxt = [s.strip() for s in ptxt.split(';')]
+                                    elif p in ('columns', 'orderby') and ',' in ptxt:
+                                        ptxt = [s.strip() for s in ptxt.split(',')]
+                                    params[p]['val'] = ptxt
+                        else:                        
+                            data = db.get_datasets(get_header=True, **{p: params[p]['val'] for p in params})
+                            print_long_iterator(session, db.iterate_data_formatted(*data))
+
+                        stack.pop()
+
+                except Exception as err:
+                    msg('Error', repr(err))
+                    stack.pop()
+                    
         except EOFError:
             break
 

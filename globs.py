@@ -14,6 +14,29 @@ import sys
 ## `bool` toggle to turn console debug messages on/off
 DEBUGGING = False
 NL = '\n'
+REPLMENU = {
+    '!': {
+        'MENU': '1 - <OrangeRed>d</OrangeRed>atasets 2 - <OrangeRed>o</OrangeRed>bservations 3 - <OrangeRed>s</OrangeRed>ql query (raw) 4 - <OrangeRed>i</OrangeRed>nfo\n<OrangeRed>Q</OrangeRed>uit',
+        'd': {
+            'MENU': '1 - <OrangeRed>d</OrangeRed>isplay all 2 - <OrangeRed>f</OrangeRed>ind in text fields 3 - display <OrangeRed>c</OrangeRed>olumn names 4 - <OrangeRed>s</OrangeRed>earch 5 - <OrangeRed>p</OrangeRed>rint categories\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+            'd': 'SET OUTPUT PARAMETERS\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+            'f': 'ENTER SEARCH PHRASE\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+            'c': '<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+            's': {
+                'MENU': '1 - by <OrangeRed>i</OrangeRed>d 2 - by <OrangeRed>n</OrangeRed>ame 3 - by <OrangeRed>c</OrangeRed>ategory 4 - <OrangeRed>e</OrangeRed>xtended search\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+                'i': 'ENTER IDS SEPARATING WITH COMMA\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+                'n': 'ENTER NAME OR PART OF IT\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+                'c': 'ENTER CATEGORY OR PART OF IT\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+                'e': {
+                    'MENU': '1 - <OrangeRed>p</OrangeRed>arameters 2 - <OrangeRed>r</OrangeRed>aw\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+                    'p': 'ENTER SEARCH PARAMETERS\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+                    'r': 'ENTER SQL QUERY\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit'
+                }
+            },
+            'p': 'SET OUTPUT PARAMETERS\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit'
+        }
+    }
+}
 
 # --------------------------------------------------------------- #
 
