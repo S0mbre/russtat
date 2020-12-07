@@ -9,3 +9,4 @@ __pycache__/
 */.vscode/
 *.json
 *.xml
+dask-worker-space/

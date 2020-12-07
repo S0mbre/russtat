@@ -109,29 +109,57 @@ class Psdb:
         else:
             return (self._get_column_names(cur), cur) if get_header else cur
 
+    def data_to_dict(self, data, on_error=print):
+        if data is None: return None
+        
+        if 'cursor' in str(type(data)).lower():
+            names = self._get_column_names(data)
+            rows = data
+        elif isinstance(data, tuple):
+            names = data[0]
+            rows = data[1]
+        elif on_error:
+            on_error('data parameter must be a DB cursor object or a tuple (column names, values)')
+            return None
+
+        vals = {n: [] for n in names}
+        for row in rows:
+            for i, n in enumerate(names):
+                vals[n].append(row[i])
+        return vals
+
+    def data_to_dataframe(self, data, on_error=print):
+        d = self.data_to_dict(data, on_error)
+        return pd.DataFrame(d) if d else None
+
     def fetch_dict(self, sql, on_error=print):
         cur = self.exec(sql, on_error=on_error)
-        if cur is None: return None
-        names = self._get_column_names(cur)
-        data = {n: [] for n in names}
-        for row in cur:
-            for i, n in enumerate(names):
-                data[n].append(row[i])
-        return data
+        return self.data_to_dict(cur, on_error)
 
     def fetch_dataframe(self, sql, on_error=print):
-        res = self.fetch_dict(sql, on_error)
-        return pd.DataFrame(res) if res else None
+        cur = self.exec(sql, on_error=on_error)
+        return self.data_to_dataframe(cur, on_error)
 
     def iterate_data(self, colnames, data):
+        if not data: return
         for row in data:
             yield zip(colnames, row)
 
-    def iterate_data_formatted(self, colnames, data, keysep=': ', filler='\n\n========================================\n\n'):
+    def iterate_data_formatted(self, colnames, data, keysep=': ', 
+                               colname_handler=None, value_handler=None, 
+                               filler='========================================',
+                               number_handler=None):
+        if not data: return
+        i = 0
         for row in data:
+            if number_handler:
+                yield(number_handler(i))
             for tup in zip(colnames, row):
-                yield f"{tup[0]}{keysep}{tup[1]}"
+                c = colname_handler(tup[0]) if colname_handler else tup[0]
+                v = value_handler(tup[1]) if value_handler else tup[1]
+                yield f"{c}{keysep}{v}"
             if filler: yield filler
+            i += 1
 
     def sqlquery(self, table, columns='*', distinct=True, joins=None, condition=None, conj='and',
                 groupby=None, having=None, window=None, union=None, orderby=None,
@@ -208,7 +236,7 @@ class Russtatdb(Psdb):
     def dbmessages(self, default='Database Error'):
         return '\n'.join(self.con.notices) if self.con.notices else default
 
-    def findin_datasets(self, query, **kwargs):
+    def findin_datasets(self, query, extended=False, **kwargs):
         """
         RETURNS:
         id integer, classificator text, dsname text, updated timestamp with time zone, 
@@ -216,9 +244,9 @@ class Russtatdb(Psdb):
         description text, agency text, department text, startyr smallint, 
         endyr smallint, prepby text, contact text, ranking real
         """
-        return self.sqlquery(f"search_datasets($${query}$$::text)", **kwargs)
+        return self.sqlquery(f"search_datasets{'_web' if not extended else ''}($${query}$$::text)", **kwargs)
 
-    def findin_data(self, query, **kwargs):
+    def findin_data(self, query, extended=False, **kwargs):
         """
         RETURNS:
         id bigint, classificator text, dsname text, description text, 
@@ -228,7 +256,7 @@ class Russtatdb(Psdb):
         obsyear integer, obsperiod character varying, obsunit character varying, 
         obscode text, obscodeval text, value real, ranking real
         """
-        return self.sqlquery(f"search_data($${query}$$::text)", **kwargs)
+        return self.sqlquery(f"search_data{'_web' if not extended else ''}($${query}$$::text)", **kwargs)
 
     def get_datasets(self, **kwargs):
         return self.sqlquery('all_datasets', **kwargs)
