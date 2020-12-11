@@ -24,6 +24,9 @@ XML_NS = {'message': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message"
         'utility': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/utility",
         'xsi': "http://www.w3.org/2001/XMLSchema-instance"}
 
+HEADER = {'Content-Type': 'application/xml; charset=utf-8', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'}
+PROXY = {'http': 'http://192.168.1.10:3128', 'https': 'https://192.168.1.10:3128'} # use None for system / default proxy settings
+
 # --------------------------------------------------------------- # 
 
 ## @brief EMISS data retrieving and processing engine. 
@@ -163,7 +166,7 @@ class Russtat:
             except Exception as err:
                 report(err)                
             try:
-                res = requests.get(URL_EMISS_LIST, timeout=self.connection_timeout)
+                res = requests.get(URL_EMISS_LIST, headers=HEADER, proxies=PROXY, timeout=self.connection_timeout)
                 if not res: 
                     report(f'Could not retrieve dataset list from {URL_EMISS_LIST}')
                     return
@@ -517,7 +520,7 @@ class Russtat:
             except Exception as err:
                 report(err)                
             try:
-                res = requests.get(dataset['link'], timeout=self.connection_timeout)
+                res = requests.get(dataset['link'], headers=HEADER, proxies=PROXY, timeout=self.connection_timeout)
                 if not res: 
                     report(f"Could not retrieve dataset from {dataset['link']}")
                     #return None
