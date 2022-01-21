@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['next_32',['next',['../classrusstat_1_1rsengine_1_1_russtat.html#a8f3383b0b66b45a0332ec607ca0778f7',1,'russtat::rsengine::Russtat']]]
+  ['json_5fhook_0',['json_hook',['../classrusstat_1_1rsengine_1_1_russtat.html#a21a649eaf038b4271604a18afec8abf5',1,'russtat::rsengine::Russtat']]]
 ];

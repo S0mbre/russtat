@@ -12,48 +12,61 @@ from pygments.lexers.sql import PostgresLexer
 import argparse, itertools, os
 from rsengine import Russtat
 from psdb import Russtatdb, pd
+from russtat import add2db
+from globs import NL, report
 
 # --------------------------------------------------------------- #
 
+RQUIT = '<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit'
+
+def COLOR_FIRST(txt, col='OrangeRed'):
+    return f'<{col}>{txt[0]}</{col}>{txt[1:]}'
+
 REPLMENU = {
     '!': {
-        'MENU': '1 - <OrangeRed>d</OrangeRed>atasets 2 - <OrangeRed>o</OrangeRed>bservations 3 - <OrangeRed>s</OrangeRed>ql query (raw) 4 - <OrangeRed>i</OrangeRed>nfo\n<OrangeRed>Q</OrangeRed>uit',
+        'MENU': f'1 - {COLOR_FIRST("datasets")} 2 - {COLOR_FIRST("observations")} 3 - {COLOR_FIRST("sql query (raw)")} 4 - {COLOR_FIRST("info")} 5 - {COLOR_FIRST("update DB")}\n{COLOR_FIRST("Quit")}',
         'd': {
-            'MENU': '1 - <OrangeRed>d</OrangeRed>isplay all 2 - <OrangeRed>f</OrangeRed>ind in text fields 3 - display <OrangeRed>c</OrangeRed>olumn names 4 - <OrangeRed>s</OrangeRed>earch 5 - <OrangeRed>p</OrangeRed>rint categories\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-            'd': 'SET OUTPUT PARAMETERS\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-            'f': 'ENTER SEARCH PHRASE\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-            'c': '<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+            'MENU': f'1 - {COLOR_FIRST("display all")} 2 - {COLOR_FIRST("find in text fields")} 3 - display {COLOR_FIRST("column names")} 4 - {COLOR_FIRST("search")} 5 - {COLOR_FIRST("print")} categories{NL}{RQUIT}',
+            'd': f'SET OUTPUT PARAMETERS{NL}{RQUIT}',
+            'f': f'ENTER SEARCH PHRASE{RQUIT}',
+            'c': RQUIT,
             's': {
-                'MENU': '1 - by <OrangeRed>i</OrangeRed>d 2 - by <OrangeRed>n</OrangeRed>ame 3 - by <OrangeRed>c</OrangeRed>ategory 4 - <OrangeRed>e</OrangeRed>xtended search\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-                'i': 'ENTER IDS SEPARATING WITH COMMA\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-                'n': 'ENTER NAME OR PART OF IT\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-                'c': 'ENTER CATEGORY OR PART OF IT\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+                'MENU': f'1 - by {COLOR_FIRST("id")} 2 - by {COLOR_FIRST("name")} 3 - by {COLOR_FIRST("category")} 4 - {COLOR_FIRST("extended")} search{NL}{RQUIT}',
+                'i': f'ENTER IDS SEPARATING WITH COMMA{NL}{RQUIT}',
+                'n': f'ENTER NAME OR PART OF IT{NL}{RQUIT}',
+                'c': f'ENTER CATEGORY OR PART OF IT{NL}{RQUIT}',
                 'e': {
-                    'MENU': '1 - <OrangeRed>p</OrangeRed>arameters 2 - <OrangeRed>r</OrangeRed>aw\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-                    'p': 'ENTER SEARCH PARAMETERS\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-                    'r': 'ENTER SQL QUERY\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit'
+                    'MENU': f'1 - {COLOR_FIRST("parameters")} 2 - {COLOR_FIRST("raw")}{NL}{RQUIT}',
+                    'p': f'ENTER SEARCH PARAMETERS{NL}{RQUIT}',
+                    'r': f'ENTER SQL QUERY{NL}{RQUIT}'
                 }
             },
-            'p': 'SET OUTPUT PARAMETERS\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit'
+            'p': f'SET OUTPUT PARAMETERS{NL}{RQUIT}'
         },
         'o': {
-            'MENU': '1 - <OrangeRed>d</OrangeRed>isplay all 2 - <OrangeRed>f</OrangeRed>ind in text fields 3 - display <OrangeRed>c</OrangeRed>olumn names 4 - <OrangeRed>s</OrangeRed>earch\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-            'd': 'SET OUTPUT PARAMETERS\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-            'f': 'ENTER SEARCH PHRASE\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-            'c': '<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+            'MENU': f'1 - {COLOR_FIRST("display all")} 2 - {COLOR_FIRST("find")} in text fields 3 - display {COLOR_FIRST("column")} names 4 - {COLOR_FIRST("search")}{NL}{RQUIT}',
+            'd': f'SET OUTPUT PARAMETERS{NL}{RQUIT}',
+            'f': f'ENTER SEARCH PHRASE{NL}{RQUIT}',
+            'c': RQUIT,
             's': {
-                'MENU': '1 - by <OrangeRed>i</OrangeRed>d 2 - by dataset <OrangeRed>n</OrangeRed>ame 3 - by <OrangeRed>d</OrangeRed>ataset id 4 - <OrangeRed>e</OrangeRed>xtended search\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-                'i': 'ENTER IDS SEPARATING WITH COMMA\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-                'n': 'ENTER DATASET NAME OR PART OF IT\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-                'd': 'ENTER DATASET IDS SEPARATING WITH COMMA\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
+                'MENU': f'1 - by {COLOR_FIRST("id")} 2 - by dataset {COLOR_FIRST("name")} 3 - by {COLOR_FIRST("dataset")} id 4 - {COLOR_FIRST("extended")} search{NL}{RQUIT}',
+                'i': f'ENTER IDS SEPARATING WITH COMMA{NL}{RQUIT}',
+                'n': f'ENTER DATASET NAME OR PART OF IT{NL}{RQUIT}',
+                'd': f'ENTER DATASET IDS SEPARATING WITH COMMA{NL}{RQUIT}',
                 'e': {
-                    'MENU': '1 - <OrangeRed>p</OrangeRed>arameters 2 - <OrangeRed>r</OrangeRed>aw\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-                    'p': 'ENTER SEARCH PARAMETERS\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit',
-                    'r': 'ENTER SQL QUERY\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit'
+                    'MENU': f'1 - {COLOR_FIRST("parameters")} 2 - {COLOR_FIRST("raw")}{NL}{RQUIT}',
+                    'p': f'ENTER SEARCH PARAMETERS{NL}{RQUIT}',
+                    'r': f'ENTER SQL QUERY{NL}{RQUIT}'
                 }
             }
         },
-        's': 'ENTER SQL QUERY\n<OrangeRed>*</OrangeRed> - RETURN\n<OrangeRed>Q</OrangeRed>uit'
+        's': f'ENTER SQL QUERY{NL}{RQUIT}',
+        'i': RQUIT,
+        'u': {
+            'MENU': f'1 - {COLOR_FIRST("full")} update 2 - {COLOR_FIRST("new")} datasets only{NL}{RQUIT}',
+            'f': RQUIT,
+            'n': RQUIT
+        }
     }
 }
 
@@ -63,6 +76,21 @@ MENU_FILESTORE = '<OrangeRed>Store to file: </OrangeRed> <yellow>> filename</yel
 
 # --------------------------------------------------------------- #
 
+def get_menu(stack):
+    nd = REPLMENU
+    try:
+        for m in stack:
+            nd = nd[m]
+        return (formatted_text.HTML(nd['MENU'] if isinstance(nd, dict) else nd), nd)
+    except:
+        return (formatted_text.HTML(REPLMENU['!']['MENU']), REPLMENU['!']) 
+
+def print_msg(text):
+    print_formatted_text(formatted_text.HTML(text))
+
+def print_err(err):
+    print_msg(f'<red>{err}</red>')
+
 def msg(title, text, ok_text='OK'):
     return shortcuts.message_dialog(title=title, text=text, ok_text=ok_text).run()
 
@@ -71,6 +99,31 @@ def input_msg(title, text, ok_text='OK', cancel_text='Cancel', password=False):
 
 def yesno_msg(title, text, yes_text='YES', no_text='NO'):
     return shortcuts.yes_no_dialog(title=title, text=text, yes_text=yes_text, no_text=no_text).run()
+    
+def update_database(db, dbpassword, rs, datasets):
+    try:
+        db.disable_triggers()
+
+        res = rs.get_many(datasets, del_xml=True, save2json=None, loadfromjson='auto', on_dataset=add2db, 
+                        on_dataset_kwargs={'dbparams': {'password': dbpassword}, 'logfile': 'stdout'}, on_error=print_err)
+        # get results
+        if res:                
+            res = res.get()
+
+            if res:                    
+                # print summary
+                cnt = len(res)
+                nonval = sum(1 for x in res if x is None) 
+                print_msg(f"<blue>Processed</blue> <yellow>{cnt}</yellow> <blue>datasets:</blue> <yellow>{cnt - nonval}</yellow> <blue>valid,</blue> <red>{nonval}</red> <blue>non-valid.</blue>")
+
+            else:
+                print_err('No datasets processed!')
+
+        else:
+            print_err('Error executing operation!')
+
+    finally:
+        db.enable_triggers()
 
 def print_long_iterator(session, it, print_func=lambda line: print_formatted_text(formatted_text.HTML(line)), 
                         toolbar='----- Hit <violet>Return</violet> to continue, <violet>Ctrl + C</violet> to abort -----', max_rows=50):
@@ -84,11 +137,24 @@ def print_long_iterator(session, it, print_func=lambda line: print_formatted_tex
         except:
             break
 
-def print_datasets(session, data, db, **kwargs):
+def print_datasets(session, data, db, dbpassword, rs, stack, **kwargs):
     lines = db.iterate_data_formatted(*data, colname_handler=lambda c: f"<yellow>{c}</yellow>", 
                                       filler='<blue>========================================</blue>',
                                       number_handler=lambda i: f"<green>{i + 1}</green>")
     print_long_iterator(session, lines, **kwargs)
+
+    # suggest options (update...)
+    if not data or not data[1]: return
+
+    opt = session.prompt(formatted_text.HTML(f"[{' -> '.join(stack)}]: SEARCH >> "), 
+                            auto_suggest=auto_suggest.AutoSuggestFromHistory(), 
+                            bottom_toolbar=formatted_text.HTML(f'1 - {COLOR_FIRST("update listed datasets")}{NL}{RQUIT}'))
+    if opt == 'u':
+        # dataset names
+        datasets = [e[2] for e in data[1]]
+        print(datasets[:10])
+        if yesno_msg('Proceed with update?', f'Update {len(datasets)} datasets.'):
+            update_database(db, dbpassword, rs, datasets)
 
 def print_dataframe(session, df, max_rows=50): 
     l = len(df)
@@ -141,15 +207,6 @@ def output_data(session, data, db, stack):
     elif args.fmt == 'clip':
         df.to_clipboard(date_format='%Y-%m-%d %H:%M:%S')
 
-def get_menu(stack):
-    nd = REPLMENU
-    try:
-        for m in stack:
-            nd = nd[m]
-        return (formatted_text.HTML(nd['MENU'] if isinstance(nd, dict) else nd), nd)
-    except:
-        return (formatted_text.HTML(REPLMENU['!']['MENU']), REPLMENU['!'])          
-
 def cli():    
 
     stack = ['!']  
@@ -160,6 +217,8 @@ def cli():
     if not db:
         msg('Error', 'DB connection failed!')
         return
+
+    rs = Russtat(update_list=True)
 
     # renderer = output.win32.Win32Output(stdout=sys.stdout, use_complete_width=True)
     # renderer.disable_autowrap()
@@ -193,10 +252,11 @@ def cli():
                     
                     if path == '!/d/d':
                         data = db.get_datasets(get_header=True) # 2-tuple: (colnames list, Cursor)
-                        print_datasets(session, data, db)
+                        print_datasets(session, data, db, dbpassword, rs, stack)
 
                         try:
-                            output_data(session, data, db, stack)
+                            output_data(session, data, db, stack)                            
+
                         finally:
                             stack.pop()
                                            
@@ -206,7 +266,7 @@ def cli():
                                         bottom_toolbar=tb)
                         if text1:
                             data = db.findin_datasets(text1, get_header=True)
-                            print_datasets(session, data, db)
+                            print_datasets(session, data, db, dbpassword, rs, stack)
                         stack.pop()
                        
                     elif path == '!/d/c':
@@ -224,7 +284,7 @@ def cli():
                         if text1:
                             ids = [s.strip() for s in text1.split(',')]
                             data = db.get_datasets_by_ids(ids, get_header=True)
-                            print_datasets(session, data, db)
+                            print_datasets(session, data, db, dbpassword, rs, stack)
                         stack.pop()
 
                     elif path == '!/d/s/n':
@@ -233,7 +293,7 @@ def cli():
                                         bottom_toolbar=tb)
                         if text1:
                             data = db.get_datasets_by_name(text1, get_header=True)
-                            print_datasets(session, data, db)
+                            print_datasets(session, data, db, dbpassword, rs, stack)
                         stack.pop()
 
                     elif path == '!/d/s/c':
@@ -242,7 +302,7 @@ def cli():
                                         bottom_toolbar=tb)
                         if text1:
                             data = db.get_datasets_by_name(text1, 'classifier', get_header=True)
-                            print_datasets(session, data, db)
+                            print_datasets(session, data, db, dbpassword, rs, stack)
                         stack.pop()
 
                     elif path == '!/d/s/e/p':
@@ -268,7 +328,7 @@ def cli():
                                     params[p]['val'] = ptxt
                         else:                        
                             data = db.get_datasets(get_header=True, **{p: params[p]['val'] for p in params})
-                            print_datasets(session, data, db)
+                            print_datasets(session, data, db, dbpassword, rs, stack)
 
                         stack.pop()
 
@@ -278,20 +338,49 @@ def cli():
                                         bottom_toolbar=tb)
                         if text1:
                             data = db.fetch(text1, get_header=True)
-                            print_datasets(session, data, db)
+                            print_datasets(session, data, db, dbpassword, rs, stack)
                         stack.pop()
 
                     elif path == '!/o/d':
                         data = db.get_data(get_header=True) # 2-tuple: (colnames list, Cursor)
-                        print_datasets(session, data, db)
+                        print_datasets(session, data, db, dbpassword, rs, stack)
 
                         try:
                             output_data(session, data, db, stack)
                         finally:
                             stack.pop()
 
+                    elif path == '!/i':
+                        # display info
+                        lst = db.get_classificator()
+                        print(lst)
+                        stack.pop()
+
+                    elif path.startswith('!/u/'):
+                        #db.update_dataset_list(overwrite=True)
+                        start_num = session.prompt(formatted_text.HTML(f"[{' -> '.join(stack)}]: STARTING NUMBER (HIT RETURN TO SET TO FIRST) >> "), 
+                                        auto_suggest=auto_suggest.AutoSuggestFromHistory(), 
+                                        bottom_toolbar=tb)
+                        end_num = session.prompt(formatted_text.HTML(f"[{' -> '.join(stack)}]: END NUMBER (HIT RETURN TO SET TO LAST) >> "), 
+                                        auto_suggest=auto_suggest.AutoSuggestFromHistory(), 
+                                        bottom_toolbar=tb)
+                        datasets = rs[int(start_num) if start_num else 0:int(end_num) if end_num else None]
+                        if path.endswith('n'):
+                            datasets = rs.filter_datasets(db, datasets, 'new')
+                        # print number of available and new datasets
+                        try:
+                            confmsg = f"{len(datasets)} datasets / {len(rs)} ({int(len(datasets) * 100.0 / len(rs))}%) to add/update. Proceed?"
+                        except:
+                            confmsg = f'{len(datasets)} datasets to add/update. Proceed?'
+
+                        if yesno_msg('Proceed with update?', confmsg):
+                            update_database(db, dbpassword, rs, datasets)
+                        
+                        stack.pop()
+
                 except Exception as err:
-                    msg('Error', repr(err))
+                    #msg('Error', repr(err))
+                    report(None)
                     stack.pop()
                     
         except EOFError:

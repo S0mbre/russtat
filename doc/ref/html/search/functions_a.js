@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['timeit_83',['timeit',['../namespacerusstat_1_1globs.html#a635bd21cc380c954c8980714072f63be',1,'russtat::globs']]]
+  ['next_0',['next',['../classrusstat_1_1rsengine_1_1_russtat.html#a8f3383b0b66b45a0332ec607ca0778f7',1,'russtat::rsengine::Russtat']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['url_5femiss_5flist_93',['URL_EMISS_LIST',['../namespacerusstat_1_1rsengine.html#a3d861cb137ad164dfcabdef20bbde273',1,'russtat::rsengine']]]
+  ['menu_5ffilestore_0',['MENU_FILESTORE',['../namespacerusstat_1_1repl.html#a4b8eaba62b5e034e63856a3dbbd47728',1,'russtat::repl']]]
 ];

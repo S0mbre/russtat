@@ -7,6 +7,7 @@
 # @brief Application entry point.
 import os, sys, json, traceback
 from datetime import datetime
+from types import resolve_bases
 from rsengine import Russtat
 from psdb import Russtatdb
 from globs import timeit
@@ -17,13 +18,15 @@ from globs import timeit
 # @param ds `dict` The stats dataset as a dictionary object -- see rsengine::Russtat::get_one()
 # @param db `psdb::Russtatdb` | `None` DB connection object; may be `None` to connect locally
 # @param dbparams `dict` DB connection parameters passed to the `psdb::Russtatdb` constructor
-# `None` means STDOUT, otherwise, a valid path is expected
-def add2db(ds, db=None, dbparams={}, logfile=None):   
+# `stdout` means STDOUT, otherwise, a valid path is expected
+def add2db(ds, db=None, dbparams={}, logfile=None):
 
     # by default messages are printed to the console
     closelog = False
-    if logfile is None:
+    if logfile == 'stdout':
         logfile = sys.stdout
+    elif logfile == 'stderr':
+        logfile = sys.stderr
     elif isinstance(logfile, str):
         # ...but a different file may be indicated
         try:
@@ -41,20 +44,22 @@ def add2db(ds, db=None, dbparams={}, logfile=None):
         res = db.add_data(json.dumps(ds, ensure_ascii=False, default=str))
 
         # result must be a 3-tuple
-        if res:
+        if logfile and res:
             print("'{}'\n\t{}\tAdded: {}, Data ID = {}, Dataset ID = {}".format(
                     ds['full_name'], f"{datetime.now():'%b.%d %H:%M:%S'}", 
                     res[0], res[1], res[2]), end='\n\n', file=logfile, flush=True)
-        else:
+        elif not res:
             raise Exception('FAILED TO IMPORT')
 
     except Exception as err:
         # print error message
-        print("{}\n\t{}".format(ds['full_name'], err), end='\n\n', file=logfile, flush=True)
+        if logfile:
+            print("{}\n\t{}".format(ds['full_name'], err), end='\n\n', file=logfile, flush=True)
 
     except:
         # print traceback info from stack
-        traceback.print_exc(limit=None, file=logfile)
+        if logfile:
+            traceback.print_exc(limit=None, file=logfile)
 
     finally:
         # close output file, if any
@@ -94,11 +99,14 @@ def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=
 
         # print number of available and new datasets
         try:
-            print(f":: {len(rs)} datasets / {len(datasets)} ({int(len(datasets) * 100.0 / len(rs))}%) to add/update.")
+            print(f":: {len(datasets)} datasets / {len(rs)} ({int(len(datasets) * 100.0 / len(rs))}%) to add/update.")
         except:
             pass
         #for ds in datasets: print(ds)
         #return
+
+        if input(f'update_list={update_list}, start_ds={start_ds}, end_ds={end_ds}, skip_existing={skip_existing}. Proceed? [y/n] ').lower() != 'y':
+            return
 
         if not datasets:
             print(f":: NO DATASETS TO UPDATE!")
@@ -115,7 +123,7 @@ def update_db(update_list=False, start_ds=0, end_ds=-1, skip_existing=True, pwd=
         try:
             print(f":: Processing {len(datasets)} datasets...")
 
-            res = rs.get_many(datasets, del_xml=True, save2json=None, loadfromjson='auto', on_dataset=add2db, 
+            res = rs.get_many(datasets, del_xml=True, save2json=None, loadfromjson='auto', on_dataset=add2db,
                               on_dataset_kwargs={'dbparams': {'password': dbpassword}, 'logfile': logfile}, 
                               on_error=print)
             # get results

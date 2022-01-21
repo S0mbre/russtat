@@ -25,7 +25,7 @@ XML_NS = {'message': "http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message"
         'xsi': "http://www.w3.org/2001/XMLSchema-instance"}
 
 HEADER = {'Content-Type': 'application/xml; charset=utf-8', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'}
-PROXY = {'http': 'http://192.168.1.10:3128', 'https': 'https://192.168.1.10:3128'} # use None for system / default proxy settings
+PROXY = None # use None for system / default proxy settings
 
 # --------------------------------------------------------------- # 
 
@@ -119,7 +119,7 @@ class Russtat:
                 if ds['title'].lower() == key.lower():
                     return ds
             raise IndexError 
-        elif isinstance(key, int):            
+        elif isinstance(key, int):
             return self.datasets[key]
         elif isinstance(key, slice):
             return self.datasets[key.start:key.stop:key.step]
@@ -682,7 +682,13 @@ class Russtat:
                     report('Empty datasets parameter!', True)
                     return None          
                 if isinstance(datasets[0], int) or isinstance(datasets[0], str):
-                    datasets = [self[k] for k in datasets]            
+                    datasets_ = []
+                    for d in datasets:
+                        try:
+                            datasets_.append(self[d])
+                        except:
+                            pass
+                    datasets = datasets_
             else:
                 report('Bad type: datasets', True)
                 return None

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xml_5fns_94',['XML_NS',['../namespacerusstat_1_1rsengine.html#a617d29b5c3f7bfa079b7d36341e698ef',1,'russtat::rsengine']]]
+  ['nl_0',['NL',['../namespacerusstat_1_1globs.html#aaf92a3de1697c4057308d809adec9c14',1,'russtat::globs']]]
 ];

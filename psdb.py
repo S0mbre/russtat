@@ -294,6 +294,10 @@ class Russtatdb(Psdb):
         cur = self.exec(f"call public.clear_all({int(full_clear)}::boolean);", commit=True, on_error=on_error)
         return True if cur else False
 
+    def get_classificator2(self, ignore_root=True):
+        dsets = self.sqlquery('all_datasets', columns=['classifier', 'id'], condition="classifier <> ''", orderby='classifier')
+        
+
     def get_classificator(self, ignore_root=True, max_levels=None):
         dsets = self.sqlquery('all_datasets', columns=['classifier', 'id'], condition="classifier <> ''", orderby='classifier')
         spl = [(tuple(s.strip() for s in x[0].split('/')[int(ignore_root):max_levels]), x[1]) for x in dsets]

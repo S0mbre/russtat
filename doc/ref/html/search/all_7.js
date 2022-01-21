@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['is_5fiterable_30',['is_iterable',['../namespacerusstat_1_1rsengine.html#a143ccecb72fa41e60d9d14765651f2fc',1,'russtat::rsengine']]]
+  ['header_0',['HEADER',['../namespacerusstat_1_1rsengine.html#ad9780f60e6e22445b6a2543d37144440',1,'russtat::rsengine']]]
 ];

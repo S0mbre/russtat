@@ -6,7 +6,7 @@
 ## @package russtat.globs
 # @brief Global variables.
 from datetime import datetime, timedelta
-import sys
+import sys, traceback
 
 # GNU General Public License v3.0+ (see LICENSE.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 # --------------------------------------------------------------- #
@@ -25,7 +25,8 @@ NL = '\n'
 # @param flush `bool` `True` to flush the IO buffer immediately
 def report(message, force=False, file=sys.stdout, end='\n', flush=False):
     if force or DEBUGGING:
-        print(message, end=end, file=file, flush=flush)
+        if message: print(message, end=end, file=file, flush=flush)
+        traceback.print_exc(file=file)
 
 ## Checks if an object is iterable (e.g. a collection or iterator).
 # @returns `bool` `True` if `obj` is iterable / `False` if not

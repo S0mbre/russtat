@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['next_82',['next',['../classrusstat_1_1rsengine_1_1_russtat.html#a8f3383b0b66b45a0332ec607ca0778f7',1,'russtat::rsengine::Russtat']]]
+  ['main_0',['main',['../namespacerusstat_1_1russtat.html#ada019b0043668137918efd137b88e0b4',1,'russtat::russtat']]],
+  ['msg_1',['msg',['../namespacerusstat_1_1repl.html#af9f424051002fd3a2654bf01a7ce28e8',1,'russtat::repl']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['root_5ffolder_92',['root_folder',['../classrusstat_1_1rsengine_1_1_russtat.html#ac766e8e2133d4a5efa4780e165c775ef',1,'russtat::rsengine::Russtat']]]
+  ['header_0',['HEADER',['../namespacerusstat_1_1rsengine.html#ad9780f60e6e22445b6a2543d37144440',1,'russtat::rsengine']]]
 ];
